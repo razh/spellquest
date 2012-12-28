@@ -154,8 +154,8 @@ Entity.prototype.setAlpha = function( alpha ) {
 };
 
 Entity.prototype.update = function( elapsedTime ) {
-  this.setVelocityX( this.getVelocityX() * 0.96 );
-  this.setVelocityY( this.getVelocityY() * 0.96 );
+  this.setVelocityX( this.getVelocityX() * 0.95 );
+  this.setVelocityY( this.getVelocityY() * 0.95 );
 
   if ( ( ( 0.5 + this.getVelocityX() ) << 0 ) < _game.EPSILON ) {
     this.setVelocityX( 0 );
