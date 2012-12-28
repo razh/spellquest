@@ -157,6 +157,18 @@ function onMouseUp( event ) {
   }
 }
 
+function onTouchStart( event ) {
+  onMouseDown( event.touches[0] );
+}
+
+function onTouchMove( event ) {
+  onMouseMove( event.touches[0] );
+}
+
+function onTouchEnd( event ) {
+  onMouseUp( event.touches[0] );
+}
+
 function transformCoords( x, y ) {
   return {
     x: x - _game._canvas.offsetLeft,
@@ -172,10 +184,9 @@ function init() {
   _game._canvas.addEventListener( 'mousemove', onMouseMove, null );
   _game._canvas.addEventListener( 'mouseup', onMouseUp, null );
 
-  _game._canvas.addEventListener( 'touchstart', onMouseDown, null );
-  _game._canvas.addEventListener( 'touchmove', onMouseMove, null );
-  _game._canvas.addEventListener( 'touchend', onMouseUp, null );
-
+  _game._canvas.addEventListener( 'touchstart', onTouchStart, null );
+  _game._canvas.addEventListener( 'touchmove', onTouchMove, null );
+  _game._canvas.addEventListener( 'touchend', onTouchEnd, null );
 
   document.addEventListener( 'keydown', (function( event ) {
     if ( event.keyCode === 81 )
