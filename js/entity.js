@@ -185,11 +185,8 @@ Entity.prototype.draw = function( ctx ) {
 };
 
 Entity.prototype.hit = function( x, y ) {
-  x -= this.getX();
-  y -= this.getY();
-
-  if ( ( Math.abs( x ) <= this.getHalfWidth() ) &&
-       ( Math.abs( y ) <= this.getHalfHeight() ) ) {
+  if ( ( Math.abs( x - this.getX() ) <= this.getHalfWidth() ) &&
+       ( Math.abs( y - this.getY() ) <= this.getHalfHeight() ) ) {
     return this;
   }
 

@@ -11,3 +11,13 @@ html, body {
 canvas {
   display: block;
 }
+
+#spellquest {
+  position: absolute;
+  z-index: 1;
+}
+
+#spellquest-background {
+  position: absolute;
+  z-index: 0;
+}

@@ -2,15 +2,22 @@ var running = true;
 
 var Game = function() {
   $( 'body' ).append( '<canvas id="spellquest"></canvas>' );
+  $( 'body' ).append( '<canvas id="spellquest-background"></canvas>' );
   this._canvas = document.getElementById( 'spellquest' );
   this._ctx = this._canvas.getContext( '2d' );
+
+  this._backgroundCanvas = document.getElementById( 'spellquest-background' );
+  this._backgroundCtx = this._backgroundCanvas.getContext( '2d' );
 
   this.WIDTH = window.innerWidth;
   this.HEIGHT = window.innerHeight;
 
-  this._canvas.style.backgroundColor = "#DDDDDD";
   this._canvas.width = this.WIDTH;
   this._canvas.height = this.HEIGHT;
+
+  this._backgroundCanvas.style.backgroundColor = "#DDDDDD";
+  this._backgroundCanvas.width = this.WIDTH;
+  this._backgroundCanvas.height = this.HEIGHT;
 
   this._prevTime = Date.now();
   this._currTime = this._prevTime;
@@ -23,7 +30,7 @@ var Game = function() {
   testEntity.setWidth( 200 );
   testEntity.setHeight( 200 );
   testEntity.setColor( 240, 63, 53, 1.0 );
-  // this._entities.push( testEntity );
+  // this.add( testEntity );
 
   var testLetter = new Letter();
   testLetter.setPosition( 50, 50 );
@@ -33,7 +40,7 @@ var Game = function() {
   testLetter.setColor( 240, 63, 53, 1.0 );
   testLetter.setChar( 'B' );
   testLetter.setTextColor( 255, 255, 255, 1.0 );
-  this._entities.push( testLetter );
+  this.add( testLetter );
 
   var testLetter2 = new Letter();
   testLetter2.setPosition( 200, 50 );
@@ -42,7 +49,7 @@ var Game = function() {
   testLetter2.setColor( 240, 63, 53, 1.0 );
   testLetter2.setChar( 'E' );
   testLetter2.setTextColor( 255, 255, 255, 1.0 );
-  this._entities.push( testLetter2 );
+  this.add( testLetter2 );
 
   var testForm = new Form();
   testForm.setPosition( 100, 400 );
@@ -50,18 +57,19 @@ var Game = function() {
   testForm.setHeight( 55 );
   testForm.setColor( 100, 100, 100, 1.0 );
   testForm.setLineWidth( 5 );
-  this._entities.push( testForm );
+  this.add( testForm );
 
   var tempForm = null;
   for ( var i = 0; i < 5; i++ ) {
-    this._entities.push( new Form() );
-    tempForm = this._entities[ this._entities.length - 1 ];
+    tempForm = new Form();
 
     tempForm.setPosition( 100 + i * 75, 400 );
     tempForm.setWidth( 55 );
     tempForm.setHeight( 55 );
     tempForm.setColor( 100, 100, 100, 1.0 );
     tempForm.setLineWidth( 5 );
+
+    this.add( tempForm );
   }
 };
 
@@ -83,7 +91,9 @@ Game.prototype.draw = function() {
   this._ctx.clearRect( 0, 0, this.WIDTH, this.HEIGHT );
 
   for ( var i = this._entities.length - 1; i >= 0; i-- ) {
-    this._entities[i].draw( this._ctx );
+    if ( !( this._entities[i] instanceof Form ) ) {
+      this._entities[i].draw( this._ctx );
+    }
   }
 };
 
@@ -101,6 +111,14 @@ Game.prototype.hit = function( x, y ) {
   }
 
   return null;
+};
+
+Game.prototype.add = function( entity ) {
+  if ( entity instanceof Form ) {
+    entity.draw( this._backgroundCtx );
+  }
+
+  this._entities.push( entity );
 };
 
 var selected = null;
