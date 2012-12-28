@@ -129,7 +129,7 @@ var lastPosition = {
 
 function onMouseDown( event ) {
   var mouse = transformCoords( event.pageX, event.pageY );
-
+_game._backgroundCtx.fillRect( mouse.x, mouse.y, 5, 5 );
   selected = _game.hit( mouse.x, mouse.y );
 
   if ( selected !== null ) {
