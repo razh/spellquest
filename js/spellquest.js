@@ -145,7 +145,7 @@ function onMouseMove( event ) {
     selected.setPosition( mouse.x, mouse.y );
 }
 
-function onMouseUp( event ){
+function onMouseUp( event ) {
   var mouse = transformCoords( event.pageX, event.pageY );
 
   if ( selected !== null ) {
@@ -172,7 +172,12 @@ function init() {
   _game._canvas.addEventListener( 'mousemove', onMouseMove, null );
   _game._canvas.addEventListener( 'mouseup', onMouseUp, null );
 
-  document.addEventListener( 'keydown', (function ( event ) {
+  _game._canvas.addEventListener( 'touchstart', onMouseDown, null );
+  _game._canvas.addEventListener( 'touchmove', onMouseMove, null );
+  _game._canvas.addEventListener( 'touchend', onMouseUp, null );
+
+
+  document.addEventListener( 'keydown', (function( event ) {
     if ( event.keyCode === 81 )
       quit();
   }), null );
