@@ -192,7 +192,7 @@ function inputMove( input ) {
   }
 
   lastPositions.push( input );
-  console.log( input.x + ", " + input.y );
+  // console.log( input.x + ", " + input.y );
 
   if ( selected !== null ) {
     selected.setPosition( input.x, input.y );
@@ -206,10 +206,22 @@ function inputUp( input ) {
         dy = lastPositions[1].y - lastPositions[0].y;
 
     selected.setVelocity( dx / 50, dy / 50 );
-    console.log( lastPositions );
-    console.log( dx + ", " + dy );
-    console.log( selected.getVelocity() );
+    // console.log( lastPositions );
+    // console.log( dx + ", " + dy );
+    // console.log( selected.getVelocity() );
     selected = null;
+  }
+}
+
+function onKeyDown( event ) {
+  // ESC.
+  if ( event.keyCode === 27 ) {
+    quit();
+    return;
+  }
+
+  if ( 65 <= event.keyCode && event.keyCode <= 90 ) {
+    console.log( String.fromCharCode( event.keyCode ) );
   }
 }
 
@@ -232,10 +244,7 @@ function init() {
   _game._canvas.addEventListener( 'touchmove', onTouchMove, null );
   _game._canvas.addEventListener( 'touchend', onTouchEnd, null );
 
-  document.addEventListener( 'keydown', (function( event ) {
-    if ( event.keyCode === 81 )
-      quit();
-  }), null );
+  document.addEventListener( 'keydown', onKeyDown, null );
 
   loop();
 }
