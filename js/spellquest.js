@@ -135,10 +135,8 @@ Game.prototype.add = function( entity ) {
 };
 
 var selected = null;
-var lastPosition = {
-  x: 0,
-  y: 0
-};
+// Keep track of last three positions.
+var lastPositions = [];
 
 function onMouseDown( event ) {
   var mouse = transformCoords( event.pageX, event.pageY );
@@ -169,7 +167,7 @@ function onTouchMove( event ) {
 
 function onTouchEnd( event ) {
   event.preventDefault();
-  inputUp( lastPosition );
+  inputUp();
 }
 
 function inputDown( input ) {
@@ -180,12 +178,18 @@ function inputDown( input ) {
 
   if ( selected !== null ) {
     selected.setPosition( input.x, input.y );
+    selected.setVelocity( 0, 0 );
   }
 }
 
 function inputMove( input ) {
   // console.log( 'move' );
-  lastPosition = input;
+  while ( lastPositions.length > 1 ) {
+    lastPositions.shift();
+  }
+
+  lastPositions.push( input );
+  console.log( input.x + ", " + input.y );
 
   if ( selected !== null ) {
     selected.setPosition( input.x, input.y );
@@ -195,10 +199,13 @@ function inputMove( input ) {
 function inputUp( input ) {
   // console.log( 'up' );
   if ( selected !== null ) {
-    var dx = lastPosition.x - input.x,
-        dy = lastPosition.y - input.y;
+    var dx = lastPositions[1].x - lastPositions[0].x,
+        dy = lastPositions[1].y - lastPositions[0].y;
 
-    selected.setVelocity( dx, dy );
+    selected.setVelocity( dx / 10000, dy / 10000 );
+    console.log( lastPositions );
+    console.log( dx + ", " + dy );
+    console.log( selected.getVelocity() );
     selected = null;
   }
 }

@@ -14,8 +14,8 @@ var Letter = function() {
 Letter.prototype = new Entity();
 Letter.prototype.constructor = Letter;
 
-Letter.prototype.setPosition = function( x, y ) {
-  Entity.prototype.setPosition.call( this, x, y );
+Letter.prototype.update = function( x, y ) {
+  Entity.prototype.update.call( this, x, y );
 
   if ( _game !== undefined && _game !== null ) {
     for ( var i = _game._entities.length - 1; i >= 0; i-- ) {
@@ -23,6 +23,7 @@ Letter.prototype.setPosition = function( x, y ) {
         if ( _game._entities[i].hit( this.getX(), this.getY() ) !== null ) {
           this.setX( _game._entities[i].getX() );
           this.setY( _game._entities[i].getY() );
+          this.setVelocity( 0, 0 );
         }
       }
     }
