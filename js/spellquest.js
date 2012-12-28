@@ -35,8 +35,8 @@ var Game = function() {
   var testLetter = new Letter();
   testLetter.setPosition( 50, 50 );
   // testLetter.setVelocity( 0.0002, 0.0001 );
-  testLetter.setWidth( 60 );
-  testLetter.setHeight( 60 );
+  testLetter.setWidth( 70 );
+  testLetter.setHeight( 70 );
   testLetter.setColor( 240, 63, 53, 1.0 );
   testLetter.setChar( 'B' );
   testLetter.setTextColor( 255, 255, 255, 1.0 );
@@ -44,8 +44,8 @@ var Game = function() {
 
   var testLetter2 = new Letter();
   testLetter2.setPosition( 200, 50 );
-  testLetter2.setWidth( 60 );
-  testLetter2.setHeight( 60 );
+  testLetter2.setWidth( 70 );
+  testLetter2.setHeight( 70 );
   testLetter2.setColor( 240, 63, 53, 1.0 );
   testLetter2.setChar( 'E' );
   testLetter2.setTextColor( 255, 255, 255, 1.0 );
@@ -53,8 +53,8 @@ var Game = function() {
 
   var testForm = new Form();
   testForm.setPosition( 100, 400 );
-  testForm.setWidth( 65 );
-  testForm.setHeight( 65 );
+  testForm.setWidth( 75 );
+  testForm.setHeight( 75 );
   testForm.setColor( 100, 100, 100, 1.0 );
   testForm.setLineWidth( 5 );
   this.add( testForm );
@@ -63,9 +63,9 @@ var Game = function() {
   for ( var i = 0; i < 5; i++ ) {
     tempForm = new Form();
 
-    tempForm.setPosition( 100 + i * 75, 400 );
-    tempForm.setWidth( 65 );
-    tempForm.setHeight( 65 );
+    tempForm.setPosition( 100 + i * 95, 400 );
+    tempForm.setWidth( 75 );
+    tempForm.setHeight( 75 );
     tempForm.setColor( 100, 100, 100, 1.0 );
     tempForm.setLineWidth( 5 );
 
@@ -129,44 +129,65 @@ var lastPosition = {
 
 function onMouseDown( event ) {
   var mouse = transformCoords( event.pageX, event.pageY );
-_game._backgroundCtx.fillRect( mouse.x, mouse.y, 5, 5 );
-  selected = _game.hit( mouse.x, mouse.y );
-
-  if ( selected !== null ) {
-    selected.setPosition( mouse.x, mouse.y );
-  }
+  inputDown( mouse );
 }
 
 function onMouseMove( event ) {
   var mouse = transformCoords( event.pageX, event.pageY );
-  lastPosition = mouse;
-
-  if ( selected !== null )
-    selected.setPosition( mouse.x, mouse.y );
+  inputMove( mouse );
 }
 
 function onMouseUp( event ) {
   var mouse = transformCoords( event.pageX, event.pageY );
+  inputUp( mouse );
+}
+
+function onTouchStart( event ) {
+  event.preventDefault();
+  var touch = transformCoords( event.touches[0].pageX, event.touches[0].pageY );
+  inputDown( touch );
+}
+
+function onTouchMove( event ) {
+  event.preventDefault();
+  var touch = transformCoords( event.changedTouches[0].pageX, event.changedTouches[0].pageY );
+  inputMove( touch );
+}
+
+function onTouchEnd( event ) {
+  event.preventDefault();
+  inputUp( lastPosition );
+}
+
+function inputDown( input ) {
+  // console.log( 'down' );
+  // _game._backgroundCtx.fillRect( input.x, input.y, 5, 5 );
+
+  selected = _game.hit( input.x, input.y );
 
   if ( selected !== null ) {
-    var dx = lastPosition.x - mouse.x,
-        dy = lastPosition.y - mouse.y;
+    selected.setPosition( input.x, input.y );
+  }
+}
+
+function inputMove( input ) {
+  // console.log( 'move' );
+  lastPosition = input;
+
+  if ( selected !== null ) {
+    selected.setPosition( input.x, input.y );
+  }
+}
+
+function inputUp( input ) {
+  // console.log( 'up' );
+  if ( selected !== null ) {
+    var dx = lastPosition.x - input.x,
+        dy = lastPosition.y - input.y;
 
     selected.setVelocity( dx, dy );
     selected = null;
   }
-}
-
-function onTouchStart( event ) {
-  onMouseDown( event.touches[0] );
-}
-
-function onTouchMove( event ) {
-  onMouseMove( event.touches[0] );
-}
-
-function onTouchEnd( event ) {
-  onMouseUp( event.touches[0] );
 }
 
 function transformCoords( x, y ) {

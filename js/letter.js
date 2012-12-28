@@ -32,7 +32,7 @@ Letter.prototype.setPosition = function( x, y ) {
 Letter.prototype.draw = function( ctx ) {
   Entity.prototype.draw.call( this, ctx );
 
-  ctx.font = "20pt Helvetica";
+  ctx.font = "24pt Helvetica";
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getTextRed() )   << 0 ) +
