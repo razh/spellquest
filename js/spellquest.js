@@ -24,6 +24,8 @@ var Game = function() {
 
   this._entities = [];
 
+  this.EPSILON = 1e-20;
+
   var testEntity = new Entity();
   testEntity.setPosition( 200, 200 );
   testEntity.setVelocity( 0.0001, -0.0001 );
@@ -94,6 +96,7 @@ Game.prototype.tick = function() {
 Game.prototype.update = function() {
   this._currTime = Date.now();
   var elapsedTime = this._currTime - this._prevTime;
+  this._prevTime = this._currTime;
 
   for ( var i = this._entities.length - 1; i >= 0; i-- ) {
     this._entities[i].update( elapsedTime );
@@ -202,7 +205,7 @@ function inputUp( input ) {
     var dx = lastPositions[1].x - lastPositions[0].x,
         dy = lastPositions[1].y - lastPositions[0].y;
 
-    selected.setVelocity( dx / 10000, dy / 10000 );
+    selected.setVelocity( dx / 50, dy / 50 );
     console.log( lastPositions );
     console.log( dx + ", " + dy );
     console.log( selected.getVelocity() );

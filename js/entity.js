@@ -157,13 +157,12 @@ Entity.prototype.update = function( elapsedTime ) {
   this.setVelocityX( this.getVelocityX() * 0.95 );
   this.setVelocityY( this.getVelocityY() * 0.95 );
 
-  if ( ( ( 0.5 + this.getVelocityX() ) << 0 ) < _game.EPSILON ) {
+  if ( Math.abs( this.getVelocityX() ) < _game.EPSILON ) {
     this.setVelocityX( 0 );
   }
-  if ( ( ( 0.5 + this.getVelocityY() ) << 0 ) < _game.EPSILON ) {
+  if ( Math.abs( this.getVelocityY() ) < _game.EPSILON ) {
     this.setVelocityY( 0 );
   }
-
 
   this.setX( this.getX() + this.getVelocityX() * elapsedTime );
   this.setY( this.getY() + this.getVelocityY() * elapsedTime );
