@@ -51,8 +51,21 @@ var Game = function() {
   testLetter2.setTextColor( 255, 255, 255, 1.0 );
   this.add( testLetter2 );
 
+  this.add( testLetter2.clone() );
+  var tempLetter = this._entities[ this._entities.length - 1 ];
+  tempLetter.setChar( 'V' );
+  tempLetter.setPosition( 320, 50 );
+  this.add( testLetter2.clone() );
+  tempLetter = this._entities[ this._entities.length - 1 ];
+  tempLetter.setChar( 'P' );
+  tempLetter.setPosition( 70, 170 );
+  this.add( testLetter2.clone() );
+  tempLetter = this._entities[ this._entities.length - 1 ];
+  tempLetter.setChar( 'T' );
+  tempLetter.setPosition( 200, 170 );
+
   var testForm = new Form();
-  testForm.setPosition( 100, 400 );
+  testForm.setPosition( 100, 300 );
   testForm.setWidth( 75 );
   testForm.setHeight( 75 );
   testForm.setColor( 100, 100, 100, 1.0 );
@@ -63,7 +76,7 @@ var Game = function() {
   for ( var i = 0; i < 5; i++ ) {
     tempForm = new Form();
 
-    tempForm.setPosition( 100 + i * 95, 400 );
+    tempForm.setPosition( 100 + i * 95, 300 );
     tempForm.setWidth( 75 );
     tempForm.setHeight( 75 );
     tempForm.setColor( 100, 100, 100, 1.0 );
@@ -240,6 +253,23 @@ window.requestAnimFrame = (function() {
             window.setTimeout( callback, 1000 / 60 );
          };
 }) ();
+
+// Cloning function taken from:
+// http://my.opera.com/GreyWyvern/blog/show.dml/1725165
+Object.prototype.clone = function() {
+  var newObj = ( this instanceof Array ) ? [] : {};
+
+  for ( var i in this ) {
+    if ( i === 'clone' ) continue;
+    if ( this[i] && typeof this[i] === 'object' ) {
+      newObj[i] = this[i].clone();
+    } else {
+      newObj[i] = this[i];
+    }
+  }
+
+  return newObj;
+};
 
 $(
   function() {
