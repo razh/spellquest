@@ -35,8 +35,8 @@ var Game = function() {
   var testLetter = new Letter();
   testLetter.setPosition( 50, 50 );
   // testLetter.setVelocity( 0.0002, 0.0001 );
-  testLetter.setWidth( 50 );
-  testLetter.setHeight( 50 );
+  testLetter.setWidth( 60 );
+  testLetter.setHeight( 60 );
   testLetter.setColor( 240, 63, 53, 1.0 );
   testLetter.setChar( 'B' );
   testLetter.setTextColor( 255, 255, 255, 1.0 );
@@ -44,8 +44,8 @@ var Game = function() {
 
   var testLetter2 = new Letter();
   testLetter2.setPosition( 200, 50 );
-  testLetter2.setWidth( 50 );
-  testLetter2.setHeight( 50 );
+  testLetter2.setWidth( 60 );
+  testLetter2.setHeight( 60 );
   testLetter2.setColor( 240, 63, 53, 1.0 );
   testLetter2.setChar( 'E' );
   testLetter2.setTextColor( 255, 255, 255, 1.0 );
@@ -53,8 +53,8 @@ var Game = function() {
 
   var testForm = new Form();
   testForm.setPosition( 100, 400 );
-  testForm.setWidth( 55 );
-  testForm.setHeight( 55 );
+  testForm.setWidth( 65 );
+  testForm.setHeight( 65 );
   testForm.setColor( 100, 100, 100, 1.0 );
   testForm.setLineWidth( 5 );
   this.add( testForm );
@@ -64,8 +64,8 @@ var Game = function() {
     tempForm = new Form();
 
     tempForm.setPosition( 100 + i * 75, 400 );
-    tempForm.setWidth( 55 );
-    tempForm.setHeight( 55 );
+    tempForm.setWidth( 65 );
+    tempForm.setHeight( 65 );
     tempForm.setColor( 100, 100, 100, 1.0 );
     tempForm.setLineWidth( 5 );
 
