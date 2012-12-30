@@ -66,7 +66,10 @@ var Game = function() {
   tempLetter.setChar( 'T' );
   tempLetter.setPosition( 200, 170 );
 
-  var testForm = new Form();
+  var pool = new Pool();
+  pool.setLetters( this._entities );
+
+  var testForm = new FormElement();
   testForm.setPosition( 100, 300 );
   testForm.setWidth( 75 );
   testForm.setHeight( 75 );
@@ -76,7 +79,7 @@ var Game = function() {
 
   var tempForm = null;
   for ( var i = 0; i < 5; i++ ) {
-    tempForm = new Form();
+    tempForm = new FormElement();
 
     tempForm.setPosition( 100 + i * 95, 300 );
     tempForm.setWidth( 75 );
@@ -86,6 +89,8 @@ var Game = function() {
 
     this.add( tempForm );
   }
+
+  var dict = new Dictionary();
 };
 
 Game.prototype.tick = function() {
@@ -107,7 +112,7 @@ Game.prototype.draw = function() {
   this._ctx.clearRect( 0, 0, this.WIDTH, this.HEIGHT );
 
   for ( var i = this._entities.length - 1; i >= 0; i-- ) {
-    if ( !( this._entities[i] instanceof Form ) ) {
+    if ( !( this._entities[i] instanceof FormElement ) ) {
       this._entities[i].draw( this._ctx );
     }
   }
@@ -116,7 +121,7 @@ Game.prototype.draw = function() {
 Game.prototype.hit = function( x, y ) {
   var hit = null;
   for ( var i = this._entities.length - 1; i >= 0; i-- ) {
-    if ( this._entities[i] instanceof Form ) {
+    if ( this._entities[i] instanceof FormElement ) {
       continue;
     }
 
@@ -130,7 +135,7 @@ Game.prototype.hit = function( x, y ) {
 };
 
 Game.prototype.add = function( entity ) {
-  if ( entity instanceof Form ) {
+  if ( entity instanceof FormElement ) {
     entity.draw( this._backgroundCtx );
   }
 

@@ -49,33 +49,38 @@ function roundRect( ctx, x, y, width, height, radius, fill, stroke ) {
   }
 }
 
-var Form = function() {
+var FormElement = function() {
   Entity.call( this );
 
   this._letterCount = 0;
   this._lineWidth = 0;
 };
 
-Form.prototype = new Entity();
-Form.prototype.constructor = Form;
+FormElement.prototype = new Entity();
+FormElement.prototype.constructor = FormElement;
 
-Form.prototype.getLetterCount = function() {
+FormElement.prototype.getLetterCount = function() {
   return this._letterCount;
 };
 
-Form.prototype.getLineWidth = function() {
+FormElement.prototype.getLineWidth = function() {
   return this._lineWidth;
 };
 
-Form.prototype.setLineWidth = function( lineWidth ) {
+FormElement.prototype.setLineWidth = function( lineWidth ) {
   this._lineWidth = lineWidth;
 };
 
-Form.prototype.draw = function( ctx ) {
+FormElement.prototype.draw = function( ctx ) {
   ctx.lineWidth = this.getLineWidth();
   ctx.strokeStyle = 'rgba( ' + ( ( 0.5 + this.getRed() )   << 0 ) +
                     ', '     + ( ( 0.5 + this.getGreen() ) << 0 ) +
                     ','      + ( ( 0.5 + this.getBlue() )  << 0 ) +
                     ','      + this.getAlpha() + ' )';
   roundRect( ctx, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 5, false, true );
+};
+
+
+var Form = function() {
+  this._formElements = [];
 };
