@@ -19,7 +19,7 @@ Letter.prototype.update = function( x, y ) {
 
   if ( _game !== undefined && _game !== null ) {
     for ( var i = _game._entities.length - 1; i >= 0; i-- ) {
-      if ( _game._entities[i] instanceof Form ) {
+      if ( _game._entities[i] instanceof FormElement ) {
         if ( _game._entities[i].hit( this.getX(), this.getY() ) !== null ) {
           this.setX( _game._entities[i].getX() );
           this.setY( _game._entities[i].getY() );
