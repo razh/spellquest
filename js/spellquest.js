@@ -92,6 +92,9 @@ var Game = function() {
 
   this.dict = new Dictionary();
   var word = this.dict.getRandomWord();
+  while ( word.length < 5 )
+    word = this.dict.getRandomWord();
+
   console.log( word );
   this._pool.setLetters( word.split( '' ) );
   var letters = this._pool.getLetters();
@@ -166,6 +169,10 @@ Game.prototype.add = function( entity ) {
 
 Game.prototype.getPool = function() {
   return this._pool;
+};
+
+Game.prototype.getForm = function() {
+  return this._form;
 };
 
 var selected = null;
@@ -259,6 +266,18 @@ function onKeyDown( event ) {
       letter.setPosition( _game._form._formElements[ currFormElement ].getPosition() );
       if ( currFormElement < _game.getPool().getLetters().length - 1 )
         currFormElement++;
+    }
+  }
+
+  else {
+    console.log( event.keyCode );
+    switch ( event.keyCode ) {
+      // Enter.
+      case 13:
+        break;
+      case 8:
+        event.preventDefault();
+        break;
     }
   }
 }

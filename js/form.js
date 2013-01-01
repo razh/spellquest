@@ -102,3 +102,7 @@ Form.prototype.draw = function( ctx ) {
 };
 
 Form.prototype.update = function() {};
+
+Form.prototype.getFormElements = function() {
+  return this._formElements;
+};

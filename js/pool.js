@@ -54,8 +54,11 @@ Pool.prototype.draw = function( ctx ) {
 
 Pool.prototype.hit = function( x, y ) {
   for ( var i = 0; i < this._letterEntities.length; i++ ) {
-    this._letterEntities[i].hit( x, y );
+    if ( this._letterEntities[i].hit( x, y ) !== null )
+      return this._letterEntities[i];
   }
+
+  return null;
 };
 
 // http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
