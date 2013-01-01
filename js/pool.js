@@ -6,7 +6,8 @@ var Pool = function() {
 
 Pool.prototype.getLetterByChar = function( char ) {
   for ( var i = this._letterEntities.length - 1; i >= 0; i-- ) {
-    if ( this._letterEntities[i].getChar() === char ) {
+    if ( this._letterEntities[i].getChar() === char && this._inPool[i] ) {
+      this._inPool[i] = false;
       return this._letterEntities[i];
     }
   }
@@ -35,6 +36,7 @@ Pool.prototype.createLetterEntities = function() {
     letter.setChar( this.getLetters()[i].toUpperCase() );
     letter.setTextColor( 255, 255, 255, 1.0 );
     this._letterEntities.push( letter );
+    this._inPool.push( true );
   }
 };
 
