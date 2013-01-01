@@ -52,7 +52,6 @@ Letter.prototype.setChar = function( char ) {
   this._char = char;
 };
 
-
 Letter.prototype.getTextColor = function() {
   return this._textColor;
 };

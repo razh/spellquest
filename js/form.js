@@ -84,3 +84,21 @@ FormElement.prototype.draw = function( ctx ) {
 var Form = function() {
   this._formElements = [];
 };
+
+Form.prototype.getWord = function() {
+  var word = '';
+
+  for ( var i = 0, n = this._formElements.length; i < n; i++ ) {
+    word += this._formElements[i];
+  }
+
+  return word;
+};
+
+Form.prototype.draw = function( ctx ) {
+  for ( var i = 0, n = this._formElements.length; i < n; i++ ) {
+    this._formElements[i].draw( ctx );
+  }
+};
+
+Form.prototype.update = function() {};

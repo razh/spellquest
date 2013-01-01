@@ -1,16 +1,23 @@
 var Dictionary = function() {
-  this._wordList = [];
-  this._loaded = false;
-
   var jsonURL = '../json/dictionary.json';
-  $.getJSON( jsonURL, function( data ) {
-    this._wordList = data;
-    this._loaded = true;
-  });
+
+  this._wordList = (function() {
+    var json = null;
+    $.ajax({
+      'async': false,
+      'global': false,
+      'url': jsonURL,
+      'dataType': 'json',
+      'success': function( data ) {
+        json = data;
+      }
+    });
+    return json;
+  }) ();
 };
 
 Dictionary.prototype.getRandomWord = function() {
-
+  return this._wordList[ Math.floor( Math.random() * ( this._wordList.length + 1 ) ) ];
 };
 
 
@@ -18,6 +25,6 @@ Dictionary.prototype.getSubWords = function( word ) {
 
 };
 
-Dictionary.prototype.isLoaded = function() {
-  return this._loaded;
+Dictionary.prototype.createMap = function() {
+
 };

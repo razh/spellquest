@@ -26,71 +26,103 @@ var Game = function() {
 
   this.EPSILON = 1e-20;
 
-  var testEntity = new Entity();
-  testEntity.setPosition( 200, 200 );
-  testEntity.setVelocity( 0.0001, -0.0001 );
-  testEntity.setWidth( 200 );
-  testEntity.setHeight( 200 );
-  testEntity.setColor( 240, 63, 53, 1.0 );
-  // this.add( testEntity );
+  // var testEntity = new Entity();
+  // testEntity.setPosition( 200, 200 );
+  // testEntity.setVelocity( 0.0001, -0.0001 );
+  // testEntity.setWidth( 200 );
+  // testEntity.setHeight( 200 );
+  // testEntity.setColor( 240, 63, 53, 1.0 );
+  // // this.add( testEntity );
 
-  var testLetter = new Letter();
-  testLetter.setPosition( 50, 50 );
-  // testLetter.setVelocity( 0.0002, 0.0001 );
-  testLetter.setWidth( 70 );
-  testLetter.setHeight( 70 );
-  testLetter.setColor( 240, 63, 53, 1.0 );
-  testLetter.setChar( 'B' );
-  testLetter.setTextColor( 255, 255, 255, 1.0 );
-  this.add( testLetter );
+  // var testLetter = new Letter();
+  // testLetter.setPosition( 50, 50 );
+  // // testLetter.setVelocity( 0.0002, 0.0001 );
+  // testLetter.setWidth( 70 );
+  // testLetter.setHeight( 70 );
+  // testLetter.setColor( 240, 63, 53, 1.0 );
+  // testLetter.setChar( 'B' );
+  // testLetter.setTextColor( 255, 255, 255, 1.0 );
+  // this.add( testLetter );
 
-  var testLetter2 = new Letter();
-  testLetter2.setPosition( 200, 50 );
-  testLetter2.setWidth( 70 );
-  testLetter2.setHeight( 70 );
-  testLetter2.setColor( 240, 63, 53, 1.0 );
-  testLetter2.setChar( 'E' );
-  testLetter2.setTextColor( 255, 255, 255, 1.0 );
-  this.add( testLetter2 );
+  // var testLetter2 = new Letter();
+  // testLetter2.setPosition( 200, 50 );
+  // testLetter2.setWidth( 70 );
+  // testLetter2.setHeight( 70 );
+  // testLetter2.setColor( 240, 63, 53, 1.0 );
+  // testLetter2.setChar( 'E' );
+  // testLetter2.setTextColor( 255, 255, 255, 1.0 );
+  // this.add( testLetter2 );
 
-  this.add( testLetter2.clone() );
-  var tempLetter = this._entities[ this._entities.length - 1 ];
-  tempLetter.setChar( 'V' );
-  tempLetter.setPosition( 320, 50 );
-  this.add( testLetter2.clone() );
-  tempLetter = this._entities[ this._entities.length - 1 ];
-  tempLetter.setChar( 'P' );
-  tempLetter.setPosition( 70, 170 );
-  this.add( testLetter2.clone() );
-  tempLetter = this._entities[ this._entities.length - 1 ];
-  tempLetter.setChar( 'T' );
-  tempLetter.setPosition( 200, 170 );
+  // this.add( testLetter2.clone() );
+  // var tempLetter = this._entities[ this._entities.length - 1 ];
+  // tempLetter.setChar( 'V' );
+  // tempLetter.setPosition( 320, 50 );
+  // this.add( testLetter2.clone() );
+  // tempLetter = this._entities[ this._entities.length - 1 ];
+  // tempLetter.setChar( 'P' );
+  // tempLetter.setPosition( 70, 170 );
+  // this.add( testLetter2.clone() );
+  // tempLetter = this._entities[ this._entities.length - 1 ];
+  // tempLetter.setChar( 'T' );
+  // tempLetter.setPosition( 200, 170 );
 
-  var pool = new Pool();
-  pool.setLetters( this._entities );
+  this._pool = new Pool();
+  // this._pool.setLetters( this._entities );
 
-  var testForm = new FormElement();
-  testForm.setPosition( 100, 300 );
-  testForm.setWidth( 75 );
-  testForm.setHeight( 75 );
-  testForm.setColor( 100, 100, 100, 1.0 );
-  testForm.setLineWidth( 5 );
-  this.add( testForm );
+  // var testForm = new FormElement();
+  // testForm.setPosition( 100, 300 );
+  // testForm.setWidth( 75 );
+  // testForm.setHeight( 75 );
+  // testForm.setColor( 100, 100, 100, 1.0 );
+  // testForm.setLineWidth( 5 );
+  // this.add( testForm );
 
-  var tempForm = null;
-  for ( var i = 0; i < 5; i++ ) {
-    tempForm = new FormElement();
+  // var tempForm = null;
+  // for ( var i = 0; i < 5; i++ ) {
+  //   tempForm = new FormElement();
 
-    tempForm.setPosition( 100 + i * 95, 300 );
-    tempForm.setWidth( 75 );
-    tempForm.setHeight( 75 );
-    tempForm.setColor( 100, 100, 100, 1.0 );
-    tempForm.setLineWidth( 5 );
+  //   tempForm.setPosition( 100 + i * 95, 300 );
+  //   tempForm.setWidth( 75 );
+  //   tempForm.setHeight( 75 );
+  //   tempForm.setColor( 100, 100, 100, 1.0 );
+  //   tempForm.setLineWidth( 5 );
 
-    this.add( tempForm );
+  //   this.add( tempForm );
+  // }
+
+  this.dict = new Dictionary();
+  var word = this.dict.getRandomWord();
+  console.log( word );
+  this._pool.setLetters( word.split( '' ) );
+  var letters = this._pool.getLetters();
+  // var letterEntities = [];
+  // var tempLetter = null;
+  // for ( i = 0; i < letters.length; i++ ) {
+  //   tempLetter = new Letter();
+  //   tempLetter.setPosition( 100 + i * 90, 200 );
+  //   tempLetter.setWidth( 70 );
+  //   tempLetter.setHeight( 70 );
+  //   tempLetter.setColor( 240, 63, 53, 1.0 );
+  //   tempLetter.setChar( letters[i].toUpperCase() );
+  //   tempLetter.setTextColor( 255, 255, 255, 1.0 );
+  //   letterEntities.push( tempLetter );
+  // }
+  // this._pool._letterEntities = letterEntities;
+
+  this._form = new Form();
+  var formElements = [];
+  var tempFormElement = null;
+  for ( i = 0; i < letters.length; i++) {
+    tempFormElement = new FormElement();
+    tempFormElement.setPosition( 100 + i * 90, 400 );
+    tempFormElement.setWidth( 75 );
+    tempFormElement.setHeight( 75 );
+    tempFormElement.setColor( 100, 100, 100, 1.0 );
+    tempFormElement.setLineWidth( 5 );
+    formElements.push( tempFormElement );
   }
-
-  var dict = new Dictionary();
+  this._form._formElements = formElements;
+  this.add( this._form );
 };
 
 Game.prototype.tick = function() {
@@ -103,43 +135,37 @@ Game.prototype.update = function() {
   var elapsedTime = this._currTime - this._prevTime;
   this._prevTime = this._currTime;
 
-  for ( var i = this._entities.length - 1; i >= 0; i-- ) {
-    this._entities[i].update( elapsedTime );
-  }
+  this.getPool().update( elapsedTime );
+  // for ( var i = this._entities.length - 1; i >= 0; i-- ) {
+  //   this._entities[i].update( elapsedTime );
+  // }
 };
 
 Game.prototype.draw = function() {
   this._ctx.clearRect( 0, 0, this.WIDTH, this.HEIGHT );
 
-  for ( var i = this._entities.length - 1; i >= 0; i-- ) {
-    if ( !( this._entities[i] instanceof FormElement ) ) {
-      this._entities[i].draw( this._ctx );
-    }
-  }
+  this.getPool().draw( this._ctx );
+  // for ( var i = this._entities.length - 1; i >= 0; i-- ) {
+  //   if ( !( this._entities[i] instanceof FormElement ) ) {
+  //     this._entities[i].draw( this._ctx );
+  //   }
+  // }
 };
 
 Game.prototype.hit = function( x, y ) {
-  var hit = null;
-  for ( var i = this._entities.length - 1; i >= 0; i-- ) {
-    if ( this._entities[i] instanceof FormElement ) {
-      continue;
-    }
-
-    hit = this._entities[i].hit( x, y );
-    if ( hit !== null ) {
-      return hit;
-    }
-  }
-
-  return null;
+  return this.getPool().hit( x, y );
 };
 
 Game.prototype.add = function( entity ) {
-  if ( entity instanceof FormElement ) {
+  if ( entity instanceof Form ) {
     entity.draw( this._backgroundCtx );
   }
 
   this._entities.push( entity );
+};
+
+Game.prototype.getPool = function() {
+  return this._pool;
 };
 
 var selected = null;
@@ -218,6 +244,7 @@ function inputUp( input ) {
   }
 }
 
+var currFormElement = 0;
 function onKeyDown( event ) {
   // ESC.
   if ( event.keyCode === 27 ) {
@@ -227,6 +254,12 @@ function onKeyDown( event ) {
 
   if ( 65 <= event.keyCode && event.keyCode <= 90 ) {
     console.log( String.fromCharCode( event.keyCode ) );
+    var letter = _game.getPool().getLetterByChar( String.fromCharCode( event.keyCode ) );
+    if ( letter !== null ) {
+      letter.setPosition( _game._form._formElements[ currFormElement ].getPosition() );
+      if ( currFormElement < _game.getPool().getLetters().length - 1 )
+        currFormElement++;
+    }
   }
 }
 
