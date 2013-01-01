@@ -274,7 +274,9 @@ function onKeyDown( event ) {
     switch ( event.keyCode ) {
       // Enter.
       case 13:
+        console.log( _game.getForm().getWord() );
         break;
+      // Backspace.
       case 8:
         event.preventDefault();
         break;

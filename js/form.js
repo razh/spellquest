@@ -52,12 +52,21 @@ function roundRect( ctx, x, y, width, height, radius, fill, stroke ) {
 var FormElement = function() {
   Entity.call( this );
 
+  this._letter = null;
   this._letterCount = 0;
   this._lineWidth = 0;
 };
 
 FormElement.prototype = new Entity();
 FormElement.prototype.constructor = FormElement;
+
+FormElement.prototype.setLetter = function( letter ) {
+  this._letter = letter;
+};
+
+FormElement.prototype.getLetter = function() {
+  return this._letter;
+};
 
 FormElement.prototype.getLetterCount = function() {
   return this._letterCount;
@@ -89,10 +98,17 @@ Form.prototype.getWord = function() {
   var word = '';
 
   for ( var i = 0, n = this._formElements.length; i < n; i++ ) {
-    word += this._formElements[i];
+    var letter = this._formElements[i].getLetter();
+    if ( letter !== null ) {
+      word += letter.getChar();
+    }
   }
 
   return word;
+};
+
+Form.prototype.getLetterArray = function() {
+  return this._formElements;
 };
 
 Form.prototype.draw = function( ctx ) {

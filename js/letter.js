@@ -24,6 +24,7 @@ Letter.prototype.update = function( x, y ) {
         this.setX( formElements[i].getX() );
         this.setY( formElements[i].getY() );
         this.setVelocity( 0, 0 );
+        formElements[i].setLetter( this );
       }
     }
   }

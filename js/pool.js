@@ -1,6 +1,7 @@
 var Pool = function() {
   this._letters = [];
   this._letterEntities = [];
+  this._letterIndices = [];
   this._inPool = [];
 };
 
@@ -20,24 +21,37 @@ Pool.prototype.getLetters = function() {
 };
 
 Pool.prototype.setLetters = function( letters ) {
-  this._letters = fisherYates( letters );
+  var indices = [];
+  for ( var i = 0; i < letters.length; i++ ) {
+    indices.push( i );
+  }
+
+  this._letters = letters;
+  this._letterIndices = fisherYates( indices );
 
   this.createLetterEntities();
 };
 
 Pool.prototype.createLetterEntities = function() {
   var letter = null;
+  var index = 0;
   for ( var i = 0; i < this.getLetters().length; i++ ) {
+    index = this._letterIndices[i];
+
     letter = new Letter();
     letter.setPosition( 100 + i * 90, 200 );
     letter.setWidth( 70 );
     letter.setHeight( 70 );
     letter.setColor( 240, 63, 53, 1.0 );
-    letter.setChar( this.getLetters()[i].toUpperCase() );
+    letter.setChar( this.getLetters()[ index ].toUpperCase() );
     letter.setTextColor( 255, 255, 255, 1.0 );
     this._letterEntities.push( letter );
     this._inPool.push( true );
   }
+};
+
+Pool.prototype.reset = function() {
+
 };
 
 Pool.prototype.update = function( elapsedTime ) {
