@@ -25,6 +25,13 @@ Letter.prototype.update = function( x, y ) {
         this.setY( formElements[i].getY() );
         this.setVelocity( 0, 0 );
         formElements[i].setLetter( this );
+
+        // Set it to used.
+        var index = _game.getPool()._letterEntities.lastIndexOf( this );
+        if ( index !== -1 ) {
+          _game.getPool()._isUsed[ index ] = true;
+        }
+
         break;
       }
     }

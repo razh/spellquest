@@ -9,6 +9,7 @@ var Pool = function() {
   this._isUsed = [];
 };
 
+// TODO: Go in order of letter indices.
 Pool.prototype.getLetterByChar = function( char ) {
   for ( var i = this._letterEntities.length - 1; i >= 0; i-- ) {
     if ( this._letterEntities[i].getChar() === char && !this._isUsed[i] ) {
@@ -71,18 +72,19 @@ Pool.prototype.reset = function() {
 
   var formElements = _game.getForm().getFormElements();
   for ( i = 0; i < formElements.length; i++ ){
-    letter = formElements[i].getLetter();
-    if ( letter !== null ) {
+    if ( formElements[i].hasLetter() ) {
+      letter = formElements[i].getLetter();
+
       // Remove from form element.
       formElements[i].setLetter( null );
       letter.setPosition( 100 + x * 90, 300 );
-      for ( var j = 0; j < this._letterEntities.length; j++ ) {
-        if ( this._letterEntities[j] === letter ) {
-          this._isUsed[j] = false;
-          newIndices.push(j);
-          break;
-        }
+
+      var index = this._letterEntities.lastIndexOf( letter );
+      if ( index !== -1 ) {
+        this._isUsed[ index ] = false;
+        newIndices.push( index );
       }
+
       x++;
     }
   }

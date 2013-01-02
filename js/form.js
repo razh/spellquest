@@ -68,6 +68,10 @@ FormElement.prototype.getLetter = function() {
   return this._letter;
 };
 
+FormElement.prototype.hasLetter = function() {
+  return this._letter !== null;
+}
+
 FormElement.prototype.getLetterCount = function() {
   return this._letterCount;
 };
