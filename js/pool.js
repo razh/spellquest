@@ -1,14 +1,18 @@
 var Pool = function() {
+  // Actual letters, in order.
   this._letters = [];
+  // Letter entities, in order.
   this._letterEntities = [];
+  // Order of the letter entities in the pool.
   this._letterIndices = [];
-  this._inPool = [];
+  // Whether the letter has been used, in order.
+  this._isUsed = [];
 };
 
 Pool.prototype.getLetterByChar = function( char ) {
   for ( var i = this._letterEntities.length - 1; i >= 0; i-- ) {
-    if ( this._letterEntities[i].getChar() === char && this._inPool[i] ) {
-      this._inPool[i] = false;
+    if ( this._letterEntities[i].getChar() === char && !this._isUsed[i] ) {
+      this._isUsed[i] = true;
       return this._letterEntities[i];
     }
   }
@@ -23,7 +27,7 @@ Pool.prototype.getLetters = function() {
 Pool.prototype.setLetters = function( letters ) {
   var indices = [];
   for ( var i = 0; i < letters.length; i++ ) {
-    indices.push( i );
+    indices.push(i);
   }
 
   this._letters = letters;
@@ -47,12 +51,43 @@ Pool.prototype.createLetterEntities = function() {
     letter.setTextColor( 255, 255, 255, 1.0 );
 
     this._letterEntities.push( letter );
-    this._inPool.push( true );
+    this._isUsed.push( false );
   }
 };
 
 Pool.prototype.reset = function() {
+  var x = 0;
+  var letter = null;
+  // The new order of the letters.
+  var newIndices = [];
+  for ( var i = 0; i < this._letterIndices.length; i++ ) {
+    if ( !this._isUsed[ this._letterIndices[i] ] ) {
+      letter = this._letterEntities[ this._letterIndices[i] ];
+      newIndices.push( this._letterIndices[i] );
+      letter.setPosition( 100 + x * 90, 200 );
+      x++;
+    }
+  }
 
+  var formElements = _game.getForm().getFormElements();
+  for ( i = 0; i < formElements.length; i++ ){
+    letter = formElements[i].getLetter();
+    if ( letter !== null ) {
+      // Remove from form element.
+      formElements[i].setLetter( null );
+      letter.setPosition( 100 + x * 90, 300 );
+      for ( var j = 0; j < this._letterEntities.length; j++ ) {
+        if ( this._letterEntities[j] === letter ) {
+          this._isUsed[j] = false;
+          newIndices.push(j);
+          break;
+        }
+      }
+      x++;
+    }
+  }
+
+  this._letterIndices = newIndices;
 };
 
 Pool.prototype.update = function( elapsedTime ) {

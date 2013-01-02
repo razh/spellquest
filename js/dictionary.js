@@ -28,3 +28,14 @@ Dictionary.prototype.getSubWords = function( word ) {
 Dictionary.prototype.createMap = function() {
 
 };
+
+
+Dictionary.prototype.isWord = function( word ) {
+  for ( var i = 0, n = this._wordList.length; i < n; i++ ) {
+    if ( this._wordList[i] === word ) {
+      return true;
+    }
+  }
+
+  return false;
+}

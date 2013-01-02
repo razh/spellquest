@@ -28,10 +28,10 @@ var Game = function() {
 
   this._pool = new Pool();
 
-  this.dict = new Dictionary();
-  var word = this.dict.getRandomWord();
+  this._dict = new Dictionary();
+  var word = this._dict.getRandomWord();
   while ( word.length < 5 )
-    word = this.dict.getRandomWord();
+    word = this._dict.getRandomWord();
 
   console.log( word );
   this._pool.setLetters( word.split( '' ) );
@@ -192,6 +192,9 @@ function onKeyDown( event ) {
       // Enter.
       case 13:
         console.log( _game.getForm().getWord() );
+        console.log( _game._dict.isWord( _game.getForm().getWord().toLowerCase() ) );
+        currFormElement = 0;
+        _game.getPool().reset();
         break;
       // Backspace.
       case 8:

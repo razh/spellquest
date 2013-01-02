@@ -107,10 +107,6 @@ Form.prototype.getWord = function() {
   return word;
 };
 
-Form.prototype.getLetterArray = function() {
-  return this._formElements;
-};
-
 Form.prototype.draw = function( ctx ) {
   for ( var i = 0, n = this._formElements.length; i < n; i++ ) {
     this._formElements[i].draw( ctx );
