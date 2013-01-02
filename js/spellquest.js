@@ -169,7 +169,7 @@ function inputUp( input ) {
   }
 }
 
-var currFormElement = 0;
+var currFormElement = null;
 function onKeyDown( event ) {
   // ESC.
   if ( event.keyCode === 27 ) {
@@ -181,10 +181,11 @@ function onKeyDown( event ) {
     console.log( String.fromCharCode( event.keyCode ) );
     var letter = _game.getPool().getLetterByChar( String.fromCharCode( event.keyCode ) );
     if ( letter !== null ) {
-      letter.setPosition( _game.getForm().getFormElements()[ currFormElement ].getPosition() );
-      if ( currFormElement < _game.getPool().getLetters().length - 1 )
-        currFormElement++;
-    }
+      currFormElement = _game.getForm().getFirstEmptyFormElement();
+      if ( currFormElement !== null ) {
+        letter.setPosition( currFormElement.getPosition() );
+      }
+     }
   }
 
   else {
@@ -194,7 +195,6 @@ function onKeyDown( event ) {
       case 13:
         console.log( _game.getForm().getWord() );
         console.log( _game._dict.isWord( _game.getForm().getWord().toLowerCase() ) );
-        currFormElement = 0;
         _game.getPool().reset();
         break;
       // Backspace.
@@ -202,7 +202,6 @@ function onKeyDown( event ) {
         event.preventDefault();
         var form = _game.getForm();
         if ( form.getWord().length !== 0 ) {
-          currFormElement--;
           _game.getPool().pushLetter( _game.getForm().getLastLetter() );
         }
         break;

@@ -147,3 +147,13 @@ Form.prototype.getLastLetter = function() {
 
   return null;
 };
+
+Form.prototype.getFirstEmptyFormElement = function() {
+  for ( var i = 0; i < this._formElements.length; i++ ) {
+    if ( !this._formElements[i].hasLetter() ) {
+      return this._formElements[i];
+    }
+  }
+
+  return null;
+};
