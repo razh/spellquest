@@ -1,5 +1,5 @@
 var Dictionary = function() {
-  var jsonURL = '/json/dictionary.json';
+  var jsonURL = './json/dictionary.json';
 
   this._wordList = (function() {
     var json = null;
