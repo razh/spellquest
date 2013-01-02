@@ -31,5 +31,5 @@ Dictionary.prototype.createMap = function() {
 
 
 Dictionary.prototype.isWord = function( word ) {
-  return this._wordList.lastIndexOf( word );
+  return this._wordList.lastIndexOf( word ) !== -1;
 }
