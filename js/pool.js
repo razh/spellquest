@@ -11,10 +11,13 @@ var Pool = function() {
 
 // TODO: Go in order of letter indices.
 Pool.prototype.getLetterByChar = function( char ) {
-  for ( var i = this._letterEntities.length - 1; i >= 0; i-- ) {
-    if ( this._letterEntities[i].getChar() === char && !this._isUsed[i] ) {
-      this._isUsed[i] = true;
-      return this._letterEntities[i];
+  var index;
+  for ( var i = 0; i < this._letterIndices.length; i++ ) {
+    index = this._letterIndices[i];
+    console.log( index );
+    if ( this._letterEntities[ index ].getChar() === char && !this._isUsed[ index ] ) {
+      this._isUsed[ index ] = true;
+      return this._letterEntities[ index ];
     }
   }
 
@@ -39,20 +42,21 @@ Pool.prototype.setLetters = function( letters ) {
 
 Pool.prototype.createLetterEntities = function() {
   var letter = null;
-  var index = 0;
   for ( var i = 0; i < this.getLetters().length; i++ ) {
-    index = this._letterIndices[i];
-
     letter = new Letter();
-    letter.setPosition( 100 + i * 90, 200 );
     letter.setWidth( 70 );
     letter.setHeight( 70 );
     letter.setColor( 240, 63, 53, 1.0 );
-    letter.setChar( this.getLetters()[ index ].toUpperCase() );
+    letter.setChar( this.getLetters()[i].toUpperCase() );
     letter.setTextColor( 255, 255, 255, 1.0 );
 
     this._letterEntities.push( letter );
     this._isUsed.push( false );
+  }
+
+  // Position letters in scrambled order.
+  for ( i = 0; i < this._letterIndices.length; i++ ) {
+    this._letterEntities[ this._letterIndices[i] ].setPosition( 100 + i * 90, 200 );
   }
 };
 
