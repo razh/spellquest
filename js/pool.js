@@ -14,7 +14,6 @@ Pool.prototype.getLetterByChar = function( char ) {
   var index;
   for ( var i = 0; i < this._letterIndices.length; i++ ) {
     index = this._letterIndices[i];
-    console.log( index );
     if ( this._letterEntities[ index ].getChar() === char && !this._isUsed[ index ] ) {
       this._isUsed[ index ] = true;
       return this._letterEntities[ index ];
@@ -81,7 +80,7 @@ Pool.prototype.reset = function() {
 
       // Remove from form element.
       formElements[i].setLetter( null );
-      letter.setPosition( 100 + x * 90, 300 );
+      letter.setPosition( 100 + x * 90, 200 );
 
       var index = this._letterEntities.lastIndexOf( letter );
       if ( index !== -1 ) {
