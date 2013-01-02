@@ -25,6 +25,7 @@ Dictionary.prototype.getSubWords = function( word ) {
 
 };
 
+// TODO: Check whether to optimize.
 Dictionary.prototype.createMap = function() {
 
 };

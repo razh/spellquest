@@ -137,3 +137,13 @@ Form.prototype.update = function( elapsedTime ) {
 Form.prototype.getFormElements = function() {
   return this._formElements;
 };
+
+Form.prototype.getLastLetter = function() {
+  for ( var i = this._formElements.length - 1; i >= 0; i-- ) {
+    if ( this._formElements[i].hasLetter() ) {
+      return this._formElements[i].getLetter();
+    }
+  }
+
+  return null;
+};

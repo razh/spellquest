@@ -95,6 +95,27 @@ Pool.prototype.reset = function() {
   this._letterIndices = newIndices;
 };
 
+Pool.prototype.pushLetter = function( letter ) {
+  var x = 0;
+  var newIndices = [];
+  for ( var i = 0; i < this._letterIndices.length; i++ ) {
+    if ( !this._isUsed[ this._letterIndices[i] ] ) {
+      this._letterEntities[ this._letterIndices[i] ].setPosition( 100 + x * 90, 200 );
+      newIndices.push( this._letterIndices[i] );
+      x++;
+    }
+  }
+
+  var index = this._letterEntities.lastIndexOf( letter );
+  if ( index !== -1 ) {
+    this._isUsed[ index ] = false;
+    this._letterEntities[ index ].setPosition( 100 + x * 90, 200 );
+    newIndices.push( index );
+  }
+
+  this._letterIndices = newIndices;
+};
+
 Pool.prototype.update = function( elapsedTime ) {
   for ( var i = 0; i < this._letterEntities.length; i++ ) {
     this._letterEntities[i].update( elapsedTime );

@@ -200,6 +200,11 @@ function onKeyDown( event ) {
       // Backspace.
       case 8:
         event.preventDefault();
+        var form = _game.getForm();
+        if ( form.getWord().length !== 0 ) {
+          currFormElement--;
+          _game.getPool().pushLetter( _game.getForm().getLastLetter() );
+        }
         break;
     }
   }
