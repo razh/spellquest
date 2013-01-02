@@ -45,6 +45,7 @@ Pool.prototype.createLetterEntities = function() {
     letter.setColor( 240, 63, 53, 1.0 );
     letter.setChar( this.getLetters()[ index ].toUpperCase() );
     letter.setTextColor( 255, 255, 255, 1.0 );
+
     this._letterEntities.push( letter );
     this._inPool.push( true );
   }

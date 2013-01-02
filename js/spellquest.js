@@ -180,7 +180,7 @@ function onKeyDown( event ) {
     console.log( String.fromCharCode( event.keyCode ) );
     var letter = _game.getPool().getLetterByChar( String.fromCharCode( event.keyCode ) );
     if ( letter !== null ) {
-      letter.setPosition( _game._form._formElements[ currFormElement ].getPosition() );
+      letter.setPosition( _game.getForm().getFormElements()[ currFormElement ].getPosition() );
       if ( currFormElement < _game.getPool().getLetters().length - 1 )
         currFormElement++;
     }
