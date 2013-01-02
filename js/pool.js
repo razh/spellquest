@@ -64,16 +64,9 @@ Pool.prototype.reset = function() {
   var letter = null;
   // The new order of the letters.
   var newIndices = [];
-  for ( var i = 0; i < this._letterIndices.length; i++ ) {
-    if ( !this._isUsed[ this._letterIndices[i] ] ) {
-      letter = this._letterEntities[ this._letterIndices[i] ];
-      newIndices.push( this._letterIndices[i] );
-      letter.setPosition( 100 + x * 90, 200 );
-      x++;
-    }
-  }
-
   var formElements = _game.getForm().getFormElements();
+
+  // We want the letters in the form to be first.
   for ( i = 0; i < formElements.length; i++ ){
     if ( formElements[i].hasLetter() ) {
       letter = formElements[i].getLetter();
@@ -84,13 +77,28 @@ Pool.prototype.reset = function() {
 
       var index = this._letterEntities.lastIndexOf( letter );
       if ( index !== -1 ) {
-        this._isUsed[ index ] = false;
         newIndices.push( index );
       }
 
       x++;
     }
   }
+
+  // Shift letters in pool to the right.
+  for ( var i = 0; i < this._letterIndices.length; i++ ) {
+    if ( !this._isUsed[ this._letterIndices[i] ] ) {
+      letter = this._letterEntities[ this._letterIndices[i] ];
+      newIndices.push( this._letterIndices[i] );
+      letter.setPosition( 100 + x * 90, 200 );
+      x++;
+    }
+  }
+
+  // Mark all not used.
+  for ( i = 0; i < this._isUsed.length; i++ ) {
+    this._isUsed[ i ] = false;
+  }
+
 
   this._letterIndices = newIndices;
 };
@@ -106,6 +114,7 @@ Pool.prototype.pushLetter = function( letter ) {
     }
   }
 
+  // Move to last available position in pool.
   var index = this._letterEntities.lastIndexOf( letter );
   if ( index !== -1 ) {
     this._isUsed[ index ] = false;
