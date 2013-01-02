@@ -63,6 +63,7 @@ Game.prototype.update = function() {
   var elapsedTime = this._currTime - this._prevTime;
   this._prevTime = this._currTime;
 
+  this.getForm().update( elapsedTime );
   this.getPool().update( elapsedTime );
 };
 

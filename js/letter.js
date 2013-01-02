@@ -18,11 +18,11 @@ Letter.prototype.update = function( x, y ) {
   Entity.prototype.update.call( this, x, y );
 
   if ( _game !== undefined && _game !== null ) {
+    // Snap letter to form element.
     var formElements = _game.getForm().getFormElements();
     for ( var i = formElements.length - 1; i >= 0; i-- ) {
       if ( formElements[i].hit( this.getX(), this.getY() ) !== null ) {
-        this.setX( formElements[i].getX() );
-        this.setY( formElements[i].getY() );
+        this.setPosition( formElements[i].getPosition() );
         this.setVelocity( 0, 0 );
         formElements[i].setLetter( this );
 

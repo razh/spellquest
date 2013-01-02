@@ -60,6 +60,17 @@ var FormElement = function() {
 FormElement.prototype = new Entity();
 FormElement.prototype.constructor = FormElement;
 
+FormElement.prototype.update = function( elapsedTime ) {
+  Entity.prototype.update.call( this, elapsedTime );
+
+  // Remove letter if no longer inside the form element.
+  if ( this.hasLetter() ) {
+    if ( this.getPosition() !== this.getLetter().getPosition() ) {
+      this.setLetter( null );
+    }
+  }
+};
+
 FormElement.prototype.setLetter = function( letter ) {
   this._letter = letter;
 };
@@ -117,7 +128,11 @@ Form.prototype.draw = function( ctx ) {
   }
 };
 
-Form.prototype.update = function() {};
+Form.prototype.update = function( elapsedTime ) {
+  for ( var i = 0; i < this._formElements.length; i++ ) {
+    this._formElements[i].update( elapsedTime );
+  }
+};
 
 Form.prototype.getFormElements = function() {
   return this._formElements;
