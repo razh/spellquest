@@ -11,12 +11,7 @@ var Pool = function() {
   // Whether the letter has been used, in order.
   this._isUsed = [];
 
-  this._textColor = {
-    red:   0,
-    green: 0,
-    blue:  0,
-    alpha: 0.0
-  };
+  this._textColor = new Color();
 };
 
 Pool.prototype = new Entity();
@@ -44,6 +39,18 @@ Pool.prototype.setSpacing = function( spacing ) {
   this._spacing = spacing;
 };
 
+Entity.prototype.getTextColor = function() {
+  return this._textColor;
+};
+
+Entity.prototype.setTextColor = function() {
+  if ( arguments.length === 1 ) {
+    this.getTextColor().set( arguments[0] );
+  } else if ( arguments.length === 4 ) {
+    this.getTextColor().set( arguments[0], arguments[1], arguments[2], arguments[3] );
+  }
+};
+
 Pool.prototype.getLetters = function() {
   return this._letters;
 };
@@ -64,6 +71,7 @@ Pool.prototype.createLetterEntities = function() {
   var width = this.getWidth();
   var height = this.getHeight();
   var color = this.getColor();
+  var textColor = this.getTextColor();
 
   var letter = null;
   for ( var i = 0; i < this.getLetters().length; i++ ) {
@@ -72,7 +80,7 @@ Pool.prototype.createLetterEntities = function() {
     letter.setHeight( height );
     letter.setColor( color );
     letter.setChar( this.getLetters()[i].toUpperCase() );
-    letter.setTextColor( 255, 255, 255, 1.0 );
+    letter.setTextColor( textColor );
 
     this._letterEntities.push( letter );
     this._isUsed.push( false );
@@ -185,55 +193,6 @@ Pool.prototype.hit = function( x, y ) {
 Pool.prototype.shuffle = function() {
 
 };
-
-Pool.prototype.getTextColor = function() {
-  return this._textColor;
-}
-
-Pool.prototype.setTextColor = function() {
-  if ( arguments.length === 1 ) {
-    this._textColor = arguments[0];
-  }
-  else if ( arguments.length === 4 ) {
-    this.setTextRed( arguments[0] );
-    this.setTextGreen( arguments[1] );
-    this.setTextBlue( arguments[2] );
-    this.setTextAlpha( arguments[3] );
-  }
-};
-
-Pool.prototype.getTextRed = function() {
-  return this.getTextColor().red;
-};
-
-Pool.prototype.setTextRed = function( red ) {
-  this._textColor.red = red;
-};
-
-Pool.prototype.getTextGreen = function() {
-  return this.getTextColor().green;
-};
-
-Pool.prototype.setTextGreen = function( green ) {
-  this._textColor.green = green;
-};
-
-Pool.prototype.getTextBlue = function() {
-  return this.getTextColor().blue;
-};
-
-Pool.prototype.setTextBlue = function( blue ) {
-  this._textColor.blue = blue;
-};
-
-Pool.prototype.getTextAlpha = function() {
-  return this.getTextColor().alpha;
-};
-
-Pool.prototype.setTextAlpha = function( alpha ) {
-  this._textColor.alpha = alpha;
-};
-
 
 // http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
 function fisherYates( array ) {

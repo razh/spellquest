@@ -12,12 +12,7 @@ var Entity = function() {
   this._width = 0;
   this._height = 0;
 
-  this._color = {
-    red:   0,
-    green: 0,
-    blue:  0,
-    alpha: 0
-  };
+  this._color = new Color();
 };
 
 Entity.prototype.getX = function() {
@@ -111,46 +106,10 @@ Entity.prototype.getColor = function() {
 
 Entity.prototype.setColor = function() {
   if ( arguments.length === 1 ) {
-    this._color = arguments[0];
+    this.getColor().set( arguments[0] );
+  } else if ( arguments.length === 4 ) {
+    this.getColor().set( arguments[0], arguments[1], arguments[2], arguments[3] );
   }
-  else if ( arguments.length === 4 ) {
-    this.setRed( arguments[0] );
-    this.setGreen( arguments[1] );
-    this.setBlue( arguments[2] );
-    this.setAlpha( arguments[3] );
-  }
-};
-
-Entity.prototype.getRed = function() {
-  return this.getColor().red;
-};
-
-Entity.prototype.setRed = function( red ) {
-  this._color.red = red;
-};
-
-Entity.prototype.getGreen = function() {
-  return this.getColor().green;
-};
-
-Entity.prototype.setGreen = function( green ) {
-  this._color.green = green;
-};
-
-Entity.prototype.getBlue = function() {
-  return this.getColor().blue;
-};
-
-Entity.prototype.setBlue = function( blue ) {
-  this._color.blue = blue;
-};
-
-Entity.prototype.getAlpha = function() {
-  return this.getColor().alpha;
-};
-
-Entity.prototype.setAlpha = function( alpha ) {
-  this._color.alpha = alpha;
 };
 
 Entity.prototype.update = function( elapsedTime ) {
@@ -182,10 +141,10 @@ Entity.prototype.update = function( elapsedTime ) {
 };
 
 Entity.prototype.draw = function( ctx ) {
-  ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getRed() )   << 0 ) +
-                  ', '     + ( ( 0.5 + this.getGreen() ) << 0 ) +
-                  ','      + ( ( 0.5 + this.getBlue() )  << 0 ) +
-                  ','      + this.getAlpha() + ' )';
+  ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getColor().getRed() )   << 0 ) +
+                  ', '     + ( ( 0.5 + this.getColor().getGreen() ) << 0 ) +
+                  ','      + ( ( 0.5 + this.getColor().getBlue() )  << 0 ) +
+                  ','      + this.getColor().getAlpha() + ' )';
   ctx.fillRect(
     this.getX() - this.getHalfWidth(),
     this.getY() - this.getHalfHeight(),
@@ -201,4 +160,65 @@ Entity.prototype.hit = function( x, y ) {
   }
 
   return null;
+};
+
+var Color = function() {
+  this._red = 0;
+  this._green = 0;
+  this._blue = 0;
+  this._alpha = 0.0;
+
+  if ( arguments.length === 4 ) {
+    this.setRed( arguments[0] );
+    this.setGreen( arguments[1] );
+    this.setBlue( arguments[2] );
+    this.setAlpha( arguments[3] );
+  }
+}
+
+Color.prototype.set = function() {
+  if ( arguments.length === 1 ) {
+    this.setRed( arguments[0].getRed() );
+    this.setGreen( arguments[0].getGreen() );
+    this.setBlue( arguments[0].getBlue() );
+    this.setAlpha( arguments[0].getAlpha() );
+  }
+  else if ( arguments.length === 4 ) {
+    this.setRed( arguments[0] );
+    this.setGreen( arguments[1] );
+    this.setBlue( arguments[2] );
+    this.setAlpha( arguments[3] );
+  }
+};
+
+Color.prototype.getRed = function() {
+  return this._red;
+};
+
+Color.prototype.setRed = function( red ) {
+  this._red = red;
+};
+
+Color.prototype.getGreen = function() {
+  return this._green;
+};
+
+Color.prototype.setGreen = function( green ) {
+  this._green = green;
+};
+
+Color.prototype.getBlue = function() {
+  return this._blue;
+};
+
+Color.prototype.setBlue = function( blue ) {
+  this._blue = blue;
+};
+
+Color.prototype.getAlpha = function() {
+  return this._alpha;
+};
+
+Color.prototype.setAlpha = function( alpha ) {
+  this._alpha = alpha;
 };
