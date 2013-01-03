@@ -177,7 +177,6 @@ function inputUp( input ) {
   }
 }
 
-var currFormElement = null;
 function onKeyDown( event ) {
   // ESC.
   if ( event.keyCode === 27 ) {
@@ -189,7 +188,7 @@ function onKeyDown( event ) {
     // console.log( String.fromCharCode( event.keyCode ) );
     var letter = _game.getPool().getLetterByChar( String.fromCharCode( event.keyCode ) );
     if ( letter !== null ) {
-      currFormElement = _game.getForm().getFirstEmptyFormElement();
+      var currFormElement = _game.getForm().getFirstEmptyFormElement();
       if ( currFormElement !== null ) {
         letter.setPosition( currFormElement.getPosition() );
       }
