@@ -33,6 +33,12 @@ var Game = function() {
   while ( word.length < 5 )
     word = this._dict.getRandomWord();
 
+  this._dict.createMap();
+  var subWords = this._dict.getSubWords( word );
+  for ( i = 0; i < subWords.length; i++ ) {
+    console.log( subWords[i] );
+  }
+
   console.log( word );
   this._pool.setLetters( word.split( '' ) );
   var letters = this._pool.getLetters();
