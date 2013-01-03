@@ -2,6 +2,8 @@ var List = function() {
   Entity.call( this );
 
   this._words = [];
+  // Whether or not the player has found the word.
+  this._wasFound = [];
 
   this._horizontalSpacing = 0;
   this._verticalSpacing = 0;
@@ -21,6 +23,9 @@ List.prototype.getWords = function() {
 
 List.prototype.setWords = function( words ) {
   this._words = words;
+  for ( var i = 0; i < this.getWords().length; i++ ) {
+    this._wasFound.push( false );
+  }
 };
 
 List.prototype.getHorizontalSpacing = function() {
@@ -71,8 +76,47 @@ List.prototype.setTextColor = function( TextColor ) {
   }
 };
 
+List.prototype.isWord = function( word ) {
+  return this.getWords().lastIndexOf( word ) !== -1;
+};
+
+List.prototype.markWord = function( ctx, word ) {
+  var index = this.getWords().lastIndexOf( word );
+  if ( index !== -1 ) {
+    var letterCount = word.length;
+    ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getBackgroundColor().getRed() )   << 0 ) +
+                    ', '     + ( ( 0.5 + this.getBackgroundColor().getGreen() ) << 0 ) +
+                    ','      + ( ( 0.5 + this.getBackgroundColor().getBlue() )  << 0 ) +
+                    ','      + this.getBackgroundColor().getAlpha() + ' )';
+
+    ctx.fillRect( this.getX(), this.getY() + index * this.getHeight(), this.getWidth() * letterCount, this.getHeight() );
+
+    ctx.font = '6pt Helvetica';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getTextColor().getRed() )   << 0 ) +
+                    ', '     + ( ( 0.5 + this.getTextColor().getGreen() ) << 0 ) +
+                    ','      + ( ( 0.5 + this.getTextColor().getBlue() )  << 0 ) +
+                    ','      + this.getTextColor().getAlpha() + ' )';
+
+    var yPos = this.getY() + index * this.getHeight() + this.getHalfHeight();
+    for ( var i = 0; i < letterCount; i++ ) {
+      ctx.fillText( word[i], this.getX() + i * this.getWidth() + this.getHalfWidth(), yPos );
+    }
+  }
+};
+
 List.prototype.draw = function( ctx ) {
-  this.drawSpaces( ctx, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 5 );
+  var x = this.getX();
+  var y = this.getY();
+  var width = this.getWidth();
+  var height = this.getHeight();
+
+  var letterCount = 0;
+  for ( var i = 0; i < this._words.length; i++ ) {
+    letterCount = this._words[i].length;
+    this.drawSpaces( ctx, x, y + i * height, width, height, letterCount );
+  }
 };
 
 List.prototype.drawSpaces = function( ctx, x, y, width, height, letterCount ) {

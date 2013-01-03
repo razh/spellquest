@@ -61,11 +61,14 @@ var Game = function() {
   this.add( this._form );
 
   this._list = new List();
-  this._list.setPosition( 200, 400 );
-  this._list.setWidth( 50 );
-  this._list.setHeight( 50 );
+  this._list.setPosition( 100, 400 );
+  this._list.setWidth( 12 );
+  this._list.setHeight( 12 );
   this._list.setColor( 0, 55, 55, 1.0 );
-  this._list.setLineWidth( 4 );
+  this._list.setBackgroundColor( 0, 0, 0, 1.0 );
+  this._list.setTextColor( 255, 255, 255, 1.0 );
+  this._list.setLineWidth( 2 );
+  this._list.setWords( this._subWords );
   this.add( this._list );
 };
 
@@ -209,7 +212,10 @@ function onKeyDown( event ) {
       // Enter.
       case 13:
         console.log( _game.getForm().getWord() );
-        console.log( _game._dict.isWord( _game.getForm().getWord().toLowerCase() ) );
+        console.log( _game._list.isWord( _game.getForm().getWord().toLowerCase() ) );
+        if ( _game._list.isWord( _game.getForm().getWord().toLowerCase() ) ) {
+          _game._list.markWord( _game._backgroundCtx, _game.getForm().getWord().toLowerCase() );
+        }
         _game.getPool().reset();
         break;
       // Backspace.

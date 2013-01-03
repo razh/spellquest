@@ -41,7 +41,7 @@ Letter.prototype.update = function( x, y ) {
 Letter.prototype.draw = function( ctx ) {
   Entity.prototype.draw.call( this, ctx );
 
-  ctx.font = "24pt Helvetica";
+  ctx.font = '24pt Helvetica';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getTextColor().getRed() )   << 0 ) +
