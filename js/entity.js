@@ -168,11 +168,8 @@ var Color = function() {
   this._blue = 0;
   this._alpha = 0.0;
 
-  if ( arguments.length === 4 ) {
-    this.setRed( arguments[0] );
-    this.setGreen( arguments[1] );
-    this.setBlue( arguments[2] );
-    this.setAlpha( arguments[3] );
+  if ( arguments.length !== 0 ) {
+    this.set.apply( this, arguments );
   }
 }
 
