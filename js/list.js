@@ -80,15 +80,22 @@ List.prototype.isWord = function( word ) {
   return this.getWords().lastIndexOf( word ) !== -1;
 };
 
+List.prototype.wasWordFound = function( word ) {
+  var index = this.getWords().lastIndexOf( word );
+  return index === -1 && this._wasFound[ index ];
+};
+
 List.prototype.markWord = function( ctx, word ) {
   var index = this.getWords().lastIndexOf( word );
-  if ( index !== -1 ) {
+  if ( index !== -1 && !this._wasFound[ index ] ) {
+    this._wasFound[ index ] = true;
+
     var letterCount = word.length;
     ctx.fillStyle = this.getBackgroundColor().toString();
 
     ctx.fillRect( this.getX(), this.getY() + index * this.getHeight(), this.getWidth() * letterCount, this.getHeight() );
 
-    ctx.font = '6pt Helvetica';
+    ctx.font = '9pt Helvetica';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.getTextColor().toString();
@@ -109,11 +116,11 @@ List.prototype.draw = function( ctx ) {
   var letterCount = 0;
   for ( var i = 0; i < this._words.length; i++ ) {
     letterCount = this._words[i].length;
-    this.drawSpaces( ctx, x, y + i * height, width, height, letterCount );
+    this.drawWordSpace( ctx, x, y + i * height, width, height, letterCount );
   }
 };
 
-List.prototype.drawSpaces = function( ctx, x, y, width, height, letterCount ) {
+List.prototype.drawWordSpace = function( ctx, x, y, width, height, letterCount ) {
   ctx.lineWidth = this.getLineWidth();
   ctx.strokeStyle = this.getColor().toString();
 

@@ -62,8 +62,8 @@ var Game = function() {
 
   this._list = new List();
   this._list.setPosition( 100, 400 );
-  this._list.setWidth( 12 );
-  this._list.setHeight( 12 );
+  this._list.setWidth( 15 );
+  this._list.setHeight( 15 );
   this._list.setColor( 0, 55, 55, 1.0 );
   this._list.setBackgroundColor( 0, 0, 0, 1.0 );
   this._list.setTextColor( 255, 255, 255, 1.0 );

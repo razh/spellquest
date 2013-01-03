@@ -191,7 +191,21 @@ Pool.prototype.hit = function( x, y ) {
 };
 
 Pool.prototype.shuffle = function() {
+  var index = this._isUsed.lastIndexOf( true );
 
+  // Only shuffle if all letters are not used/in pool.
+  if ( index === -1 ) {
+    var x = this.getX();
+    var y = this.getY();
+    var spacing = this.getSpacing();
+
+    var xPos = 0;
+    this._letterIndices = fisherYates( this._letterIndices );
+    for ( var i = 0; i < this._letterIndices.length; i++ ) {
+      this._letterEntities[ this._letterIndices[i] ].setPosition( x + xPos * spacing, y );
+      xPos++;
+    }
+  }
 };
 
 // http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
