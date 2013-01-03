@@ -59,6 +59,14 @@ var Game = function() {
   this._form.setLineWidth( 5 );
   this._form.createFormElements( letters.length );
   this.add( this._form );
+
+  this._list = new List();
+  this._list.setPosition( 200, 400 );
+  this._list.setWidth( 50 );
+  this._list.setHeight( 50 );
+  this._list.setColor( 0, 55, 55, 1.0 );
+  this._list.setLineWidth( 4 );
+  this.add( this._list );
 };
 
 Game.prototype.tick = function() {
@@ -86,7 +94,7 @@ Game.prototype.hit = function( x, y ) {
 };
 
 Game.prototype.add = function( entity ) {
-  if ( entity instanceof Form ) {
+  if ( entity instanceof Form || entity instanceof List ) {
     entity.draw( this._backgroundCtx );
   }
 
