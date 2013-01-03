@@ -23,7 +23,7 @@ Dictionary.prototype.getRandomWord = function() {
 };
 
 
-Dictionary.prototype.getSubWords = function( word ) {
+Dictionary.prototype.getSubWordsRecursive = function( word ) {
   if ( word.length < 3 ) {
     return [];
   }
@@ -42,6 +42,16 @@ Dictionary.prototype.getSubWords = function( word ) {
 
   return subWordsArray;
 };
+
+Dictionary.prototype.getSubWords = function( word ) {
+  return uniqueArray( this.getSubWordsRecursive( word ) ).sort( function( a, b ) {
+    if ( a.length === b.length ) {
+      return a < b ? -1 : 1;
+    }
+
+    return a.length < b.length ? -1 : 1;
+  });
+}
 
 // TODO: Check whether to optimize.
 Dictionary.prototype.createMap = function() {
@@ -67,7 +77,17 @@ Dictionary.prototype.isWord = function( word ) {
 
 function removeByIndex( array, index ) {
   var newArray = array.slice( 0, index );
-  // console.log( newArray.join('') + ", " + array.slice( index + 1 ).join(''));
   newArray = newArray.concat( array.slice( index + 1 ) );
+  return newArray;
+}
+
+function uniqueArray( array ) {
+  var newArray = [];
+  for ( var i = 0, n = array.length; i < n; i++ ) {
+    if ( newArray.lastIndexOf( array[i] ) === -1 ) {
+      newArray.push( array[i] );
+    }
+  }
+
   return newArray;
 }

@@ -38,6 +38,7 @@ var Game = function() {
   for ( i = 0; i < subWords.length; i++ ) {
     console.log( subWords[i] );
   }
+  this._subWords = subWords;
 
   console.log( word );
   this._pool.setLetters( word.split( '' ) );
@@ -184,7 +185,7 @@ function onKeyDown( event ) {
   }
 
   if ( 65 <= event.keyCode && event.keyCode <= 90 ) {
-    console.log( String.fromCharCode( event.keyCode ) );
+    // console.log( String.fromCharCode( event.keyCode ) );
     var letter = _game.getPool().getLetterByChar( String.fromCharCode( event.keyCode ) );
     if ( letter !== null ) {
       currFormElement = _game.getForm().getFirstEmptyFormElement();
