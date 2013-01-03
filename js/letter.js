@@ -44,10 +44,7 @@ Letter.prototype.draw = function( ctx ) {
   ctx.font = '24pt Helvetica';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getTextColor().getRed() )   << 0 ) +
-                  ', '     + ( ( 0.5 + this.getTextColor().getGreen() ) << 0 ) +
-                  ','      + ( ( 0.5 + this.getTextColor().getBlue() )  << 0 ) +
-                  ','      + this.getTextColor().getAlpha() + ' )';
+  ctx.fillStyle = this.getTextColor().toString();
 
   ctx.fillText( this.getChar(), this.getX(), this.getY() );
 };

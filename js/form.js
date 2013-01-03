@@ -92,10 +92,7 @@ FormElement.prototype.setLineWidth = function( lineWidth ) {
 
 FormElement.prototype.draw = function( ctx ) {
   ctx.lineWidth = this.getLineWidth();
-  ctx.strokeStyle = 'rgba( ' + ( ( 0.5 + this.getColor().getRed() )   << 0 ) +
-                    ', '     + ( ( 0.5 + this.getColor().getGreen() ) << 0 ) +
-                    ','      + ( ( 0.5 + this.getColor().getBlue() )  << 0 ) +
-                    ','      + this.getColor().getAlpha() + ' )';
+  ctx.strokeStyle = this.getColor().toString();
   roundRect( ctx, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 5, false, true );
 };
 

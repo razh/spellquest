@@ -141,10 +141,7 @@ Entity.prototype.update = function( elapsedTime ) {
 };
 
 Entity.prototype.draw = function( ctx ) {
-  ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getColor().getRed() )   << 0 ) +
-                  ', '     + ( ( 0.5 + this.getColor().getGreen() ) << 0 ) +
-                  ','      + ( ( 0.5 + this.getColor().getBlue() )  << 0 ) +
-                  ','      + this.getColor().getAlpha() + ' )';
+  ctx.fillStyle = this.getColor().toString();
   ctx.fillRect(
     this.getX() - this.getHalfWidth(),
     this.getY() - this.getHalfHeight(),
@@ -219,3 +216,10 @@ Color.prototype.getAlpha = function() {
 Color.prototype.setAlpha = function( alpha ) {
   this._alpha = alpha;
 };
+
+Color.prototype.toString = function() {
+  return 'rgba( ' + ( ( 0.5 + this.getRed() )   << 0 ) +
+         ', '     + ( ( 0.5 + this.getGreen() ) << 0 ) +
+         ','      + ( ( 0.5 + this.getBlue() )  << 0 ) +
+         ','      + this.getAlpha() + ' )';
+}

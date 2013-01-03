@@ -84,20 +84,14 @@ List.prototype.markWord = function( ctx, word ) {
   var index = this.getWords().lastIndexOf( word );
   if ( index !== -1 ) {
     var letterCount = word.length;
-    ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getBackgroundColor().getRed() )   << 0 ) +
-                    ', '     + ( ( 0.5 + this.getBackgroundColor().getGreen() ) << 0 ) +
-                    ','      + ( ( 0.5 + this.getBackgroundColor().getBlue() )  << 0 ) +
-                    ','      + this.getBackgroundColor().getAlpha() + ' )';
+    ctx.fillStyle = this.getBackgroundColor().toString();
 
     ctx.fillRect( this.getX(), this.getY() + index * this.getHeight(), this.getWidth() * letterCount, this.getHeight() );
 
     ctx.font = '6pt Helvetica';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillStyle = 'rgba( ' + ( ( 0.5 + this.getTextColor().getRed() )   << 0 ) +
-                    ', '     + ( ( 0.5 + this.getTextColor().getGreen() ) << 0 ) +
-                    ','      + ( ( 0.5 + this.getTextColor().getBlue() )  << 0 ) +
-                    ','      + this.getTextColor().getAlpha() + ' )';
+    ctx.fillStyle = this.getTextColor().toString();
 
     var yPos = this.getY() + index * this.getHeight() + this.getHalfHeight();
     for ( var i = 0; i < letterCount; i++ ) {
@@ -121,10 +115,7 @@ List.prototype.draw = function( ctx ) {
 
 List.prototype.drawSpaces = function( ctx, x, y, width, height, letterCount ) {
   ctx.lineWidth = this.getLineWidth();
-  ctx.strokeStyle = 'rgba( ' + ( ( 0.5 + this.getColor().getRed() )   << 0 ) +
-                    ', '     + ( ( 0.5 + this.getColor().getGreen() ) << 0 ) +
-                    ','      + ( ( 0.5 + this.getColor().getBlue() )  << 0 ) +
-                    ','      + this.getColor().getAlpha() + ' )';
+  ctx.strokeStyle = this.getColor().toString();
 
   ctx.strokeRect( x, y, width * letterCount, height );
 
