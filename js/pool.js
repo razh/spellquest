@@ -1,4 +1,7 @@
 var Pool = function() {
+  Entity.call( this );
+
+  this._spacing = 0;
   // Actual letters, in order.
   this._letters = [];
   // Letter entities, in order.
@@ -7,7 +10,17 @@ var Pool = function() {
   this._letterIndices = [];
   // Whether the letter has been used, in order.
   this._isUsed = [];
+
+  this._textColor = {
+    red:   0,
+    green: 0,
+    blue:  0,
+    alpha: 0.0
+  };
 };
+
+Pool.prototype = new Entity();
+Pool.prototype.constructor = Pool;
 
 // TODO: Go in order of letter indices.
 Pool.prototype.getLetterByChar = function( char ) {
@@ -21,6 +34,14 @@ Pool.prototype.getLetterByChar = function( char ) {
   }
 
   return null;
+};
+
+Pool.prototype.getSpacing = function() {
+  return this._spacing;
+};
+
+Pool.prototype.setSpacing = function( spacing ) {
+  this._spacing = spacing;
 };
 
 Pool.prototype.getLetters = function() {
@@ -40,12 +61,16 @@ Pool.prototype.setLetters = function( letters ) {
 };
 
 Pool.prototype.createLetterEntities = function() {
+  var width = this.getWidth();
+  var height = this.getHeight();
+  var color = this.getColor();
+
   var letter = null;
   for ( var i = 0; i < this.getLetters().length; i++ ) {
     letter = new Letter();
-    letter.setWidth( 70 );
-    letter.setHeight( 70 );
-    letter.setColor( 240, 63, 53, 1.0 );
+    letter.setWidth( width );
+    letter.setHeight( height );
+    letter.setColor( color );
     letter.setChar( this.getLetters()[i].toUpperCase() );
     letter.setTextColor( 255, 255, 255, 1.0 );
 
@@ -53,14 +78,21 @@ Pool.prototype.createLetterEntities = function() {
     this._isUsed.push( false );
   }
 
+  var x = this.getX();
+  var y = this.getY();
+  var spacing = this.getSpacing();
   // Position letters in scrambled order.
   for ( i = 0; i < this._letterIndices.length; i++ ) {
-    this._letterEntities[ this._letterIndices[i] ].setPosition( 100 + i * 90, 200 );
+    this._letterEntities[ this._letterIndices[i] ].setPosition( x + i * spacing, y );
   }
 };
 
 Pool.prototype.reset = function() {
-  var x = 0;
+  var x = this.getX();
+  var y = this.getY();
+  var spacing = this.getSpacing();
+  // x-position of letter in pool.
+  var xPos = 0;
   var letter = null;
   // The new order of the letters.
   var newIndices = [];
@@ -73,14 +105,14 @@ Pool.prototype.reset = function() {
 
       // Remove from form element.
       formElements[i].setLetter( null );
-      letter.setPosition( 100 + x * 90, 200 );
+      letter.setPosition( x + xPos * spacing, y );
 
       var index = this._letterEntities.lastIndexOf( letter );
       if ( index !== -1 ) {
         newIndices.push( index );
       }
 
-      x++;
+      xPos++;
     }
   }
 
@@ -89,8 +121,8 @@ Pool.prototype.reset = function() {
     if ( !this._isUsed[ this._letterIndices[i] ] ) {
       letter = this._letterEntities[ this._letterIndices[i] ];
       newIndices.push( this._letterIndices[i] );
-      letter.setPosition( 100 + x * 90, 200 );
-      x++;
+      letter.setPosition( x + xPos * spacing, y );
+      xPos++;
     }
   }
 
@@ -104,13 +136,17 @@ Pool.prototype.reset = function() {
 };
 
 Pool.prototype.pushLetter = function( letter ) {
-  var x = 0;
+  var x = this.getX();
+  var y = this.getY();
+  var spacing = this.getSpacing();
+
+  var xPos = 0;
   var newIndices = [];
   for ( var i = 0; i < this._letterIndices.length; i++ ) {
     if ( !this._isUsed[ this._letterIndices[i] ] ) {
-      this._letterEntities[ this._letterIndices[i] ].setPosition( 100 + x * 90, 200 );
+      this._letterEntities[ this._letterIndices[i] ].setPosition( x + xPos * spacing, y );
       newIndices.push( this._letterIndices[i] );
-      x++;
+      xPos++;
     }
   }
 
@@ -118,7 +154,7 @@ Pool.prototype.pushLetter = function( letter ) {
   var index = this._letterEntities.lastIndexOf( letter );
   if ( index !== -1 ) {
     this._isUsed[ index ] = false;
-    this._letterEntities[ index ].setPosition( 100 + x * 90, 200 );
+    this._letterEntities[ index ].setPosition( x + xPos * spacing, y );
     newIndices.push( index );
   }
 
@@ -145,6 +181,59 @@ Pool.prototype.hit = function( x, y ) {
 
   return null;
 };
+
+Pool.prototype.shuffle = function() {
+
+};
+
+Pool.prototype.getTextColor = function() {
+  return this._textColor;
+}
+
+Pool.prototype.setTextColor = function() {
+  if ( arguments.length === 1 ) {
+    this._textColor = arguments[0];
+  }
+  else if ( arguments.length === 4 ) {
+    this.setTextRed( arguments[0] );
+    this.setTextGreen( arguments[1] );
+    this.setTextBlue( arguments[2] );
+    this.setTextAlpha( arguments[3] );
+  }
+};
+
+Pool.prototype.getTextRed = function() {
+  return this.getTextColor().red;
+};
+
+Pool.prototype.setTextRed = function( red ) {
+  this._textColor.red = red;
+};
+
+Pool.prototype.getTextGreen = function() {
+  return this.getTextColor().green;
+};
+
+Pool.prototype.setTextGreen = function( green ) {
+  this._textColor.green = green;
+};
+
+Pool.prototype.getTextBlue = function() {
+  return this.getTextColor().blue;
+};
+
+Pool.prototype.setTextBlue = function( blue ) {
+  this._textColor.blue = blue;
+};
+
+Pool.prototype.getTextAlpha = function() {
+  return this.getTextColor().alpha;
+};
+
+Pool.prototype.setTextAlpha = function( alpha ) {
+  this._textColor.alpha = alpha;
+};
+
 
 // http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
 function fisherYates( array ) {

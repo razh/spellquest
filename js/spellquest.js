@@ -27,6 +27,12 @@ var Game = function() {
   this.EPSILON = 1e-20;
 
   this._pool = new Pool();
+  this._pool.setPosition( 100, 100 );
+  this._pool.setSpacing( 90 );
+  this._pool.setWidth( 70 );
+  this._pool.setHeight( 70 );
+  this._pool.setColor( 240, 63, 53, 1.0 );
+  this._pool.setTextColor( 255, 255, 255, 1.0 );
 
   this._dict = new Dictionary();
   var word = this._dict.getRandomWord();
@@ -45,18 +51,13 @@ var Game = function() {
   var letters = this._pool.getLetters();
 
   this._form = new Form();
-  var formElements = [];
-  var tempFormElement = null;
-  for ( i = 0; i < letters.length; i++) {
-    tempFormElement = new FormElement();
-    tempFormElement.setPosition( 100 + i * 90, 400 );
-    tempFormElement.setWidth( 75 );
-    tempFormElement.setHeight( 75 );
-    tempFormElement.setColor( 100, 100, 100, 1.0 );
-    tempFormElement.setLineWidth( 5 );
-    formElements.push( tempFormElement );
-  }
-  this._form._formElements = formElements;
+  this._form.setPosition( 100, 300 );
+  this._form.setSpacing( 90 );
+  this._form.setWidth( 75 );
+  this._form.setHeight( 75 );
+  this._form.setColor( 100, 100, 100, 1.0 );
+  this._form.setLineWidth( 5 );
+  this._form.createFormElements( letters.length );
   this.add( this._form );
 };
 
