@@ -16,6 +16,8 @@ var List = function() {
 
   this._backgroundColor = new Color();
   this._textColor = new Color();
+
+  this._fontSize = 12;
 };
 
 List.prototype = new Entity();
@@ -96,6 +98,14 @@ List.prototype.setTextColor = function( TextColor ) {
   this.getTextColor().set.apply( this.getTextColor(), arguments );
 };
 
+List.prototype.getFontSize = function() {
+  return this._fontSize;
+};
+
+List.prototype.setFontSize = function( fontSize ) {
+  this._fontSize = fontSize;
+};
+
 List.prototype.isWord = function( word ) {
   return this.getWords().lastIndexOf( word ) !== -1;
 };
@@ -115,7 +125,7 @@ List.prototype.markWord = function( ctx, word ) {
     ctx.fillStyle = this.getBackgroundColor().toString();
     ctx.fillRect( x, y, this.getWidth() * letterCount, this.getHeight() );
 
-    ctx.font = '9pt Helvetica';
+    ctx.font = this.getFontSize() + 'pt Helvetica';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.getTextColor().toString();

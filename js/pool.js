@@ -12,6 +12,7 @@ var Pool = function() {
   this._isUsed = [];
 
   this._textColor = new Color();
+  this._fontSize = 12;
 };
 
 Pool.prototype = new Entity();
@@ -47,6 +48,14 @@ Pool.prototype.setTextColor = function() {
   this.getTextColor().set.apply( this.getTextColor(), arguments );
 };
 
+Pool.prototype.getFontSize = function() {
+  return this._fontSize;
+};
+
+Pool.prototype.setFontSize = function( fontSize ) {
+  this._fontSize = fontSize;
+};
+
 Pool.prototype.clear = function() {
   this._letters = [];
   this._letterEntities = [];
@@ -75,6 +84,7 @@ Pool.prototype.createLetterEntities = function() {
   var height = this.getHeight();
   var color = this.getColor();
   var textColor = this.getTextColor();
+  var fontSize = this.getFontSize();
 
   var letter = null;
   for ( var i = 0; i < this.getLetters().length; i++ ) {
@@ -84,6 +94,7 @@ Pool.prototype.createLetterEntities = function() {
     letter.setColor( color );
     letter.setChar( this.getLetters()[i].toUpperCase() );
     letter.setTextColor( textColor );
+    letter.setFontSize( fontSize );
 
     this._letterEntities.push( letter );
     this._isUsed.push( false );

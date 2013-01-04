@@ -26,6 +26,7 @@ var Game = function() {
 
   this.EPSILON = 1e-20;
 
+  // Pool of letters the player can select form.
   this._pool = new Pool();
   this._pool.setPosition( 100, 100 );
   this._pool.setSpacing( 90 );
@@ -33,6 +34,7 @@ var Game = function() {
   this._pool.setHeight( 70 );
   this._pool.setColor( 240, 63, 53, 1.0 );
   this._pool.setTextColor( 255, 255, 255, 1.0 );
+  this._pool.setFontSize( 24 );
 
   this._dict = new Dictionary();
   var word = this._dict.getRandomWord();
@@ -49,6 +51,7 @@ var Game = function() {
   this._pool.setLetters( word.split( '' ) );
   var letters = this._pool.getLetters();
 
+  // Form where player inputs the word guess.
   this._form = new Form();
   this._form.setPosition( 100, 300 );
   this._form.setSpacing( 90 );
@@ -58,15 +61,16 @@ var Game = function() {
   this._form.setLineWidth( 5 );
   this._form.createFormElements( letters.length );
 
+  // List displaying all correctly spelled words.
   this._list = new List();
   this._list.setPosition( 100, 400 );
-  this._list.setWidth( 15 );
-  this._list.setHeight( 15 );
+  this._list.setWidth( 20 );
+  this._list.setHeight( 20 );
   this._list.setColor( 0, 55, 55, 1.0 );
   this._list.setBackgroundColor( 0, 0, 0, 1.0 );
   this._list.setTextColor( 255, 255, 255, 1.0 );
   this._list.setLineWidth( 2 );
-  this._list.setHorizontalSpacing( 50 );
+  this._list.setHorizontalSpacing( 40 );
   this._list.setPadding( 100 );
   this._list.setMaxHeight( this.HEIGHT );
   this._list.setWords( this._subWords );
@@ -244,10 +248,11 @@ function onKeyDown( event ) {
     switch ( event.keyCode ) {
       // Enter.
       case 13:
+        var word = _game.getForm().getWord().toLowerCase();
         console.log( _game.getForm().getWord() );
-        console.log( _game.getList().isWord( _game.getForm().getWord().toLowerCase() ) );
-        if ( _game.getList().isWord( _game.getForm().getWord().toLowerCase() ) ) {
-          _game.getList().markWord( _game._backgroundCtx, _game.getForm().getWord().toLowerCase() );
+        console.log( _game.getList().isWord( word ) );
+        if ( _game.getList().isWord( word ) ) {
+          _game.getList().markWord( _game._backgroundCtx, word );
         }
         _game.getPool().reset();
         break;

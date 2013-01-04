@@ -2,8 +2,10 @@ var Letter = function() {
   Entity.call( this );
 
   this._char = ' ';
+  this._fontSize = 12;
 
   this._textColor = new Color();
+
 };
 
 Letter.prototype = new Entity();
@@ -36,7 +38,7 @@ Letter.prototype.update = function( x, y ) {
 Letter.prototype.draw = function( ctx ) {
   Entity.prototype.draw.call( this, ctx );
 
-  ctx.font = '24pt Helvetica';
+  ctx.font = this.getFontSize() + 'pt Helvetica';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = this.getTextColor().toString();
@@ -50,6 +52,14 @@ Letter.prototype.getChar = function() {
 
 Letter.prototype.setChar = function( char ) {
   this._char = char;
+};
+
+Letter.prototype.getFontSize = function() {
+  return this._fontSize;
+};
+
+Letter.prototype.setFontSize = function( fontSize ) {
+  this._fontSize = fontSize;
 };
 
 Letter.prototype.getTextColor = function() {
