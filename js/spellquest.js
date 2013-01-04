@@ -53,7 +53,7 @@ var Game = function() {
 
   // Form where player inputs the word guess.
   this._form = new Form();
-  this._form.setPosition( 100, 250 );
+  this._form.setPosition( 100, 200 );
   this._form.setSpacing( 90 );
   this._form.setWidth( 75 );
   this._form.setHeight( 75 );
@@ -63,7 +63,7 @@ var Game = function() {
 
   // List displaying all correctly spelled words.
   this._list = new List();
-  this._list.setPosition( 100, 360 );
+  this._list.setPosition( 100, 270 );
   this._list.setWidth( 20 );
   this._list.setHeight( 20 );
   this._list.setColor( 0, 55, 55, 1.0 );
