@@ -297,6 +297,10 @@ function onKeyDown( event ) {
         }
         _game.getPool().reset();
         break;
+      // Space.
+      case 32:
+        _game.getPool().shuffle();
+        break;
       // Backspace.
       case 8:
         event.preventDefault();

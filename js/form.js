@@ -69,6 +69,12 @@ FormElement.prototype.update = function( elapsedTime ) {
   // Remove letter if no longer inside the form element.
   if ( this.hasLetter() ) {
     if ( this.getPosition() !== this.getLetter().getPosition() ) {
+      // TODO: pool.setLetterUsed() instead.
+      var index = _game.getPool()._letterEntities.lastIndexOf( this.getLetter() );
+      if ( index !== -1 ) {
+        _game.getPool()._isUsed[ index ] = false;
+      }
+
       this.setLetter( null );
     }
   }
