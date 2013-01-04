@@ -231,7 +231,7 @@ function inputDown( input ) {
   selected = _game.hit( input.x, input.y );
 
   if ( selected !== null ) {
-    selected.setPosition( input.x, input.y );
+    // selected.setPosition( input.x, input.y );
     selected.setVelocity( 0, 0 );
   } else {
     _game.getUI().click( input.x, input.y );
@@ -248,26 +248,31 @@ function inputMove( input ) {
   // console.log( input.x + ", " + input.y );
 
   if ( selected !== null ) {
-    selected.setPosition( input.x, input.y );
+    // selected.setPosition( input.x, input.y );
   }
 }
 
 function inputUp( input ) {
   // console.log( 'up' );
   if ( selected !== null ) {
-    var dx = lastPositions[1].x - lastPositions[0].x,
-        dy = lastPositions[1].y - lastPositions[0].y;
+    // var dx = lastPositions[1].x - lastPositions[0].x,
+    //     dy = lastPositions[1].y - lastPositions[0].y;
 
-    selected.setVelocity( dx / 50, dy / 50 );
+    // selected.setVelocity( dx / 50, dy / 50 );
 
     // TODO: Awful feel.
-    console.log( lastPositions[1].x + ", " + lastPositions[0].x)
-    console.log( dx + ", " +dy)
-    if ( ( dx * dx + dy * dy ) < 400 ) {
+    // console.log( lastPositions[1].x + ", " + lastPositions[0].x)
+    // console.log( dx + ", " +dy)
+    // if ( ( dx * dx + dy * dy ) < 400 ) {
+    var pool = _game.getPool();
+    var index = pool._letterEntities.lastIndexOf( selected );
+    if ( !pool._isUsed[ index ] ) {
       var formElement = _game.getForm().getFirstEmptyFormElement( selected );
       if ( formElement !== null ) {
         selected.setPosition( formElement.getPosition() );
       }
+    } else {
+      pool.pushLetter( selected );
     }
 
     // console.log( lastPositions );
