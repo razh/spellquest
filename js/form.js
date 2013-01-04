@@ -1,5 +1,5 @@
 // Adapted from http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html.
-function roundRect( ctx, x, y, width, height, radius, fill, stroke ) {
+function roundRectCentered( ctx, x, y, width, height, radius, fill, stroke ) {
   if ( typeof stroke === undefined ) {
     stroke = true;
   }
@@ -49,6 +49,10 @@ function roundRect( ctx, x, y, width, height, radius, fill, stroke ) {
   }
 }
 
+function roundRect( ctx, x, y, width, height, radius, fill, stroke ) {
+  roundRectCentered( ctx, x + width / 2, y + height / 2, width, height, radius, fill, stroke );
+}
+
 var FormElement = function() {
   Entity.call( this );
 
@@ -93,7 +97,7 @@ FormElement.prototype.setLineWidth = function( lineWidth ) {
 FormElement.prototype.draw = function( ctx ) {
   ctx.lineWidth = this.getLineWidth();
   ctx.strokeStyle = this.getColor().toString();
-  roundRect( ctx, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 5, false, true );
+  roundRectCentered( ctx, this.getX(), this.getY(), this.getWidth(), this.getHeight(), 5, false, true );
 };
 
 

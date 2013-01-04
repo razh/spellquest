@@ -177,7 +177,8 @@ List.prototype.drawWordSpace = function( ctx, x, y, width, height, letterCount )
   ctx.lineWidth = this.getLineWidth();
   ctx.strokeStyle = this.getColor().toString();
 
-  ctx.strokeRect( x, y, width * letterCount, height );
+  // ctx.strokeRect( x, y, width * letterCount, height );
+  roundRect( ctx, x, y, width * letterCount, height, 3, false, true );
 
   ctx.beginPath();
   for ( var i = 1; i < letterCount; i++ ) {
