@@ -63,7 +63,7 @@ var Game = function() {
 
   // List displaying all correctly spelled words.
   this._list = new List();
-  this._list.setPosition( 100, 270 );
+  this._list.setPosition( 65, 270 );
   this._list.setWidth( 20 );
   this._list.setHeight( 20 );
   this._list.setColor( 0, 55, 55, 1.0 );
@@ -79,31 +79,31 @@ var Game = function() {
 
   var resetButton = new ResetButton();
   resetButton.setPosition( 100, 30 );
-  resetButton.setWidth( 80 );
+  resetButton.setWidth( 70 );
   resetButton.setHeight( 30 );
   resetButton.setColor( 0, 0, 0, 1.0 );
   resetButton.setTextColor( 255, 255, 255, 1.0 );
   this._ui.addButton( resetButton );
 
   var shuffleButton = new ShuffleButton();
-  shuffleButton.setPosition( 200, 30 );
-  shuffleButton.setWidth( 80 );
+  shuffleButton.setPosition( 190, 30 );
+  shuffleButton.setWidth( 70 );
   shuffleButton.setHeight( 30 );
   shuffleButton.setColor( 0, 0, 0, 1.0 );
   shuffleButton.setTextColor( 255, 255, 255, 1.0 );
   this._ui.addButton( shuffleButton );
 
   var submitButton = new SubmitButton();
-  submitButton.setPosition( 300, 30 );
-  submitButton.setWidth( 80 );
+  submitButton.setPosition( 280, 30 );
+  submitButton.setWidth( 70 );
   submitButton.setHeight( 30 );
   submitButton.setColor( 0, 0, 0, 1.0 );
   submitButton.setTextColor( 255, 255, 255, 1.0 );
   this._ui.addButton( submitButton );
 
   var backspaceButton = new BackspaceButton();
-  backspaceButton.setPosition( 400, 30 );
-  backspaceButton.setWidth( 80 );
+  backspaceButton.setPosition( 370, 30 );
+  backspaceButton.setWidth( 70 );
   backspaceButton.setHeight( 30 );
   backspaceButton.setColor( 0, 0, 0, 1.0 );
   backspaceButton.setTextColor( 255, 255, 255, 1.0 );
