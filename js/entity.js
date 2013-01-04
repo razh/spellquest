@@ -105,11 +105,7 @@ Entity.prototype.getColor = function() {
 };
 
 Entity.prototype.setColor = function() {
-  if ( arguments.length === 1 ) {
-    this.getColor().set( arguments[0] );
-  } else if ( arguments.length === 4 ) {
-    this.getColor().set( arguments[0], arguments[1], arguments[2], arguments[3] );
-  }
+  this.getColor().set.apply( this.getColor(), arguments );
 };
 
 Entity.prototype.update = function( elapsedTime ) {

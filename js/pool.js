@@ -44,11 +44,7 @@ Entity.prototype.getTextColor = function() {
 };
 
 Entity.prototype.setTextColor = function() {
-  if ( arguments.length === 1 ) {
-    this.getTextColor().set( arguments[0] );
-  } else if ( arguments.length === 4 ) {
-    this.getTextColor().set( arguments[0], arguments[1], arguments[2], arguments[3] );
-  }
+  this.getTextColor().set.apply( this.getTextColor(), arguments );
 };
 
 Pool.prototype.getLetters = function() {

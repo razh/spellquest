@@ -7,6 +7,7 @@ var List = function() {
 
   this._horizontalSpacing = 0;
   this._verticalSpacing = 0;
+  this._padding = 0;
 
   this._lineWidth = 1;
 
@@ -57,11 +58,7 @@ List.prototype.getBackgroundColor = function() {
 };
 
 List.prototype.setBackgroundColor = function( backgroundColor ) {
-  if ( arguments.length === 1 ) {
-    this.getBackgroundColor().set( arguments[0] );
-  } else if ( arguments.length === 4 ) {
-    this.getBackgroundColor().set( arguments[0], arguments[1], arguments[2], arguments[3] );
-  }
+  this.getBackgroundColor().set.apply( this.getBackgroundColor(), arguments );
 };
 
 List.prototype.getTextColor = function() {
@@ -69,11 +66,7 @@ List.prototype.getTextColor = function() {
 };
 
 List.prototype.setTextColor = function( TextColor ) {
-  if ( arguments.length === 1 ) {
-    this.getTextColor().set( arguments[0] );
-  } else if ( arguments.length === 4 ) {
-    this.getTextColor().set( arguments[0], arguments[1], arguments[2], arguments[3] );
-  }
+  this.getTextColor().set.apply( this.getTextColor(), arguments );
 };
 
 List.prototype.isWord = function( word ) {

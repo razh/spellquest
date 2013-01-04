@@ -3,12 +3,7 @@ var Letter = function() {
 
   this._char = ' ';
 
-  this._textColor = {
-    red:   0,
-    green: 0,
-    blue:  0,
-    alpha: 0.0
-  };
+  this._textColor = new Color();
 };
 
 Letter.prototype = new Entity();
@@ -62,45 +57,37 @@ Letter.prototype.getTextColor = function() {
 };
 
 Letter.prototype.setTextColor = function() {
-  if ( arguments.length === 1 ) {
-    this._textColor = arguments[0];
-  }
-  else if ( arguments.length === 4 ) {
-    this.setTextRed( arguments[0] );
-    this.setTextGreen( arguments[1] );
-    this.setTextBlue( arguments[2] );
-    this.setTextAlpha( arguments[3] );
-  }
+  this.getTextColor().set.apply( this.getTextColor(), arguments );
 };
 
 Letter.prototype.getTextRed = function() {
-  return this.getTextColor().red;
+  return this.getTextColor().getRed();
 };
 
 Letter.prototype.setTextRed = function( red ) {
-  this._textColor.red = red;
+  this.getTextColor().setRed( red );
 };
 
 Letter.prototype.getTextGreen = function() {
-  return this.getTextColor().green;
+  return this.getTextColor().getGreen();
 };
 
 Letter.prototype.setTextGreen = function( green ) {
-  this._textColor.green = green;
+  this.getTextColor().setGreen( green );
 };
 
 Letter.prototype.getTextBlue = function() {
-  return this.getTextColor().blue;
+  return this.getTextColor().getBlue();
 };
 
 Letter.prototype.setTextBlue = function( blue ) {
-  this._textColor.blue = blue;
+  this.getTextColor().setBlue( blue );
 };
 
 Letter.prototype.getTextAlpha = function() {
-  return this.getTextColor().alpha;
+  return this.getTextColor().getAlpha();
 };
 
 Letter.prototype.setTextAlpha = function( alpha ) {
-  this._textColor.alpha = alpha;
+  this.getTextColor().setAlpha( alpha );
 };
