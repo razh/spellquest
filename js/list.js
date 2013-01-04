@@ -132,7 +132,7 @@ List.prototype.markWord = function( ctx, word ) {
 
     var yPos = y + this.getHalfHeight();
     for ( var i = 0; i < letterCount; i++ ) {
-      ctx.fillText( word[i], x + i * this.getWidth() + this.getHalfWidth(), yPos );
+      ctx.fillText( word[i].toUpperCase(), x + i * this.getWidth() + this.getHalfWidth(), yPos );
     }
 
     this._wasFound[ index ] = true;

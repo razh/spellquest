@@ -35,6 +35,7 @@ var Button = function() {
   Entity.call( this );
 
   this._text = '';
+  this._textColor = new Color();
   this._fontSize = 12;
 
   this._onClick = [];
@@ -49,6 +50,14 @@ Button.prototype.getText = function() {
 
 Button.prototype.setText = function( text ) {
   this._text = text;
+};
+
+Button.prototype.getTextColor = function() {
+  return this._textColor;
+};
+
+Button.prototype.setTextColor = function() {
+  this.getTextColor().set.apply( this.getTextColor(), arguments );
 };
 
 Button.prototype.getFontSize = function() {
@@ -73,6 +82,13 @@ Button.prototype.addOnClick = function( func ) {
 
 Button.prototype.draw = function( ctx ) {
   Entity.prototype.draw.call( this, ctx );
+
+  ctx.font = this.getFontSize() + 'pt Helvetica';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = this.getTextColor().toString();
+
+  ctx.fillText( this.getText(), this.getX(), this.getY() );
 };
 
 var ButtonFactory = function() {
@@ -83,7 +99,8 @@ var ButtonType = {
   DEFAULT: 0,
   SUBMIT: 1,
   RESET: 2,
-  SHUFFLE: 3
+  SHUFFLE: 3,
+  BACKSPACE: 4
 };
 
 ButtonFactory.prototype.createButton = function( buttonType ) {
@@ -100,6 +117,9 @@ ButtonFactory.prototype.createButton = function( buttonType ) {
     case ButtonType.SHUFFLE:
       this.setButtonClass( ShuffleButton );
       break;
+    case ButtonType.BACKSPACE:
+      this.setButtonClass( BackspaceButton );
+      break;
   }
 
   return new this.getButtonClass();
@@ -112,6 +132,7 @@ ButtonFactory.prototype.getButtonClass = function() {
 ButtonFactory.prototype.setButtonClass = function( buttonClass ) {
   this._buttonClass = buttonClass;
 };
+
 
 // Gets new word.
 var ResetButton = function() {
@@ -146,9 +167,32 @@ var SubmitButton = function() {
   Button.call( this );
 
   this.addOnClick(function() {
+    var word = _game.getForm().getWord().toLowerCase();
+    if ( _game.getList().isWord( word ) ) {
+      _game.getList().markWord( _game._backgroundCtx, word );
+    }
+    _game.getPool().reset();
+  });
 
-  })
+  this.setText( 'submit' );
 };
 
 SubmitButton.prototype = new Button();
 SubmitButton.prototype.constructor = SubmitButton;
+
+// Deletes right-most character from form.
+var BackspaceButton = function() {
+  Button.call( this );
+
+  this.addOnClick(function() {
+    var form = _game.getForm();
+    if ( form.getWord().length !== 0 ) {
+      _game.getPool().pushLetter( form.getLastLetter() );
+    }
+  });
+
+  this.setText( '\u2190' );
+};
+
+BackspaceButton.prototype = new Button();
+BackspaceButton.prototype.constructor = BackspaceButton;

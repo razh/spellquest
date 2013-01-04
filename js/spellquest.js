@@ -77,6 +77,38 @@ var Game = function() {
 
   this._ui = new UI();
 
+  var resetButton = new ResetButton();
+  resetButton.setPosition( 100, 30 );
+  resetButton.setWidth( 80 );
+  resetButton.setHeight( 30 );
+  resetButton.setColor( 0, 0, 0, 1.0 );
+  resetButton.setTextColor( 255, 255, 255, 1.0 );
+  this._ui.addButton( resetButton );
+
+  var shuffleButton = new ShuffleButton();
+  shuffleButton.setPosition( 200, 30 );
+  shuffleButton.setWidth( 80 );
+  shuffleButton.setHeight( 30 );
+  shuffleButton.setColor( 0, 0, 0, 1.0 );
+  shuffleButton.setTextColor( 255, 255, 255, 1.0 );
+  this._ui.addButton( shuffleButton );
+
+  var submitButton = new SubmitButton();
+  submitButton.setPosition( 300, 30 );
+  submitButton.setWidth( 80 );
+  submitButton.setHeight( 30 );
+  submitButton.setColor( 0, 0, 0, 1.0 );
+  submitButton.setTextColor( 255, 255, 255, 1.0 );
+  this._ui.addButton( submitButton );
+
+  var backspaceButton = new BackspaceButton();
+  backspaceButton.setPosition( 400, 30 );
+  backspaceButton.setWidth( 80 );
+  backspaceButton.setHeight( 30 );
+  backspaceButton.setColor( 0, 0, 0, 1.0 );
+  backspaceButton.setTextColor( 255, 255, 255, 1.0 );
+  this._ui.addButton( backspaceButton );
+
   this.drawBackground( this._backgroundCtx );
 };
 
@@ -112,6 +144,7 @@ Game.prototype.drawBackground = function( ctx ) {
   ctx.clearRect( 0, 0, this.WIDTH, this.HEIGHT );
   this.getForm().draw( ctx );
   this.getList().draw( ctx );
+  this.getUI().draw( ctx );
 }
 
 Game.prototype.getPool = function() {
@@ -201,7 +234,7 @@ function inputDown( input ) {
     selected.setPosition( input.x, input.y );
     selected.setVelocity( 0, 0 );
   } else {
-    _game.getUI.click( input.x, input.y );
+    _game.getUI().click( input.x, input.y );
   }
 }
 
@@ -269,7 +302,7 @@ function onKeyDown( event ) {
         event.preventDefault();
         var form = _game.getForm();
         if ( form.getWord().length !== 0 ) {
-          _game.getPool().pushLetter( _game.getForm().getLastLetter() );
+          _game.getPool().pushLetter( form.getLastLetter() );
         }
         break;
     }
