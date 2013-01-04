@@ -147,12 +147,16 @@ Entity.prototype.draw = function( ctx ) {
 };
 
 Entity.prototype.hit = function( x, y ) {
-  if ( ( Math.abs( x - this.getX() ) <= this.getHalfWidth() ) &&
-       ( Math.abs( y - this.getY() ) <= this.getHalfHeight() ) ) {
+  if ( this.isHit( x, y ) ) {
     return this;
   }
 
   return null;
+};
+
+Entity.prototype.isHit = function( x, y ) {
+  return Math.abs( x - this.getX() ) <= this.getHalfWidth() &&
+         Math.abs( y - this.getY() ) <= this.getHalfHeight();
 };
 
 var Color = function() {

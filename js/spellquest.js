@@ -75,6 +75,8 @@ var Game = function() {
   this._list.setMaxHeight( this.HEIGHT );
   this._list.setWords( this._subWords );
 
+  this._ui = new UI();
+
   this.drawBackground( this._backgroundCtx );
 };
 
@@ -122,7 +124,11 @@ Game.prototype.getForm = function() {
 
 Game.prototype.getList = function() {
   return this._list;
-}
+};
+
+Game.prototype.getUI = function() {
+  return this._ui;
+};
 
 Game.prototype.reset = function() {
   this.getPool().clear();
@@ -194,6 +200,8 @@ function inputDown( input ) {
   if ( selected !== null ) {
     selected.setPosition( input.x, input.y );
     selected.setVelocity( 0, 0 );
+  } else {
+    _game.getUI.click( input.x, input.y );
   }
 }
 
