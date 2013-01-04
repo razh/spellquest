@@ -135,7 +135,6 @@ Pool.prototype.reset = function() {
     this._isUsed[ i ] = false;
   }
 
-
   this._letterIndices = newIndices;
 };
 

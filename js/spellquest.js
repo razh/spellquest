@@ -68,6 +68,9 @@ var Game = function() {
   this._list.setBackgroundColor( 0, 0, 0, 1.0 );
   this._list.setTextColor( 255, 255, 255, 1.0 );
   this._list.setLineWidth( 2 );
+  this._list.setHorizontalSpacing( 50 );
+  this._list.setPadding( 100 );
+  this._list.setMaxHeight( this.HEIGHT );
   this._list.setWords( this._subWords );
   this.add( this._list );
 };

@@ -2,12 +2,15 @@ var List = function() {
   Entity.call( this );
 
   this._words = [];
+  // Where the words are drawn.
+  this._wordPositions = [];
   // Whether or not the player has found the word.
   this._wasFound = [];
 
   this._horizontalSpacing = 0;
   this._verticalSpacing = 0;
   this._padding = 0;
+  this._maxHeight = 0;
 
   this._lineWidth = 1;
 
@@ -27,6 +30,8 @@ List.prototype.setWords = function( words ) {
   for ( var i = 0; i < this.getWords().length; i++ ) {
     this._wasFound.push( false );
   }
+
+  this.calculateWordPositions( this.getMaxHeight() );
 };
 
 List.prototype.getHorizontalSpacing = function() {
@@ -43,6 +48,22 @@ List.prototype.getVerticalSpacing = function() {
 
 List.prototype.setVerticalSpacing = function( verticalSpacing ) {
   this._verticalSpacing = verticalSpacing;
+};
+
+List.prototype.getPadding = function() {
+  return this._padding;
+};
+
+List.prototype.setPadding = function( padding ) {
+  this._padding = padding;
+};
+
+List.prototype.getMaxHeight = function() {
+  return this._maxHeight;
+};
+
+List.prototype.setMaxHeight = function( maxHeight ) {
+  this._maxHeight = maxHeight;
 };
 
 List.prototype.getLineWidth = function() {
@@ -81,35 +102,58 @@ List.prototype.wasWordFound = function( word ) {
 List.prototype.markWord = function( ctx, word ) {
   var index = this.getWords().lastIndexOf( word );
   if ( index !== -1 && !this._wasFound[ index ] ) {
-    this._wasFound[ index ] = true;
-
+    var x = this._wordPositions[ index ].x;
+    var y = this._wordPositions[ index ].y;
     var letterCount = word.length;
-    ctx.fillStyle = this.getBackgroundColor().toString();
 
-    ctx.fillRect( this.getX(), this.getY() + index * this.getHeight(), this.getWidth() * letterCount, this.getHeight() );
+    ctx.fillStyle = this.getBackgroundColor().toString();
+    ctx.fillRect( x, y, this.getWidth() * letterCount, this.getHeight() );
 
     ctx.font = '9pt Helvetica';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillStyle = this.getTextColor().toString();
 
-    var yPos = this.getY() + index * this.getHeight() + this.getHalfHeight();
+    var yPos = y + this.getHalfHeight();
     for ( var i = 0; i < letterCount; i++ ) {
-      ctx.fillText( word[i], this.getX() + i * this.getWidth() + this.getHalfWidth(), yPos );
+      ctx.fillText( word[i], x + i * this.getWidth() + this.getHalfWidth(), yPos );
+    }
+
+    this._wasFound[ index ] = true;
+  }
+};
+
+List.prototype.calculateWordPositions = function( maxHeight ) {
+  var x = this.getX();
+  var y = this.getY();
+  var width = this.getWidth();
+  var height = this.getHeight();
+  var padding = this.getPadding();
+  var horizontalSpacing = this.getHorizontalSpacing();
+
+  var xPos = 0;
+  var yPos = 0;
+  for ( var i = 0; i < this._words.length; i++ ) {
+    this._wordPositions[i] = {
+      x: x + xPos,
+      y: y + yPos
+    };
+
+    yPos += height;
+
+    if ( y + yPos + padding > maxHeight ) {
+      xPos += this._words[i].length * width + horizontalSpacing;
+      yPos = 0;
     }
   }
 };
 
 List.prototype.draw = function( ctx ) {
-  var x = this.getX();
-  var y = this.getY();
   var width = this.getWidth();
   var height = this.getHeight();
 
-  var letterCount = 0;
   for ( var i = 0; i < this._words.length; i++ ) {
-    letterCount = this._words[i].length;
-    this.drawWordSpace( ctx, x, y + i * height, width, height, letterCount );
+    this.drawWordSpace( ctx, this._wordPositions[i].x, this._wordPositions[i].y, width, height, this._words[i].length );
   }
 };
 
