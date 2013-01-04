@@ -194,9 +194,10 @@ Form.prototype.getLastLetter = function() {
   return null;
 };
 
-Form.prototype.getFirstEmptyFormElement = function() {
+Form.prototype.getFirstEmptyFormElement = function( letter ) {
   for ( var i = 0; i < this._formElements.length; i++ ) {
-    if ( !this._formElements[i].hasLetter() ) {
+    if ( !this._formElements[i].hasLetter() ||
+         ( letter !== undefined && this._formElements[i].getLetter() === letter ) ) {
       return this._formElements[i];
     }
   }

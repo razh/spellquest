@@ -259,6 +259,17 @@ function inputUp( input ) {
         dy = lastPositions[1].y - lastPositions[0].y;
 
     selected.setVelocity( dx / 50, dy / 50 );
+
+    // TODO: Awful feel.
+    console.log( lastPositions[1].x + ", " + lastPositions[0].x)
+    console.log( dx + ", " +dy)
+    if ( ( dx * dx + dy * dy ) < 400 ) {
+      var formElement = _game.getForm().getFirstEmptyFormElement( selected );
+      if ( formElement !== null ) {
+        selected.setPosition( formElement.getPosition() );
+      }
+    }
+
     // console.log( lastPositions );
     // console.log( dx + ", " + dy );
     // console.log( selected.getVelocity() );
