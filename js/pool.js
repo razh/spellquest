@@ -39,12 +39,19 @@ Pool.prototype.setSpacing = function( spacing ) {
   this._spacing = spacing;
 };
 
-Entity.prototype.getTextColor = function() {
+Pool.prototype.getTextColor = function() {
   return this._textColor;
 };
 
-Entity.prototype.setTextColor = function() {
+Pool.prototype.setTextColor = function() {
   this.getTextColor().set.apply( this.getTextColor(), arguments );
+};
+
+Pool.prototype.clear = function() {
+  this._letters = [];
+  this._letterEntities = [];
+  this._letterIndices = [];
+  this._isUsed = [];
 };
 
 Pool.prototype.getLetters = function() {

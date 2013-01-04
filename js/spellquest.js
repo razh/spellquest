@@ -40,11 +40,10 @@ var Game = function() {
     word = this._dict.getRandomWord();
 
   this._dict.createMap();
-  var subWords = this._dict.getSubWords( word );
-  for ( i = 0; i < subWords.length; i++ ) {
-    console.log( subWords[i] );
+  this._subWords = this._dict.getSubWords( word );
+  for ( i = 0; i < this._subWords.length; i++ ) {
+    console.log( this._subWords[i] );
   }
-  this._subWords = subWords;
 
   console.log( word );
   this._pool.setLetters( word.split( '' ) );
@@ -58,7 +57,6 @@ var Game = function() {
   this._form.setColor( 100, 100, 100, 1.0 );
   this._form.setLineWidth( 5 );
   this._form.createFormElements( letters.length );
-  this.add( this._form );
 
   this._list = new List();
   this._list.setPosition( 100, 400 );
@@ -72,7 +70,8 @@ var Game = function() {
   this._list.setPadding( 100 );
   this._list.setMaxHeight( this.HEIGHT );
   this._list.setWords( this._subWords );
-  this.add( this._list );
+
+  this.drawBackground( this._backgroundCtx );
 };
 
 Game.prototype.tick = function() {
@@ -100,12 +99,14 @@ Game.prototype.hit = function( x, y ) {
 };
 
 Game.prototype.add = function( entity ) {
-  if ( entity instanceof Form || entity instanceof List ) {
-    entity.draw( this._backgroundCtx );
-  }
-
   this._entities.push( entity );
 };
+
+Game.prototype.drawBackground = function( ctx ) {
+  ctx.clearRect( 0, 0, this.WIDTH, this.HEIGHT );
+  this.getForm().draw( ctx );
+  this.getList().draw( ctx );
+}
 
 Game.prototype.getPool = function() {
   return this._pool;
@@ -113,6 +114,35 @@ Game.prototype.getPool = function() {
 
 Game.prototype.getForm = function() {
   return this._form;
+};
+
+Game.prototype.getList = function() {
+  return this._list;
+}
+
+Game.prototype.reset = function() {
+  this.getPool().clear();
+  this.getForm().clear();
+  this.getList().clear();
+
+  var word = this._dict.getRandomWord();
+  while ( word.length < 5 )
+    word = this._dict.getRandomWord();
+
+  this._dict.createMap();
+  this._subWords = this._dict.getSubWords( word );
+  for ( i = 0; i < this._subWords.length; i++ ) {
+    console.log( this._subWords[i] );
+  }
+
+  console.log( 'word: ' + word );
+  this.getPool().setLetters( word.split( '' ) );
+  var letters = this.getPool().getLetters();
+
+  this.getForm().createFormElements( letters.length );
+  this.getList().setWords( this._subWords );
+
+  this.drawBackground( this._backgroundCtx );
 };
 
 var selected = null;
@@ -215,9 +245,9 @@ function onKeyDown( event ) {
       // Enter.
       case 13:
         console.log( _game.getForm().getWord() );
-        console.log( _game._list.isWord( _game.getForm().getWord().toLowerCase() ) );
-        if ( _game._list.isWord( _game.getForm().getWord().toLowerCase() ) ) {
-          _game._list.markWord( _game._backgroundCtx, _game.getForm().getWord().toLowerCase() );
+        console.log( _game.getList().isWord( _game.getForm().getWord().toLowerCase() ) );
+        if ( _game.getList().isWord( _game.getForm().getWord().toLowerCase() ) ) {
+          _game.getList().markWord( _game._backgroundCtx, _game.getForm().getWord().toLowerCase() );
         }
         _game.getPool().reset();
         break;

@@ -193,3 +193,7 @@ Form.prototype.getFirstEmptyFormElement = function() {
 
   return null;
 };
+
+Form.prototype.clear = function() {
+  this._formElements = [];
+};

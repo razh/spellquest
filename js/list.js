@@ -34,6 +34,12 @@ List.prototype.setWords = function( words ) {
   this.calculateWordPositions( this.getMaxHeight() );
 };
 
+List.prototype.clear = function() {
+  this._words = [];
+  this._wasFound = [];
+  this._wordPositions = [];
+};
+
 List.prototype.getHorizontalSpacing = function() {
   return this._horizontalSpacing;
 };
