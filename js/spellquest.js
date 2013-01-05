@@ -109,6 +109,20 @@ var Game = function() {
   backspaceButton.setTextColor( 255, 255, 255, 1.0 );
   this._ui.addButton( backspaceButton );
 
+  var pEntity = new PolygonEntity();
+  pEntity.setVertices([
+      0,
+    100,
+    100,
+    100,
+     50,
+      0
+  ]);
+  pEntity.setColor( 0, 0, 255, 1.0 );
+  pEntity.setVelocity( 0.05, 0.001 );
+
+  this.add( pEntity );
+
   this.drawBackground( this._backgroundCtx );
 };
 

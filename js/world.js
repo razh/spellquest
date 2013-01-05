@@ -13,14 +13,16 @@ World.prototype.addLayer = function( layer ) {
   });
 };
 
+World.prototype.update = function( elapsedTime ) {
+  for ( var i = 0; i < this._layers.length; i++ ) {
+    this._layers[i].update( elapsedTime );
+  }
+};
+
 World.prototype.draw = function( ctx ) {
   for ( var i = 0; i < this._layers.length; i++ ) {
     this._layers[i].draw( ctx );
   }
-};
-
-World.prototype.update = function( elapsedTime ) {
-
 };
 
 var Layer = function() {
@@ -64,7 +66,12 @@ Layer.prototype.update = function( elapsedTime ) {
 };
 
 Layer.prototype.draw = function( ctx ) {
+  ctx.save();
+  ctx.translate( this.getX(), this.getY() );
+
   for ( var i = 0; i < this._props.length; i++ ) {
     this._props[i].draw( ctx );
   }
+
+  ctx.restore();
 };

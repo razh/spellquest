@@ -160,46 +160,7 @@ Entity.prototype.isHit = function( x, y ) {
 };
 
 
-// PolygonEntity ---------------------------------------------------------------
-var PolygonEntity = function() {
-  Entity.call( this );
-
-  this._vertices = [];
-};
-
-PolygonEntity.prototype = new Entity();
-PolygonEntity.prototype.constructor = PolygonEntity;
-
-PolygonEntity.prototype.getVertices = function() {
-  return this._vertices;
-};
-
-PolygonEntity.prototype.setVertices = function( vertices ) {
-  this._vertices = vertices;
-};
-
-PolygonEntity.prototype.draw = function( ctx ) {
-  ctx.save();
-
-  ctx.translate( this.getX(), this.getY() );
-
-  ctx.beginPath();
-  for ( var i = 0; i < this._vertices.length; i++ ) {
-    ctx.lineTo( this._vertices[i].x, this._vertices[i].y );
-  }
-  ctx.closePath();
-
-  ctx.fillStyle = this.getColor().toString();
-  ctx.fill();
-
-  ctx.restore();
-};
-
-// SpriteEntity ----------------------------------------------------------------
-var SpriteEntity = function() {
-
-};
-
+// Color -----------------------------------------------------------------------
 var Color = function() {
   this._red = 0;
   this._green = 0;
@@ -209,7 +170,7 @@ var Color = function() {
   if ( arguments.length !== 0 ) {
     this.set.apply( this, arguments );
   }
-}
+};
 
 Color.prototype.set = function() {
   if ( arguments.length === 1 ) {
@@ -263,4 +224,66 @@ Color.prototype.toString = function() {
          ', '     + ( ( 0.5 + this.getGreen() ) << 0 ) +
          ','      + ( ( 0.5 + this.getBlue() )  << 0 ) +
          ','      + this.getAlpha() + ' )';
-}
+};
+
+
+// PolygonEntity ---------------------------------------------------------------
+var PolygonEntity = function() {
+  Entity.call( this );
+
+  this._vertices = [];
+};
+
+PolygonEntity.prototype = new Entity();
+PolygonEntity.prototype.constructor = PolygonEntity;
+
+PolygonEntity.prototype.getVertices = function() {
+  return this._vertices;
+};
+
+PolygonEntity.prototype.setVertices = function( vertices ) {
+  this._vertices = vertices;
+};
+
+PolygonEntity.prototype.getNumVertices = function() {
+  return this._vertices.length / 2;
+};
+
+PolygonEntity.prototype.draw = function( ctx ) {
+  ctx.save();
+  ctx.translate( this.getX(), this.getY() );
+
+  ctx.beginPath();
+  for ( var i = 0, n = this.getNumVertices(); i < n; i++ ) {
+    ctx.lineTo( this._vertices[ 2 * i ],
+                this._vertices[ 2 * i + 1 ] );
+  }
+  ctx.closePath();
+
+  ctx.fillStyle = this.getColor().toString();
+  ctx.fill();
+
+  ctx.restore();
+};
+
+PolygonEntity.prototype.hit = function( x, y ) {
+  return null;
+};
+
+// SpriteEntity ----------------------------------------------------------------
+var SpriteEntity = function() {
+  Entity.call( this );
+
+  this._sprite = null;
+};
+
+SpriteEntity.prototype = new Entity();
+SpriteEntity.prototype.constructor = SpriteEntity;
+
+SpriteEntity.prototype.getSprite = function() {
+  return this._sprite;
+};
+
+SpriteEntity.prototype.setSprite = function( sprite ) {
+  this._sprite = sprite;
+};
