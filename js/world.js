@@ -1,6 +1,11 @@
 var World = function() {
+  Entity.call( this );
+
   this._layers = [];
 };
+
+World.prototype = new Entity();
+World.prototype.constructor = World;
 
 World.prototype.getLayers = function() {
   return this._layers;
@@ -20,9 +25,33 @@ World.prototype.update = function( elapsedTime ) {
 };
 
 World.prototype.draw = function( ctx ) {
+  ctx.fillRect(
+    this.getX() - this.getHalfWidth(),
+    this.getY() - this.getHalfHeight(),
+    this.getWidth(),
+    this.getHeight()
+  );
+
   for ( var i = 0; i < this._layers.length; i++ ) {
     this._layers[i].draw( ctx );
   }
+};
+
+var Camera = function() {
+  Entity.call( this );
+
+  this._zoom = 1.0;
+};
+
+Camera.prototype = new Entity();
+Camera.prototype.constructor = Camera;
+
+Camera.prototype.getZoom = function() {
+  return this._zoom;
+};
+
+Camera.prototype.setZoom = function( zoom ) {
+  this._zoom = zoom;
 };
 
 var Layer = function() {
@@ -61,8 +90,10 @@ Layer.prototype.setParallaxFactor = function( parallaxFactor ) {
   this._parallaxFactor = parallaxFactor;
 };
 
-Layer.prototype.update = function( elapsedTime ) {
+Layer.prototype.update = function( elapsedTime, dx ) {
   Entity.prototype.call( this );
+
+  this.setX( this.getX() + dx * this.getParallaxFactor() );
 };
 
 Layer.prototype.draw = function( ctx ) {

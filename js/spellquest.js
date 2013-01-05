@@ -28,7 +28,7 @@ var Game = function() {
 
   // Pool of letters the player can select form.
   this._pool = new Pool();
-  this._pool.setPosition( 100, 100 );
+  this._pool.setPosition( 100, 195 );
   this._pool.setSpacing( 90 );
   this._pool.setWidth( 70 );
   this._pool.setHeight( 70 );
@@ -53,7 +53,7 @@ var Game = function() {
 
   // Form where player inputs the word guess.
   this._form = new Form();
-  this._form.setPosition( 100, 200 );
+  this._form.setPosition( 100, 295 );
   this._form.setSpacing( 90 );
   this._form.setWidth( 75 );
   this._form.setHeight( 75 );
@@ -63,7 +63,7 @@ var Game = function() {
 
   // List displaying all correctly spelled words.
   this._list = new List();
-  this._list.setPosition( 65, 270 );
+  this._list.setPosition( 65, 365 );
   this._list.setWidth( 20 );
   this._list.setHeight( 20 );
   this._list.setColor( 0, 55, 55, 1.0 );
@@ -78,7 +78,7 @@ var Game = function() {
   this._ui = new UI();
 
   var resetButton = new ResetButton();
-  resetButton.setPosition( 100, 30 );
+  resetButton.setPosition( 100, 90 );
   resetButton.setWidth( 70 );
   resetButton.setHeight( 30 );
   resetButton.setColor( 0, 0, 0, 1.0 );
@@ -86,7 +86,7 @@ var Game = function() {
   this._ui.addButton( resetButton );
 
   var shuffleButton = new ShuffleButton();
-  shuffleButton.setPosition( 190, 30 );
+  shuffleButton.setPosition( 190, 90 );
   shuffleButton.setWidth( 70 );
   shuffleButton.setHeight( 30 );
   shuffleButton.setColor( 0, 0, 0, 1.0 );
@@ -94,7 +94,7 @@ var Game = function() {
   this._ui.addButton( shuffleButton );
 
   var submitButton = new SubmitButton();
-  submitButton.setPosition( 280, 30 );
+  submitButton.setPosition( 280, 90 );
   submitButton.setWidth( 70 );
   submitButton.setHeight( 30 );
   submitButton.setColor( 0, 0, 0, 1.0 );
@@ -102,7 +102,7 @@ var Game = function() {
   this._ui.addButton( submitButton );
 
   var backspaceButton = new BackspaceButton();
-  backspaceButton.setPosition( 370, 30 );
+  backspaceButton.setPosition( 370, 90 );
   backspaceButton.setWidth( 70 );
   backspaceButton.setHeight( 30 );
   backspaceButton.setColor( 0, 0, 0, 1.0 );
@@ -122,6 +122,11 @@ var Game = function() {
   pEntity.setVelocity( 0.05, 0.001 );
 
   this.add( pEntity );
+
+  this._world = new World();
+  this._world.setPosition( 280, 80 );
+  this._world.setWidth( 430 );
+  this._world.setHeight( 100 );
 
   this.drawBackground( this._backgroundCtx );
 };
@@ -159,6 +164,7 @@ Game.prototype.drawBackground = function( ctx ) {
   this.getForm().draw( ctx );
   this.getList().draw( ctx );
   this.getUI().draw( ctx );
+  this._world.draw( ctx );
 }
 
 Game.prototype.getPool = function() {
