@@ -1,6 +1,7 @@
 var World = function() {
   Entity.call( this );
 
+  this._player = null;
   this._layers = [];
 };
 
@@ -16,6 +17,14 @@ World.prototype.addLayer = function( layer ) {
   this._layers.sort(function( x, y ) {
     return x.getZIndex() - y.getZIndex();
   });
+};
+
+World.prototype.getPlayer = function() {
+  return this._player;
+};
+
+World.prototype.setPlayer = function( player ) {
+  this._player = player;
 };
 
 World.prototype.update = function( elapsedTime ) {
@@ -36,6 +45,8 @@ World.prototype.draw = function( ctx ) {
   for ( var i = 0; i < this._layers.length; i++ ) {
     this._layers[i].draw( ctx );
   }
+
+  this._player.draw( ctx );
 };
 
 World.prototype.hit = function( x, y ) {
@@ -128,7 +139,7 @@ Layer.prototype.hit = function( x, y ) {
 var LayerFactory = function() {};
 
 LayerFactory.prototype.createTerrainLayer = function( options ) {
-  var width = options.width || 0;
+  var width  = options.width  || 0;
   var height = options.height || 0;
   var maxTerrainHeight = options.maxTerrainHeight || 0;
   var segmentCount = options.segmentCount || 1;

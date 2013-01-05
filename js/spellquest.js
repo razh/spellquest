@@ -131,7 +131,7 @@ var Game = function() {
   this._world.setPosition( 290, 70 );
   this._world.setWidth( 450 );
   this._world.setHeight( 100 );
-  this._world.setColor( 20, 0, 0, 0.4 );
+  // this._world.setColor( 20, 0, 0, 0.0 );
 
   this._worldCanvas.width = this.getWorld().getWidth();
   this._worldCanvas.height = this.getWorld().getHeight();
@@ -160,6 +160,13 @@ var Game = function() {
     parallaxFactor: 0.5
   }));
 
+  var player = new Entity();
+  player.setWidth( 10 );
+  player.setHeight( 20 );
+  player.setPosition( 30, 90 );
+  player.setColor( 255, 255, 255, 1.0 );
+  this._world.setPlayer( player );
+
   this.drawBackground( this._backgroundCtx );
 };
 
@@ -183,6 +190,7 @@ Game.prototype.update = function() {
 Game.prototype.draw = function() {
   this._ctx.clearRect( 0, 0, this.WIDTH, this.HEIGHT );
 
+  this._worldCtx.clearRect( 0, 0, this.getWorld().getWidth(), this.getWorld().getHeight() );
   this.getWorld().draw( this._worldCtx );
   this._ctx.drawImage( this._worldCanvas,
                        this.getWorld().getX() - this.getWorld().getHalfWidth(),
