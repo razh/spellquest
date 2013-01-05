@@ -14,13 +14,13 @@ World.prototype.getLayers = function() {
 World.prototype.addLayer = function( layer ) {
   this._layers.push( layer );
   this._layers.sort(function( x, y ) {
-    return y.getZIndex() - x.getZIndex();
+    return x.getZIndex() - y.getZIndex();
   });
 };
 
 World.prototype.update = function( elapsedTime ) {
   for ( var i = 0; i < this._layers.length; i++ ) {
-    this._layers[i].update( elapsedTime );
+    this._layers[i].update( elapsedTime, elapsedTime * -0.02 );
   }
 };
 
@@ -104,7 +104,7 @@ Layer.prototype.setParallaxFactor = function( parallaxFactor ) {
 };
 
 Layer.prototype.update = function( elapsedTime, dx ) {
-  Entity.prototype.call( this );
+  Entity.prototype.update.call( this, elapsedTime );
 
   this.setX( this.getX() + dx * this.getParallaxFactor() );
 };
@@ -143,6 +143,8 @@ LayerFactory.prototype.createTerrainLayer = function( options ) {
   var color = options.color || new Color( 0, 0, 0, 1.0 );
 
   var layer = new Layer();
+  layer.setZIndex( options.zIndex || 0 );
+  layer.setParallaxFactor( options.parallaxFactor || 1.0 );
 
   var segmentWidth = width / segmentCount;
   var points = [];
@@ -150,20 +152,20 @@ LayerFactory.prototype.createTerrainLayer = function( options ) {
     points.push( Math.random() * maxTerrainHeight );
   }
 
-  var xPos = 0;
   var tempPolygonEntity;
   for ( i = 0; i < segmentCount; i++ ) {
     tempPolygonEntity = new PolygonEntity();
-    tempPolygonEntity.setVertices([
-      xPos, height,
-      xPos, height - points[i],
-      xPos + segmentWidth, height - points[ i + 1 ],
-      xPos + segmentWidth, height
-    ]);
+    tempPolygonEntity.setX( i * segmentWidth );
     tempPolygonEntity.setColor( color );
-    layer.addProp( tempPolygonEntity );
+    tempPolygonEntity.setVertices([
+      0, height,
+      0, height - points[i],
+      // Extra pixel added to x-coordinate to connect segments.
+      segmentWidth + 1, height - points[ i + 1 ],
+      segmentWidth + 1, height
+    ]);
 
-    xPos += segmentWidth;
+    layer.addProp( tempPolygonEntity );
   }
 
   return layer;

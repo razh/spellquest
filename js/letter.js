@@ -15,25 +15,25 @@ Letter.prototype.update = function( x, y ) {
   Entity.prototype.update.call( this, x, y );
 
   // TODO: This should be removed at some point.
-  if ( _game !== undefined && _game !== null ) {
-    // Snap letter to form element.
-    var formElements = _game.getForm().getFormElements();
-    for ( var i = formElements.length - 1; i >= 0; i-- ) {
-      if ( formElements[i].hit( this.getX(), this.getY() ) !== null ) {
-        this.setPosition( formElements[i].getPosition() );
-        this.setVelocity( 0, 0 );
-        formElements[i].setLetter( this );
+//   if ( _game !== undefined && _game !== null ) {
+//     // Snap letter to form element.
+//     var formElements = _game.getForm().getFormElements();
+//     for ( var i = formElements.length - 1; i >= 0; i-- ) {
+//       if ( formElements[i].hit( this.getX(), this.getY() ) !== null ) {
+//         this.setPosition( formElements[i].getPosition() );
+//         this.setVelocity( 0, 0 );
+//         formElements[i].setLetter( this );
 
-        // Set it to used.
-        var index = _game.getPool()._letterEntities.lastIndexOf( this );
-        if ( index !== -1 ) {
-          _game.getPool()._isUsed[ index ] = true;
-        }
+//         // Set it to used.
+//         var index = _game.getPool()._letterEntities.lastIndexOf( this );
+//         if ( index !== -1 ) {
+//           _game.getPool()._isUsed[ index ] = true;
+//         }
 
-        break;
-      }
-    }
-  }
+//         break;
+//       }
+//     }
+//   }
 };
 
 Letter.prototype.draw = function( ctx ) {

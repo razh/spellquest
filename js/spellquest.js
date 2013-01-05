@@ -29,7 +29,7 @@ var Game = function() {
   // Pool of letters the player can select form.
   this._pool = new Pool();
   this._pool.setPosition( 100, 220 );
-  this._pool.setSpacing( 90 );
+  this._pool.setSpacing( 95 );
   this._pool.setWidth( 70 );
   this._pool.setHeight( 70 );
   this._pool.setColor( 240, 63, 53, 1.0 );
@@ -54,7 +54,7 @@ var Game = function() {
   // Form where player inputs the word guess.
   this._form = new Form();
   this._form.setPosition( 100, 320 );
-  this._form.setSpacing( 90 );
+  this._form.setSpacing( 95 );
   this._form.setWidth( 75 );
   this._form.setHeight( 75 );
   this._form.setColor( 100, 100, 100, 1.0 );
@@ -86,7 +86,7 @@ var Game = function() {
   this._ui.addButton( resetButton );
 
   var shuffleButton = new ShuffleButton();
-  shuffleButton.setPosition( 190, 150 );
+  shuffleButton.setPosition( 195, 150 );
   shuffleButton.setWidth( 70 );
   shuffleButton.setHeight( 30 );
   shuffleButton.setColor( 0, 0, 0, 1.0 );
@@ -94,7 +94,7 @@ var Game = function() {
   this._ui.addButton( shuffleButton );
 
   var submitButton = new SubmitButton();
-  submitButton.setPosition( 280, 150 );
+  submitButton.setPosition( 290, 150 );
   submitButton.setWidth( 70 );
   submitButton.setHeight( 30 );
   submitButton.setColor( 0, 0, 0, 1.0 );
@@ -102,7 +102,7 @@ var Game = function() {
   this._ui.addButton( submitButton );
 
   var backspaceButton = new BackspaceButton();
-  backspaceButton.setPosition( 370, 150 );
+  backspaceButton.setPosition( 385, 150 );
   backspaceButton.setWidth( 70 );
   backspaceButton.setHeight( 30 );
   backspaceButton.setColor( 0, 0, 0, 1.0 );
@@ -121,8 +121,8 @@ var Game = function() {
   pEntity.setVelocity( 0.05, 0.001 );
 
   this._world = new World();
-  this._world.setPosition( 280, 70 );
-  this._world.setWidth( 430 );
+  this._world.setPosition( 290, 70 );
+  this._world.setWidth( 450 );
   this._world.setHeight( 100 );
   this._world.setColor( 20, 0, 0, 0.4 );
 
@@ -131,13 +131,24 @@ var Game = function() {
 
   // this._world.addLayer( tempLayer );
   var layerFactory = new LayerFactory();
-  this._world.addLayer( layerFactory.createTerrainLayer({
+  this._world.addLayer(layerFactory.createTerrainLayer({
     color: new Color( 255, 0, 0, 1.0 ),
-    width: 430,
+    width: 2000,
     height: 100,
     maxTerrainHeight: 50,
-    segmentCount: 43
-  }) );
+    segmentCount: 20,
+    zIndex: 1,
+    parallaxFactor: 1.0
+  }));
+  this._world.addLayer(layerFactory.createTerrainLayer({
+    color: new Color( 0, 0, 255, 1.0 ),
+    width: 2000,
+    height: 100,
+    maxTerrainHeight: 90,
+    segmentCount: 20,
+    zIndex: 0,
+    parallaxFactor: 0.5
+  }));
 
   this.drawBackground( this._backgroundCtx );
 };
@@ -152,6 +163,9 @@ Game.prototype.update = function() {
   var elapsedTime = this._currTime - this._prevTime;
   this._prevTime = this._currTime;
 
+  this.getWorld().update( elapsedTime );
+
+  // Update Form, then Pool.
   this.getForm().update( elapsedTime );
   this.getPool().update( elapsedTime );
 };
@@ -159,6 +173,7 @@ Game.prototype.update = function() {
 Game.prototype.draw = function() {
   this._ctx.clearRect( 0, 0, this.WIDTH, this.HEIGHT );
 
+  this.getWorld().draw( this._ctx );
   this.getPool().draw( this._ctx );
 };
 
@@ -175,7 +190,7 @@ Game.prototype.drawBackground = function( ctx ) {
   this.getForm().draw( ctx );
   this.getList().draw( ctx );
   this.getUI().draw( ctx );
-  this._world.draw( ctx );
+  // this.getWorld().draw( ctx );
 }
 
 Game.prototype.getPool = function() {
@@ -193,6 +208,10 @@ Game.prototype.getList = function() {
 Game.prototype.getUI = function() {
   return this._ui;
 };
+
+Game.prototype.getWorld = function() {
+  return this._world;
+}
 
 Game.prototype.reset = function() {
   this.getPool().clear();

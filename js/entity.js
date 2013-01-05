@@ -122,18 +122,18 @@ Entity.prototype.update = function( elapsedTime ) {
   this.setX( this.getX() + this.getVelocityX() * elapsedTime );
   this.setY( this.getY() + this.getVelocityY() * elapsedTime );
 
-  if ( this.getX() - this.getHalfWidth() <= 0 ) {
-    this.setX( this.getHalfWidth() );
-  }
-  if ( this.getX() + this.getHalfWidth() >= _game.WIDTH ) {
-    this.setX( _game.WIDTH - this.getHalfWidth() );
-  }
-  if ( this.getY() - this.getHalfHeight() <= 0 ) {
-    this.setY( this.getHalfHeight() );
-  }
-  if ( this.getY() + this.getHalfHeight() >= _game.HEIGHT ) {
-    this.setY( _game.HEIGHT - this.getHalfHeight() );
-  }
+  // if ( this.getX() - this.getHalfWidth() <= 0 ) {
+  //   this.setX( this.getHalfWidth() );
+  // }
+  // if ( this.getX() + this.getHalfWidth() >= _game.WIDTH ) {
+  //   this.setX( _game.WIDTH - this.getHalfWidth() );
+  // }
+  // if ( this.getY() - this.getHalfHeight() <= 0 ) {
+  //   this.setY( this.getHalfHeight() );
+  // }
+  // if ( this.getY() + this.getHalfHeight() >= _game.HEIGHT ) {
+  //   this.setY( _game.HEIGHT - this.getHalfHeight() );
+  // }
 };
 
 Entity.prototype.draw = function( ctx ) {
