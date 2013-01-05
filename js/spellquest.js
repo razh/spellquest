@@ -63,7 +63,7 @@ var Game = function() {
 
   // List displaying all correctly spelled words.
   this._list = new List();
-  this._list.setPosition( 65, 365 );
+  this._list.setPosition( 65, 390 );
   this._list.setWidth( 20 );
   this._list.setHeight( 20 );
   this._list.setColor( 0, 55, 55, 1.0 );
@@ -131,7 +131,13 @@ var Game = function() {
 
   // this._world.addLayer( tempLayer );
   var layerFactory = new LayerFactory();
-  this._world.addLayer( layerFactory.createTerrainLayer( 430, 100, 50, 43 ) );
+  this._world.addLayer( layerFactory.createTerrainLayer({
+    color: new Color( 255, 0, 0, 1.0 ),
+    width: 430,
+    height: 100,
+    maxTerrainHeight: 50,
+    segmentCount: 43
+  }) );
 
   this.drawBackground( this._backgroundCtx );
 };
@@ -365,13 +371,18 @@ var _game;
 function init() {
   _game = new Game();
 
-  _game._canvas.addEventListener( 'mousedown', onMouseDown, null );
-  _game._canvas.addEventListener( 'mousemove', onMouseMove, null );
-  _game._canvas.addEventListener( 'mouseup', onMouseUp, null );
+  var isTouchSupported = "ontouchend" in document;
 
-  _game._canvas.addEventListener( 'touchstart', onTouchStart, null );
-  _game._canvas.addEventListener( 'touchmove', onTouchMove, null );
-  _game._canvas.addEventListener( 'touchend', onTouchEnd, null );
+  if ( isTouchSupported ) {
+    _game._canvas.addEventListener( 'touchstart', onTouchStart, null );
+    _game._canvas.addEventListener( 'touchmove', onTouchMove, null );
+    _game._canvas.addEventListener( 'touchend', onTouchEnd, null );
+  } else {
+    _game._canvas.addEventListener( 'mousedown', onMouseDown, null );
+    _game._canvas.addEventListener( 'mousemove', onMouseMove, null );
+    _game._canvas.addEventListener( 'mouseup', onMouseUp, null );
+  }
+
 
   document.addEventListener( 'keydown', onKeyDown, null );
 

@@ -14,6 +14,7 @@ Letter.prototype.constructor = Letter;
 Letter.prototype.update = function( x, y ) {
   Entity.prototype.update.call( this, x, y );
 
+  // TODO: This should be removed at some point.
   if ( _game !== undefined && _game !== null ) {
     // Snap letter to form element.
     var formElements = _game.getForm().getFormElements();

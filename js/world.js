@@ -135,7 +135,13 @@ Layer.prototype.hit = function( x, y ) {
 
 var LayerFactory = function() {};
 
-LayerFactory.prototype.createTerrainLayer = function( width, height, maxTerrainHeight, segmentCount ) {
+LayerFactory.prototype.createTerrainLayer = function( options ) {
+  var width = options.width || 0;
+  var height = options.height || 0;
+  var maxTerrainHeight = options.maxTerrainHeight || 0;
+  var segmentCount = options.segmentCount || 1;
+  var color = options.color || new Color( 0, 0, 0, 1.0 );
+
   var layer = new Layer();
 
   var segmentWidth = width / segmentCount;
@@ -154,7 +160,7 @@ LayerFactory.prototype.createTerrainLayer = function( width, height, maxTerrainH
       xPos + segmentWidth, height - points[ i + 1 ],
       xPos + segmentWidth, height
     ]);
-    tempPolygonEntity.setColor( 0, 0, 0, 1.0 );
+    tempPolygonEntity.setColor( color );
     layer.addProp( tempPolygonEntity );
 
     xPos += segmentWidth;
