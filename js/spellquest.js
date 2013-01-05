@@ -3,7 +3,10 @@ var running = true;
 var Game = function() {
   this._backgroundCanvas = document.createElement( 'canvas' );
   this._canvas = document.createElement( 'canvas' );
+
+  // Offscreen canvas for rendering the player world.
   this._worldCanvas = document.createElement( 'canvas' );
+  this._worldCanvas.style.visibility = 'hidden';
 
   document.body.appendChild( this._backgroundCanvas );
   document.body.appendChild( this._canvas );
@@ -130,6 +133,9 @@ var Game = function() {
   this._world.setHeight( 100 );
   this._world.setColor( 20, 0, 0, 0.4 );
 
+  this._worldCanvas.width = this.getWorld().getWidth();
+  this._worldCanvas.height = this.getWorld().getHeight();
+
   // var tempLayer = new Layer();
   // tempLayer.addProp( pEntity );
 
@@ -177,7 +183,11 @@ Game.prototype.update = function() {
 Game.prototype.draw = function() {
   this._ctx.clearRect( 0, 0, this.WIDTH, this.HEIGHT );
 
-  this.getWorld().draw( this._ctx );
+  this.getWorld().draw( this._worldCtx );
+  this._ctx.drawImage( this._worldCanvas,
+                       this.getWorld().getX() - this.getWorld().getHalfWidth(),
+                       this.getWorld().getY() - this.getWorld().getHalfHeight() );
+
   this.getPool().draw( this._ctx );
 };
 

@@ -25,12 +25,6 @@ World.prototype.update = function( elapsedTime ) {
 };
 
 World.prototype.draw = function( ctx ) {
-  ctx.save();
-  ctx.translate(
-    this.getX() - this.getHalfWidth(),
-    this.getY() - this.getHalfHeight()
-  );
-
   ctx.fillStyle = this.getColor().toString();
   ctx.fillRect(
     0,
@@ -42,8 +36,6 @@ World.prototype.draw = function( ctx ) {
   for ( var i = 0; i < this._layers.length; i++ ) {
     this._layers[i].draw( ctx );
   }
-
-  ctx.restore();
 };
 
 World.prototype.hit = function( x, y ) {
