@@ -14,7 +14,7 @@ World.prototype.getLayers = function() {
 World.prototype.addLayer = function( layer ) {
   this._layers.push( layer );
   this._layers.sort(function( x, y ) {
-    return x.getZIndex() - y.getZIndex();
+    return y.getZIndex() - x.getZIndex();
   });
 };
 
@@ -25,9 +25,16 @@ World.prototype.update = function( elapsedTime ) {
 };
 
 World.prototype.draw = function( ctx ) {
-  ctx.fillRect(
+  ctx.save();
+  ctx.translate(
     this.getX() - this.getHalfWidth(),
-    this.getY() - this.getHalfHeight(),
+    this.getY() - this.getHalfHeight()
+  );
+
+  ctx.fillStyle = this.getColor().toString();
+  ctx.fillRect(
+    0,
+    0,
     this.getWidth(),
     this.getHeight()
   );
@@ -35,6 +42,12 @@ World.prototype.draw = function( ctx ) {
   for ( var i = 0; i < this._layers.length; i++ ) {
     this._layers[i].draw( ctx );
   }
+
+  ctx.restore();
+};
+
+World.prototype.hit = function( x, y ) {
+
 };
 
 var Camera = function() {
@@ -70,7 +83,7 @@ Layer.prototype.getProps = function() {
   return this._props;
 };
 
-Layer.prototype.addProps = function( prop ) {
+Layer.prototype.addProp = function( prop ) {
   this._props.push( prop );
 };
 
@@ -105,4 +118,47 @@ Layer.prototype.draw = function( ctx ) {
   }
 
   ctx.restore();
+};
+
+Layer.prototype.hit = function( x, y ) {
+  x -= this.getX();
+  y -= this.getY();
+
+  for ( var i = 0; i < this._props.length; i++ ) {
+    if ( this._props[i].hit( x, y ) !== null ) {
+      return this;
+    }
+  }
+
+  return null;
+};
+
+var LayerFactory = function() {};
+
+LayerFactory.prototype.createTerrainLayer = function( width, height, maxTerrainHeight, segmentCount ) {
+  var layer = new Layer();
+
+  var segmentWidth = width / segmentCount;
+  var points = [];
+  for ( var i = 0; i < segmentCount + 1; i++ ) {
+    points.push( Math.random() * maxTerrainHeight );
+  }
+
+  var xPos = 0;
+  var tempPolygonEntity;
+  for ( i = 0; i < segmentCount; i++ ) {
+    tempPolygonEntity = new PolygonEntity();
+    tempPolygonEntity.setVertices([
+      xPos, height,
+      xPos, height - points[i],
+      xPos + segmentWidth, height - points[ i + 1 ],
+      xPos + segmentWidth, height
+    ]);
+    tempPolygonEntity.setColor( 0, 0, 0, 1.0 );
+    layer.addProp( tempPolygonEntity );
+
+    xPos += segmentWidth;
+  }
+
+  return layer;
 };

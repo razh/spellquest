@@ -250,7 +250,7 @@ PolygonEntity.prototype.setVertices = function( vertices ) {
   this._vertices = vertices;
 
   var x, y;
-  for ( var i = 0, n = this.getNumVertices(); i < n; i++ ) {
+  for ( var i = 0, n = this.getVertexCount(); i < n; i++ ) {
     x = this._vertices[ 2 * i ];
     y = this._vertices[ 2 * i + 1 ];
 
@@ -261,7 +261,7 @@ PolygonEntity.prototype.setVertices = function( vertices ) {
   }
 };
 
-PolygonEntity.prototype.getNumVertices = function() {
+PolygonEntity.prototype.getVertexCount = function() {
   return this._vertices.length / 2;
 };
 
@@ -270,7 +270,7 @@ PolygonEntity.prototype.draw = function( ctx ) {
   ctx.translate( this.getX(), this.getY() );
 
   ctx.beginPath();
-  for ( var i = 0, n = this.getNumVertices(); i < n; i++ ) {
+  for ( var i = 0, n = this.getVertexCount(); i < n; i++ ) {
     ctx.lineTo( this._vertices[ 2 * i ],
                 this._vertices[ 2 * i + 1 ] );
   }

@@ -28,7 +28,7 @@ var Game = function() {
 
   // Pool of letters the player can select form.
   this._pool = new Pool();
-  this._pool.setPosition( 100, 195 );
+  this._pool.setPosition( 100, 220 );
   this._pool.setSpacing( 90 );
   this._pool.setWidth( 70 );
   this._pool.setHeight( 70 );
@@ -53,7 +53,7 @@ var Game = function() {
 
   // Form where player inputs the word guess.
   this._form = new Form();
-  this._form.setPosition( 100, 295 );
+  this._form.setPosition( 100, 320 );
   this._form.setSpacing( 90 );
   this._form.setWidth( 75 );
   this._form.setHeight( 75 );
@@ -78,7 +78,7 @@ var Game = function() {
   this._ui = new UI();
 
   var resetButton = new ResetButton();
-  resetButton.setPosition( 100, 90 );
+  resetButton.setPosition( 100, 150 );
   resetButton.setWidth( 70 );
   resetButton.setHeight( 30 );
   resetButton.setColor( 0, 0, 0, 1.0 );
@@ -86,7 +86,7 @@ var Game = function() {
   this._ui.addButton( resetButton );
 
   var shuffleButton = new ShuffleButton();
-  shuffleButton.setPosition( 190, 90 );
+  shuffleButton.setPosition( 190, 150 );
   shuffleButton.setWidth( 70 );
   shuffleButton.setHeight( 30 );
   shuffleButton.setColor( 0, 0, 0, 1.0 );
@@ -94,7 +94,7 @@ var Game = function() {
   this._ui.addButton( shuffleButton );
 
   var submitButton = new SubmitButton();
-  submitButton.setPosition( 280, 90 );
+  submitButton.setPosition( 280, 150 );
   submitButton.setWidth( 70 );
   submitButton.setHeight( 30 );
   submitButton.setColor( 0, 0, 0, 1.0 );
@@ -102,7 +102,7 @@ var Game = function() {
   this._ui.addButton( submitButton );
 
   var backspaceButton = new BackspaceButton();
-  backspaceButton.setPosition( 370, 90 );
+  backspaceButton.setPosition( 370, 150 );
   backspaceButton.setWidth( 70 );
   backspaceButton.setHeight( 30 );
   backspaceButton.setColor( 0, 0, 0, 1.0 );
@@ -111,22 +111,27 @@ var Game = function() {
 
   var pEntity = new PolygonEntity();
   pEntity.setVertices([
-      0,
-    100,
-    100,
-    100,
-     50,
-      0
+      0, 100,
+    100, 100,
+    100,  20,
+      0,  40
   ]);
+  // pEntity.setPosition( 200, 400 );
   pEntity.setColor( 0, 0, 255, 1.0 );
   pEntity.setVelocity( 0.05, 0.001 );
 
-  this.add( pEntity );
-
   this._world = new World();
-  this._world.setPosition( 280, 80 );
+  this._world.setPosition( 280, 70 );
   this._world.setWidth( 430 );
   this._world.setHeight( 100 );
+  this._world.setColor( 20, 0, 0, 0.4 );
+
+  // var tempLayer = new Layer();
+  // tempLayer.addProp( pEntity );
+
+  // this._world.addLayer( tempLayer );
+  var layerFactory = new LayerFactory();
+  this._world.addLayer( layerFactory.createTerrainLayer( 430, 100, 50, 43 ) );
 
   this.drawBackground( this._backgroundCtx );
 };
