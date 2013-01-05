@@ -109,8 +109,8 @@ Entity.prototype.setColor = function() {
 };
 
 Entity.prototype.update = function( elapsedTime ) {
-  this.setVelocityX( this.getVelocityX() * 0.95 );
-  this.setVelocityY( this.getVelocityY() * 0.95 );
+  // this.setVelocityX( this.getVelocityX() * 0.95 );
+  // this.setVelocityY( this.getVelocityY() * 0.95 );
 
   if ( Math.abs( this.getVelocityX() ) < _game.EPSILON ) {
     this.setVelocityX( 0 );
