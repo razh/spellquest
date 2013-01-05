@@ -26,12 +26,22 @@ World.prototype.update = function( elapsedTime ) {
 var Layer = function() {
   Entity.call( this );
 
+  this._props = [];
+
   this._zIndex = 0;
   this._parallaxFactor = 1.0;
 };
 
 Layer.prototype = new Entity();
 Layer.prototype.constructor = Layer;
+
+Layer.prototype.getProps = function() {
+  return this._props;
+};
+
+Layer.prototype.addProps = function( prop ) {
+  this._props.push( prop );
+};
 
 Layer.prototype.getZIndex = function() {
   return this._zIndex;
@@ -53,11 +63,8 @@ Layer.prototype.update = function( elapsedTime ) {
   Entity.prototype.call( this );
 };
 
-Layer.prototype.draw = function( ctx ) {};
-
-var SimpleLayer = function() {
-  Layer.call( this );
+Layer.prototype.draw = function( ctx ) {
+  for ( var i = 0; i < this._props.length; i++ ) {
+    this._props[i].draw( ctx );
+  }
 };
-
-SimpleLayer.prototype = new Layer();
-SimpleLayer.prototype.constructor = SimpleLayer;

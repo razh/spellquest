@@ -159,6 +159,47 @@ Entity.prototype.isHit = function( x, y ) {
          Math.abs( y - this.getY() ) <= this.getHalfHeight();
 };
 
+
+// PolygonEntity ---------------------------------------------------------------
+var PolygonEntity = function() {
+  Entity.call( this );
+
+  this._vertices = [];
+};
+
+PolygonEntity.prototype = new Entity();
+PolygonEntity.prototype.constructor = PolygonEntity;
+
+PolygonEntity.prototype.getVertices = function() {
+  return this._vertices;
+};
+
+PolygonEntity.prototype.setVertices = function( vertices ) {
+  this._vertices = vertices;
+};
+
+PolygonEntity.prototype.draw = function( ctx ) {
+  ctx.save();
+
+  ctx.translate( this.getX(), this.getY() );
+
+  ctx.beginPath();
+  for ( var i = 0; i < this._vertices.length; i++ ) {
+    ctx.lineTo( this._vertices[i].x, this._vertices[i].y );
+  }
+  ctx.closePath();
+
+  ctx.fillStyle = this.getColor().toString();
+  ctx.fill();
+
+  ctx.restore();
+};
+
+// SpriteEntity ----------------------------------------------------------------
+var SpriteEntity = function() {
+
+};
+
 var Color = function() {
   this._red = 0;
   this._green = 0;
