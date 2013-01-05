@@ -1,13 +1,17 @@
 var running = true;
 
 var Game = function() {
-  $( 'body' ).append( '<canvas id="spellquest"></canvas>' );
-  $( 'body' ).append( '<canvas id="spellquest-background"></canvas>' );
-  this._canvas = document.getElementById( 'spellquest' );
-  this._ctx = this._canvas.getContext( '2d' );
+  this._backgroundCanvas = document.createElement( 'canvas' );
+  this._canvas = document.createElement( 'canvas' );
+  this._worldCanvas = document.createElement( 'canvas' );
 
-  this._backgroundCanvas = document.getElementById( 'spellquest-background' );
+  document.body.appendChild( this._backgroundCanvas );
+  document.body.appendChild( this._canvas );
+  document.body.appendChild( this._worldCanvas );
+
   this._backgroundCtx = this._backgroundCanvas.getContext( '2d' );
+  this._ctx = this._canvas.getContext( '2d' );
+  this._worldCtx = this._worldCanvas.getContext( '2d' );
 
   this.WIDTH = window.innerWidth;
   this.HEIGHT = window.innerHeight;
