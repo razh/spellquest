@@ -147,14 +147,14 @@ Entity.prototype.draw = function( ctx ) {
 };
 
 Entity.prototype.hit = function( x, y ) {
-  if ( this.isHit( x, y ) ) {
+  if ( this.contains( x, y ) ) {
     return this;
   }
 
   return null;
 };
 
-Entity.prototype.isHit = function( x, y ) {
+Entity.prototype.contains = function( x, y ) {
   return Math.abs( x - this.getX() ) <= this.getHalfWidth() &&
          Math.abs( y - this.getY() ) <= this.getHalfHeight();
 };
@@ -232,6 +232,11 @@ var PolygonEntity = function() {
   Entity.call( this );
 
   this._vertices = [];
+
+  this._xmin = Number.MAX_VALUE;
+  this._ymin = Number.MAX_VALUE;
+  this._xmax = Number.MIN_VALUE;
+  this._ymax = Number.MIN_VALUE;
 };
 
 PolygonEntity.prototype = new Entity();
@@ -243,6 +248,17 @@ PolygonEntity.prototype.getVertices = function() {
 
 PolygonEntity.prototype.setVertices = function( vertices ) {
   this._vertices = vertices;
+
+  var x, y;
+  for ( var i = 0, n = this.getNumVertices(); i < n; i++ ) {
+    x = this._vertices[ 2 * i ];
+    y = this._vertices[ 2 * i + 1 ];
+
+    this._xmin = Math.min( x, this._xmin );
+    this._ymin = Math.min( y, this._ymin );
+    this._xmax = Math.max( x, this._xmax );
+    this._ymax = Math.max( y, this._ymax );
+  }
 };
 
 PolygonEntity.prototype.getNumVertices = function() {
@@ -266,8 +282,31 @@ PolygonEntity.prototype.draw = function( ctx ) {
   ctx.restore();
 };
 
-PolygonEntity.prototype.hit = function( x, y ) {
-  return null;
+PolygonEntity.prototype.contains = function( x, y ) {
+  x -= this.getX();
+  y -= this.getY();
+
+  if ( this._xmin > x || x > this._xmax ||
+       this._ymin > y || y > this._ymax ) {
+    return false;
+  }
+
+  var numVertices = this.getNumVertices();
+  var contains = false;
+  var xi, yi, xj, yj;
+  for ( var i = 0, j = numVertices - 1; i < numVertices; j = i++ ) {
+    xi = this._vertices[ 2 * i ];
+    yi = this._vertices[ 2 * i + 1 ];
+    xj = this._vertices[ 2 * j ];
+    yj = this._vertices[ 2 * j + 1 ];
+
+    if ( ( ( yi > y ) !== ( yj > y ) ) &&
+         ( x < ( xj - xi ) * ( y - yi ) / ( yj - yi ) + xi ) ) {
+      contains = !contains;
+    }
+  }
+
+  return contains;
 };
 
 // SpriteEntity ----------------------------------------------------------------

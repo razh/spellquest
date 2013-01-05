@@ -69,7 +69,7 @@ Button.prototype.setFontSize = function( fontSize ) {
 };
 
 Button.prototype.click = function( x, y ) {
-  if ( this.isHit( x, y ) ) {
+  if ( this.contains( x, y ) ) {
     for ( var i = 0; i < this._onClick.length; i++ ) {
       this._onClick[i].call( this, x, y );
     }
