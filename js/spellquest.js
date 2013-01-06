@@ -131,7 +131,7 @@ var Game = function() {
   this._world.setPosition( 290, 70 );
   this._world.setWidth( 450 );
   this._world.setHeight( 100 );
-  // this._world.setColor( 20, 0, 0, 0.0 );
+  this._world.setColor( 20, 0, 0, 0.1 );
 
   this._worldCanvas.width = this.getWorld().getWidth();
   this._worldCanvas.height = this.getWorld().getHeight();
@@ -143,29 +143,31 @@ var Game = function() {
   var layerFactory = new LayerFactory();
   this._world.addLayer(layerFactory.createTerrainLayer({
     color: new Color( 255, 0, 0, 1.0 ),
-    width: 2000,
+    width: 4000,
     height: 100,
     maxTerrainHeight: 50,
-    segmentCount: 20,
+    segmentCount: 40,
     zIndex: 1,
     parallaxFactor: 1.0
   }));
   this._world.addLayer(layerFactory.createTerrainLayer({
     color: new Color( 0, 0, 255, 1.0 ),
-    width: 2000,
+    width: 4000,
     height: 100,
     maxTerrainHeight: 90,
-    segmentCount: 20,
+    segmentCount: 40,
     zIndex: 0,
     parallaxFactor: 0.5
   }));
 
-  var player = new Entity();
-  player.setWidth( 10 );
-  player.setHeight( 20 );
-  player.setPosition( 30, 90 );
-  player.setColor( 255, 255, 255, 1.0 );
-  this._world.setPlayer( player );
+  var playerEntity = new Entity();
+  playerEntity.setWidth( 10 );
+  playerEntity.setHeight( 20 );
+  playerEntity.setPosition( 30, 90 );
+  playerEntity.setColor( 255, 255, 255, 1.0 );
+  this._world.setPlayerEntity( playerEntity );
+
+  this._player = new Player();
 
   this.drawBackground( this._backgroundCtx );
 };
@@ -190,7 +192,6 @@ Game.prototype.update = function() {
 Game.prototype.draw = function() {
   this._ctx.clearRect( 0, 0, this.WIDTH, this.HEIGHT );
 
-  this._worldCtx.clearRect( 0, 0, this.getWorld().getWidth(), this.getWorld().getHeight() );
   this.getWorld().draw( this._worldCtx );
   this._ctx.drawImage( this._worldCanvas,
                        this.getWorld().getX() - this.getWorld().getHalfWidth(),
@@ -213,7 +214,7 @@ Game.prototype.drawBackground = function( ctx ) {
   this.getList().draw( ctx );
   this.getUI().draw( ctx );
   // this.getWorld().draw( ctx );
-}
+};
 
 Game.prototype.getPool = function() {
   return this._pool;
@@ -233,7 +234,11 @@ Game.prototype.getUI = function() {
 
 Game.prototype.getWorld = function() {
   return this._world;
-}
+};
+
+Game.prototype.getPlayer = function() {
+  return this._player;
+};
 
 Game.prototype.reset = function() {
   this.getPool().clear();
@@ -260,7 +265,6 @@ Game.prototype.reset = function() {
   this.drawBackground( this._backgroundCtx );
 };
 
-var selected = null;
 // Keep track of last three positions.
 var lastPositions = [];
 
@@ -300,13 +304,14 @@ function inputDown( input ) {
   // console.log( 'down' );
   // _game._backgroundCtx.fillRect( input.x, input.y, 5, 5 );
 
-  selected = _game.hit( input.x, input.y );
+  _game.getPlayer().setSelected( _game.hit( input.x, input.y ) );
 
+  var selected = _game.getPlayer().getSelected();
   if ( selected !== null ) {
     // selected.setPosition( input.x, input.y );
     selected.setVelocity( 0, 0 );
   } else {
-    _game.getUI().click( input.x, input.y );
+    // _game.getUI().click( input.x, input.y );
   }
 }
 
@@ -319,6 +324,7 @@ function inputMove( input ) {
   lastPositions.push( input );
   // console.log( input.x + ", " + input.y );
 
+  var selected = _game.getPlayer().getSelected();
   if ( selected !== null ) {
     // selected.setPosition( input.x, input.y );
   }
@@ -326,6 +332,7 @@ function inputMove( input ) {
 
 function inputUp( input ) {
   // console.log( 'up' );
+  var selected = _game.getPlayer().getSelected();
   if ( selected !== null ) {
     // var dx = lastPositions[1].x - lastPositions[0].x,
     //     dy = lastPositions[1].y - lastPositions[0].y;
@@ -350,7 +357,7 @@ function inputUp( input ) {
     // console.log( lastPositions );
     // console.log( dx + ", " + dy );
     // console.log( selected.getVelocity() );
-    selected = null;
+    _game.getPlayer().setSelected( null );
   }
 }
 

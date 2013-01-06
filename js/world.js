@@ -1,8 +1,11 @@
 var World = function() {
   Entity.call( this );
 
-  this._player = null;
+  this._playerEntity = null;
+  this._enemies = [];
+
   this._layers = [];
+  this._scrollSpeed = -0.1;
 };
 
 World.prototype = new Entity();
@@ -19,38 +22,42 @@ World.prototype.addLayer = function( layer ) {
   });
 };
 
-World.prototype.getPlayer = function() {
-  return this._player;
+World.prototype.getPlayerEntity = function() {
+  return this._playerEntity;
 };
 
-World.prototype.setPlayer = function( player ) {
-  this._player = player;
+World.prototype.setPlayerEntity = function( playerEntity ) {
+  this._playerEntity = playerEntity;
+};
+
+World.prototype.getScrollSpeed = function() {
+  return this._scrollSpeed;
+};
+
+World.prototype.setScrollSpeed = function( scrollSpeed ) {
+  return this._scrollSpeed;
 };
 
 World.prototype.update = function( elapsedTime ) {
   for ( var i = 0; i < this._layers.length; i++ ) {
-    this._layers[i].update( elapsedTime, elapsedTime * -0.02 );
+    this._layers[i].update( elapsedTime, elapsedTime * this.getScrollSpeed() );
   }
 };
 
 World.prototype.draw = function( ctx ) {
+  ctx.clearRect( 0, 0, this.getWidth(), this.getHeight() );
+
   ctx.fillStyle = this.getColor().toString();
-  ctx.fillRect(
-    0,
-    0,
-    this.getWidth(),
-    this.getHeight()
-  );
+  ctx.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 
   for ( var i = 0; i < this._layers.length; i++ ) {
     this._layers[i].draw( ctx );
   }
 
-  this._player.draw( ctx );
+  this.getPlayerEntity().draw( ctx );
 };
 
 World.prototype.hit = function( x, y ) {
-
 };
 
 var Camera = function() {
