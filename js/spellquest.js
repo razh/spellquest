@@ -84,7 +84,10 @@ var Game = function() {
 
   this._ui = new UI();
 
+  var buttonFactory = new ButtonFactory();
+
   var resetButton = new ResetButton();
+  // var resetButton = buttonFactory.createButton( ButtonType.RESET );
   resetButton.setPosition( 100, 150 );
   resetButton.setWidth( 70 );
   resetButton.setHeight( 30 );
@@ -93,6 +96,7 @@ var Game = function() {
   this._ui.addButton( resetButton );
 
   var shuffleButton = new ShuffleButton();
+  // var shuffleButton = buttonFactory.createButton( ButtonType.SHUFFLE );
   shuffleButton.setPosition( 195, 150 );
   shuffleButton.setWidth( 70 );
   shuffleButton.setHeight( 30 );
@@ -101,6 +105,7 @@ var Game = function() {
   this._ui.addButton( shuffleButton );
 
   var submitButton = new SubmitButton();
+  // var submitButton = buttonFactory.createButton( ButtonType.SUBMIT );
   submitButton.setPosition( 290, 150 );
   submitButton.setWidth( 70 );
   submitButton.setHeight( 30 );
@@ -109,6 +114,7 @@ var Game = function() {
   this._ui.addButton( submitButton );
 
   var backspaceButton = new BackspaceButton();
+  // var backspaceButton = buttonFactory.createButton( ButtonType.BACKSPACE );
   backspaceButton.setPosition( 385, 150 );
   backspaceButton.setWidth( 70 );
   backspaceButton.setHeight( 30 );
@@ -142,6 +148,7 @@ var Game = function() {
   // this._world.addLayer( tempLayer );
   var layerFactory = new LayerFactory();
   this._world.addLayer(layerFactory.createTerrainLayer({
+    type: LayerType.CIRCULAR,
     color: new Color( 255, 0, 0, 1.0 ),
     width: 4000,
     height: 100,
@@ -151,8 +158,9 @@ var Game = function() {
     parallaxFactor: 1.0
   }));
   this._world.addLayer(layerFactory.createTerrainLayer({
+    type: LayerType.CIRCULAR,
     color: new Color( 0, 0, 255, 1.0 ),
-    width: 4000,
+    width: 2000,
     height: 100,
     maxTerrainHeight: 90,
     segmentCount: 40,
@@ -311,7 +319,7 @@ function inputDown( input ) {
     // selected.setPosition( input.x, input.y );
     selected.setVelocity( 0, 0 );
   } else {
-    // _game.getUI().click( input.x, input.y );
+    _game.getUI().click( input.x, input.y );
   }
 }
 

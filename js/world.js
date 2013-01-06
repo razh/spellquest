@@ -176,21 +176,45 @@ CircularLayer.prototype.update = function( elapsedTime, dx ) {
   }
 };
 
+var LayerType = {
+  DEFAULT: 0,
+  CIRCULAR: 1
+};
+
 var LayerFactory = function() {};
 
-LayerFactory.prototype.createTerrainLayer = function( options ) {
-  var width  = options.width  || 0;
-  var height = options.height || 0;
-  var color  = options.color  || new Color( 0, 0, 0, 1.0 );
-  var maxTerrainHeight = options.maxTerrainHeight || 0;
-  var segmentCount = options.segmentCount || 1;
+LayerFactory.prototype.createLayer = function( options ) {
+  var type = options.type || LayerType.DEFAULT;
 
-  var layer = new CircularLayer();
-  layer.setWidth( width );
-  layer.setHeight( height );
+  var layer = null;
+  switch ( type ) {
+    case LayerType.DEFAULT:
+      layer = new Layer();
+      break;
+
+    case LayerType.CIRCULAR:
+      layer = new CircularLayer();
+      break;
+  }
+
+  layer.setWidth( options.width  || 0 );
+  layer.setHeight( options.height || 0 );
+  layer.setColor( options.color  || new Color( 0, 0, 0, 1.0 ) );
   layer.setZIndex( options.zIndex || 0 );
   layer.setParallaxFactor( options.parallaxFactor || 1.0 );
 
+  return layer;
+};
+
+LayerFactory.prototype.createTerrainLayer = function( options ) {
+  var layer = this.createLayer( options );
+
+  var width = layer.getWidth();
+  var height = layer.getHeight();
+  var color = layer.getColor();
+
+  var maxTerrainHeight = options.maxTerrainHeight || 0;
+  var segmentCount = options.segmentCount || 1;
   var segmentWidth = width / segmentCount;
   var points = [];
   // Loops back to the first point, so we don't need extra vertex at end.

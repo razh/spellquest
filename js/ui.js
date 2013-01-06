@@ -91,9 +91,7 @@ Button.prototype.draw = function( ctx ) {
   ctx.fillText( this.getText(), this.getX(), this.getY() );
 };
 
-var ButtonFactory = function() {
-  this._buttonClass = Button;
-};
+var ButtonFactory = function() {};
 
 var ButtonType = {
   DEFAULT: 0,
@@ -104,35 +102,55 @@ var ButtonType = {
 };
 
 ButtonFactory.prototype.createButton = function( buttonType ) {
+  var button = new Button();
+
   switch ( buttonType ) {
     case ButtonType.DEFAULT:
-      this.setButtonClass( Button );
       break;
+
     case ButtonType.SUBMIT:
-      this.setButtonClass( SubmitButton );
+      button.addOnClick(function() {
+        var word = _game.getForm().getWord().toLowerCase();
+        if ( _game.getList().isWord( word ) ) {
+          _game.getList().markWord( _game._backgroundCtx, word );
+        }
+        _game.getPool().reset();
+      });
+
+      button.setText( 'submit' );
       break;
+
     case ButtonType.RESET:
-      this.setButtonClass( ResetButton );
+    console.log( "RESET" );
+      button.addOnClick(function() {
+        _game.reset();
+      });
+
+      button.setText( 'reset' );
       break;
+
     case ButtonType.SHUFFLE:
-      this.setButtonClass( ShuffleButton );
+      button.addOnClick(function() {
+        _game.getPool().shuffle();
+      });
+
+      button.setText( 'shuffle' );
       break;
+
     case ButtonType.BACKSPACE:
-      this.setButtonClass( BackspaceButton );
+      button.addOnClick(function() {
+        var form = _game.getForm();
+        if ( form.getWord().length !== 0 ) {
+          _game.getPool().pushLetter( form.getLastLetter() );
+        }
+      });
+
+      button.setText( '\u2190' );
       break;
   }
 
-  return new this.getButtonClass();
+  return button;
 };
-
-ButtonFactory.prototype.getButtonClass = function() {
-  return this._buttonClass;
-};
-
-ButtonFactory.prototype.setButtonClass = function( buttonClass ) {
-  this._buttonClass = buttonClass;
-};
-
 
 // Gets new word.
 var ResetButton = function() {
