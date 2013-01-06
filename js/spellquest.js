@@ -33,15 +33,128 @@ var Game = function() {
 
   this.EPSILON = 1e-20;
 
+  var cx = this.WIDTH / 2;
+  var cy = this.HEIGHT / 2;
+
+  var px = this.WIDTH / 100;
+  var py = this.HEIGHT / 100;
+  console.log( px, py );
+
+  var pEntity = new PolygonEntity();
+  pEntity.setVertices([
+      0, 100,
+    100, 100,
+    100,  20,
+      0,  40
+  ]);
+  // pEntity.setPosition( 200, 400 );
+  pEntity.setColor( 0, 0, 255, 1.0 );
+  pEntity.setVelocity( 0.05, 0.001 );
+
+  this._world = new World();
+  this._world.setWidth( 80 * px );
+  this._world.setHeight( 10 * px );
+  this._world.setPosition( cx, 5 * py + this._world.getHeight() / 2 );
+  this._world.setColor( 20, 0, 0, 0.1 );
+
+  this._worldCanvas.width = this.getWorld().getWidth();
+  this._worldCanvas.height = this.getWorld().getHeight();
+
+  // var tempLayer = new Layer();
+  // tempLayer.addProp( pEntity );
+
+  // this._world.addLayer( tempLayer );
+  var layerFactory = new LayerFactory();
+  this._world.addLayer(layerFactory.createTerrainLayer({
+    type: LayerType.CIRCULAR,
+    color: new Color( 255, 0, 0, 1.0 ),
+    width: 40 * this._world.getWidth(),
+    height: this._world.getHeight(),
+    maxTerrainHeight: 0.5 * this._world.getHeight(),
+    segmentCount: 40,
+    zIndex: 1,
+    parallaxFactor: 1.0
+  }));
+  this._world.addLayer(layerFactory.createTerrainLayer({
+    type: LayerType.CIRCULAR,
+    color: new Color( 0, 0, 255, 1.0 ),
+    width: 20 * this._world.getHeight(),
+    height: this._world.getHeight(),
+    maxTerrainHeight: 0.9 * this._world.getHeight(),
+    segmentCount: 40,
+    zIndex: 0,
+    parallaxFactor: 0.5
+  }));
+
+  var playerEntity = new SpriteEntity();
+  // playerEntity.setWidth( 10 );
+  // playerEntity.setHeight( 20 );
+  playerEntity.setColor( 255, 255, 255, 1.0 );
+  this._world.setPlayerEntity( playerEntity );
+
+  var spriteEntity = new SpriteEntity();
+  var image = new Image();
+  image.onload = function() {
+    playerEntity.setSprite( this );
+    playerEntity.setPosition( 30, _game.getWorld().getHeight() - playerEntity.getHeight() );
+  }
+  image.src = './img/test.png';
+
+  this._ui = new UI();
+
+  var buttonFactory = new ButtonFactory();
+
+  var buttonX = cx - this._world.getHalfWidth()
+  var buttonY = this._world.getY() + this._world.getHalfHeight();
+  var resetButton = new ResetButton();
+  // var resetButton = buttonFactory.createButton( ButtonType.RESET );
+  resetButton.setWidth( 15 * px );
+  resetButton.setHeight( 0.4 * resetButton.getWidth() );
+  resetButton.setPosition( buttonX + resetButton.getHalfWidth(), buttonY + 5 * py );
+  resetButton.setColor( 0, 0, 0, 1.0 );
+  resetButton.setTextColor( 255, 255, 255, 1.0 );
+  resetButton.setFontSize( 2 * px );
+  this._ui.addButton( resetButton );
+
+  var shuffleButton = new ShuffleButton();
+  // var shuffleButton = buttonFactory.createButton( ButtonType.SHUFFLE );
+  shuffleButton.setWidth( 15 * px );
+  shuffleButton.setHeight( 0.4 * shuffleButton.getWidth() );
+  shuffleButton.setPosition( 195, buttonY + 5 * py );
+  shuffleButton.setColor( 0, 0, 0, 1.0 );
+  shuffleButton.setTextColor( 255, 255, 255, 1.0 );
+  shuffleButton.setFontSize( 2 * px );
+  this._ui.addButton( shuffleButton );
+
+  var submitButton = new SubmitButton();
+  // var submitButton = buttonFactory.createButton( ButtonType.SUBMIT );
+  submitButton.setPosition( 290, buttonY + 5 * py );
+  submitButton.setWidth( 15 * px );
+  submitButton.setHeight( 0.4 * submitButton.getWidth() );
+  submitButton.setColor( 0, 0, 0, 1.0 );
+  submitButton.setTextColor( 255, 255, 255, 1.0 );
+  submitButton.setFontSize( 2 * px );
+  this._ui.addButton( submitButton );
+
+  var backspaceButton = new BackspaceButton();
+  // var backspaceButton = buttonFactory.createButton( ButtonType.BACKSPACE );
+  backspaceButton.setPosition( 385, buttonY + 5 * py );
+  backspaceButton.setWidth( 15 * px );
+  backspaceButton.setHeight( 0.4 * backspaceButton.getWidth() );
+  backspaceButton.setColor( 0, 0, 0, 1.0 );
+  backspaceButton.setTextColor( 255, 255, 255, 1.0 );
+  backspaceButton.setFontSize( 2 * px );
+  this._ui.addButton( backspaceButton );
+
   // Pool of letters the player can select form.
   this._pool = new Pool();
-  this._pool.setPosition( 100, 220 );
-  this._pool.setSpacing( 95 );
-  this._pool.setWidth( 70 );
-  this._pool.setHeight( 70 );
+  this._pool.setPosition( 10 * px, 36 * py );
+  this._pool.setSpacing( 10 * px );
+  this._pool.setWidth( 8 * px );
+  this._pool.setHeight( 8 * px );
   this._pool.setColor( 240, 63, 53, 1.0 );
   this._pool.setTextColor( 255, 255, 255, 1.0 );
-  this._pool.setFontSize( 24 );
+  this._pool.setFontSize( 2.5 * px );
 
   this._dict = new Dictionary();
   var word = this._dict.getRandomWord();
@@ -60,12 +173,12 @@ var Game = function() {
 
   // Form where player inputs the word guess.
   this._form = new Form();
-  this._form.setPosition( 100, 320 );
-  this._form.setSpacing( 95 );
-  this._form.setWidth( 75 );
-  this._form.setHeight( 75 );
-  this._form.setColor( 100, 100, 100, 1.0 );
   this._form.setLineWidth( 5 );
+  this._form.setSpacing( 10 * px );
+  this._form.setWidth( 8 * px  + this._form.getLineWidth() );
+  this._form.setHeight( 8 * px + this._form.getLineWidth() );
+  this._form.setPosition( 10 * px, 36 * py + this._form.getHeight() + 5 * py );
+  this._form.setColor( 100, 100, 100, 1.0 );
   this._form.createFormElements( letters.length );
 
   // List displaying all correctly spelled words.
@@ -81,106 +194,6 @@ var Game = function() {
   this._list.setPadding( 100 );
   this._list.setMaxHeight( this.HEIGHT );
   this._list.setWords( this._subWords );
-
-  this._ui = new UI();
-
-  var buttonFactory = new ButtonFactory();
-
-  var resetButton = new ResetButton();
-  // var resetButton = buttonFactory.createButton( ButtonType.RESET );
-  resetButton.setPosition( 100, 150 );
-  resetButton.setWidth( 70 );
-  resetButton.setHeight( 30 );
-  resetButton.setColor( 0, 0, 0, 1.0 );
-  resetButton.setTextColor( 255, 255, 255, 1.0 );
-  this._ui.addButton( resetButton );
-
-  var shuffleButton = new ShuffleButton();
-  // var shuffleButton = buttonFactory.createButton( ButtonType.SHUFFLE );
-  shuffleButton.setPosition( 195, 150 );
-  shuffleButton.setWidth( 70 );
-  shuffleButton.setHeight( 30 );
-  shuffleButton.setColor( 0, 0, 0, 1.0 );
-  shuffleButton.setTextColor( 255, 255, 255, 1.0 );
-  this._ui.addButton( shuffleButton );
-
-  var submitButton = new SubmitButton();
-  // var submitButton = buttonFactory.createButton( ButtonType.SUBMIT );
-  submitButton.setPosition( 290, 150 );
-  submitButton.setWidth( 70 );
-  submitButton.setHeight( 30 );
-  submitButton.setColor( 0, 0, 0, 1.0 );
-  submitButton.setTextColor( 255, 255, 255, 1.0 );
-  this._ui.addButton( submitButton );
-
-  var backspaceButton = new BackspaceButton();
-  // var backspaceButton = buttonFactory.createButton( ButtonType.BACKSPACE );
-  backspaceButton.setPosition( 385, 150 );
-  backspaceButton.setWidth( 70 );
-  backspaceButton.setHeight( 30 );
-  backspaceButton.setColor( 0, 0, 0, 1.0 );
-  backspaceButton.setTextColor( 255, 255, 255, 1.0 );
-  this._ui.addButton( backspaceButton );
-
-  var pEntity = new PolygonEntity();
-  pEntity.setVertices([
-      0, 100,
-    100, 100,
-    100,  20,
-      0,  40
-  ]);
-  // pEntity.setPosition( 200, 400 );
-  pEntity.setColor( 0, 0, 255, 1.0 );
-  pEntity.setVelocity( 0.05, 0.001 );
-
-  this._world = new World();
-  this._world.setPosition( 290, 70 );
-  this._world.setWidth( 450 );
-  this._world.setHeight( 100 );
-  this._world.setColor( 20, 0, 0, 0.1 );
-
-  this._worldCanvas.width = this.getWorld().getWidth();
-  this._worldCanvas.height = this.getWorld().getHeight();
-
-  // var tempLayer = new Layer();
-  // tempLayer.addProp( pEntity );
-
-  // this._world.addLayer( tempLayer );
-  var layerFactory = new LayerFactory();
-  this._world.addLayer(layerFactory.createTerrainLayer({
-    type: LayerType.CIRCULAR,
-    color: new Color( 255, 0, 0, 1.0 ),
-    width: 2000,
-    height: 100,
-    maxTerrainHeight: 50,
-    segmentCount: 40,
-    zIndex: 1,
-    parallaxFactor: 1.0
-  }));
-  this._world.addLayer(layerFactory.createTerrainLayer({
-    type: LayerType.CIRCULAR,
-    color: new Color( 0, 0, 255, 1.0 ),
-    width: 4000,
-    height: 100,
-    maxTerrainHeight: 90,
-    segmentCount: 40,
-    zIndex: 0,
-    parallaxFactor: 0.5
-  }));
-
-  var playerEntity = new SpriteEntity();
-  // playerEntity.setWidth( 10 );
-  // playerEntity.setHeight( 20 );
-  playerEntity.setColor( 255, 255, 255, 1.0 );
-  this._world.setPlayerEntity( playerEntity );
-
-  var spriteEntity = new SpriteEntity();
-  var image = new Image();
-  image.onload = function() {
-    playerEntity.setSprite( this );
-    playerEntity.setPosition( 30, 100 - playerEntity.getHeight() );
-  }
-  image.src = './img/test.png';
 
   this._player = new Player();
 
