@@ -46,6 +46,49 @@ Entity.prototype.setPosition = function() {
   }
 };
 
+Entity.prototype.getLeft = function() {
+  return this.getX() - this.getHalfWidth();
+};
+
+Entity.prototype.setLeft = function( left ) {
+  this.setX( left + this.getHalfWidth() );
+};
+
+Entity.prototype.getTop = function( top ) {
+  return this.getY() - this.getHalfHeight();
+};
+
+Entity.prototype.setTop = function( top ) {
+  this.setY( top + this.getHalfHeight() );
+};
+
+Entity.prototype.getRight = function() {
+  return this.getX() + this.getHalfWidth();
+};
+
+Entity.prototype.setRight = function( right ) {
+  this.setX( right - this.getHalfWidth() );
+};
+
+Entity.prototype.getBottom = function() {
+  return this.getY() + this.getHalfHeight();
+};
+
+Entity.prototype.setBottom = function( bottom ) {
+  this.setY( bottom - this.getHalfHeight() );
+};
+
+Entity.prototype.setTopLeft = function() {
+  if ( arguments.length === 1 ) {
+    this.setLeft( arguments[0].x );
+    this.setTop( arguments[0].y );
+  }
+  else if ( arguments.length === 2 ) {
+    this.setLeft( arguments[0] );
+    this.setTop( arguments[1] );
+  }
+};
+
 Entity.prototype.getVelocityX = function() {
   return this._velocity.x;
 };

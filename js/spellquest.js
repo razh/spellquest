@@ -108,13 +108,13 @@ var Game = function() {
 
   var buttonWidth = 0.2 * this._world.getWidth();
   var buttonHeight = 0.5 * this._world.getHeight();
-  var buttonX = cx - this._world.getHalfWidth()
-  var buttonY = this._world.getY() + this._world.getHalfHeight() + buttonHeight / 2 + padding;
+  var buttonX = this._world.getLeft()
+  var buttonY = this._world.getBottom() + padding;
   var resetButton = new ResetButton();
   // var resetButton = buttonFactory.createButton( ButtonType.RESET );
   resetButton.setWidth( buttonWidth );
   resetButton.setHeight( buttonHeight );
-  resetButton.setPosition( buttonX + resetButton.getHalfWidth(), buttonY );
+  resetButton.setTopLeft( buttonX, buttonY );
   resetButton.setColor( 0, 0, 0, 1.0 );
   resetButton.setTextColor( 255, 255, 255, 1.0 );
   resetButton.setFontSize( 1.75 * px );
@@ -124,7 +124,7 @@ var Game = function() {
   // var shuffleButton = buttonFactory.createButton( ButtonType.SHUFFLE );
   shuffleButton.setWidth( buttonWidth );
   shuffleButton.setHeight( buttonHeight );
-  shuffleButton.setPosition( buttonX + 1.33 * buttonWidth + shuffleButton.getHalfWidth(), buttonY );
+  shuffleButton.setTopLeft( buttonX + 1.33 * buttonWidth, buttonY );
   shuffleButton.setColor( 0, 0, 0, 1.0 );
   shuffleButton.setTextColor( 255, 255, 255, 1.0 );
   shuffleButton.setFontSize( 1.75 * px );
@@ -134,7 +134,7 @@ var Game = function() {
   // var submitButton = buttonFactory.createButton( ButtonType.SUBMIT );
   submitButton.setWidth( buttonWidth );
   submitButton.setHeight( buttonHeight );
-  submitButton.setPosition( buttonX + 2.66 * buttonWidth + submitButton.getHalfWidth(), buttonY );
+  submitButton.setTopLeft( buttonX + 2.66 * buttonWidth, buttonY );
   submitButton.setColor( 0, 0, 0, 1.0 );
   submitButton.setTextColor( 255, 255, 255, 1.0 );
   submitButton.setFontSize( 1.75 * px );
@@ -144,7 +144,7 @@ var Game = function() {
   // var backspaceButton = buttonFactory.createButton( ButtonType.BACKSPACE );
   backspaceButton.setWidth( buttonWidth );
   backspaceButton.setHeight( buttonHeight );
-  backspaceButton.setPosition( buttonX + 4 * buttonWidth + backspaceButton.getHalfWidth(), buttonY );
+  backspaceButton.setTopLeft( buttonX + 4 * buttonWidth, buttonY );
   backspaceButton.setColor( 0, 0, 0, 1.0 );
   backspaceButton.setTextColor( 255, 255, 255, 1.0 );
   backspaceButton.setFontSize( 1.75 * px );
@@ -155,7 +155,7 @@ var Game = function() {
   this._pool.setSpacing( 12 * px );
   this._pool.setWidth( 8 * px );
   this._pool.setHeight( 8 * px );
-  this._pool.setPosition( buttonX + this._pool.getHalfWidth(), buttonY + 0.5 * buttonHeight + padding + this._pool.getHalfHeight() );
+  this._pool.setTopLeft( buttonX, resetButton.getBottom() + padding );
   this._pool.setColor( 240, 63, 53, 1.0 );
   this._pool.setTextColor( 255, 255, 255, 1.0 );
   this._pool.setFontSize( 2.5 * px );
@@ -181,13 +181,13 @@ var Game = function() {
   this._form.setSpacing( 12 * px );
   this._form.setWidth( 8 * px  + this._form.getLineWidth() );
   this._form.setHeight( 8 * px + this._form.getLineWidth() );
-  this._form.setPosition( buttonX + this._pool.getHalfWidth(), this._pool.getY() + this._pool.getHalfHeight() + padding + this._form.getHalfHeight() );
+  this._form.setTopLeft( buttonX, this._pool.getBottom() + this._form.getLineWidth() + padding );
   this._form.setColor( 100, 100, 100, 1.0 );
   this._form.createFormElements( letters.length );
 
   // List displaying all correctly spelled words.
   this._list = new List();
-  this._list.setPosition( buttonX, this._form.getY() + this._form.getHalfHeight() + padding );
+  this._list.setTopLeft( buttonX, this._form.getBottom() + this._form.getLineWidth() + padding );
   this._list.setWidth( 20 );
   this._list.setHeight( 20 );
   this._list.setColor( 0, 55, 55, 1.0 );
