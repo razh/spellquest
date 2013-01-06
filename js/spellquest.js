@@ -150,7 +150,7 @@ var Game = function() {
   this._world.addLayer(layerFactory.createTerrainLayer({
     type: LayerType.CIRCULAR,
     color: new Color( 255, 0, 0, 1.0 ),
-    width: 4000,
+    width: 2000,
     height: 100,
     maxTerrainHeight: 50,
     segmentCount: 40,
@@ -160,7 +160,7 @@ var Game = function() {
   this._world.addLayer(layerFactory.createTerrainLayer({
     type: LayerType.CIRCULAR,
     color: new Color( 0, 0, 255, 1.0 ),
-    width: 2000,
+    width: 4000,
     height: 100,
     maxTerrainHeight: 90,
     segmentCount: 40,

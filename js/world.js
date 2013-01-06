@@ -171,7 +171,7 @@ CircularLayer.prototype.update = function( elapsedTime, dx ) {
   var width = this.getWidth();
   for ( var i = 0, n = this._props.length; i < n; i++ ) {
     if ( this._props[i].getX() + this._props[i].getWidth() + x <= 0 ) {
-      this._props[i].setX( this._props[i].getX() + width - this._props[i].getWidth() );
+      this._props[i].setX( this._props[i].getX() + width );
     }
   }
 };
