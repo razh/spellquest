@@ -58,6 +58,18 @@ World.prototype.draw = function( ctx ) {
 };
 
 World.prototype.hit = function( x, y ) {
+  x -= this.getX() - this.getHalfWidth();
+  y -= this.getY() - this.getHalfHeight();
+
+  var hit = null;
+  for ( var i = this._layers.length - 1; i >= 0; i-- ) {
+    hit = this._layers[i].hit( x, y );
+    if ( hit !== null ) {
+      break;
+    }
+  }
+
+  return hit;
 };
 
 var Camera = function() {
@@ -136,7 +148,7 @@ Layer.prototype.hit = function( x, y ) {
 
   for ( var i = 0; i < this._props.length; i++ ) {
     if ( this._props[i].hit( x, y ) !== null ) {
-      return this;
+      return this._props[i];
     }
   }
 

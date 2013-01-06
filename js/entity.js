@@ -291,10 +291,10 @@ PolygonEntity.prototype.contains = function( x, y ) {
     return false;
   }
 
-  var numVertices = this.getNumVertices();
+  var vertexCount = this.getVertexCount();
   var contains = false;
   var xi, yi, xj, yj;
-  for ( var i = 0, j = numVertices - 1; i < numVertices; j = i++ ) {
+  for ( var i = 0, j = vertexCount - 1; i < vertexCount; j = i++ ) {
     xi = this._vertices[ 2 * i ];
     yi = this._vertices[ 2 * i + 1 ];
     xj = this._vertices[ 2 * j ];
