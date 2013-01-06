@@ -51,10 +51,12 @@ var Game = function() {
   pEntity.setColor( 0, 0, 255, 1.0 );
   pEntity.setVelocity( 0.05, 0.001 );
 
+  var padding = 2.5 * py;
+
   this._world = new World();
   this._world.setWidth( 80 * px );
   this._world.setHeight( 10 * px );
-  this._world.setPosition( cx, 5 * py + this._world.getHeight() / 2 );
+  this._world.setPosition( cx, 2 * padding + this._world.getHeight() / 2 );
   this._world.setColor( 20, 0, 0, 0.1 );
 
   this._worldCanvas.width = this.getWorld().getWidth();
@@ -104,54 +106,56 @@ var Game = function() {
 
   var buttonFactory = new ButtonFactory();
 
+  var buttonWidth = 0.2 * this._world.getWidth();
+  var buttonHeight = 0.5 * this._world.getHeight();
   var buttonX = cx - this._world.getHalfWidth()
-  var buttonY = this._world.getY() + this._world.getHalfHeight();
+  var buttonY = this._world.getY() + this._world.getHalfHeight() + buttonHeight / 2 + padding;
   var resetButton = new ResetButton();
   // var resetButton = buttonFactory.createButton( ButtonType.RESET );
-  resetButton.setWidth( 15 * px );
-  resetButton.setHeight( 0.4 * resetButton.getWidth() );
-  resetButton.setPosition( buttonX + resetButton.getHalfWidth(), buttonY + 5 * py );
+  resetButton.setWidth( buttonWidth );
+  resetButton.setHeight( buttonHeight );
+  resetButton.setPosition( buttonX + resetButton.getHalfWidth(), buttonY );
   resetButton.setColor( 0, 0, 0, 1.0 );
   resetButton.setTextColor( 255, 255, 255, 1.0 );
-  resetButton.setFontSize( 2 * px );
+  resetButton.setFontSize( 1.75 * px );
   this._ui.addButton( resetButton );
 
   var shuffleButton = new ShuffleButton();
   // var shuffleButton = buttonFactory.createButton( ButtonType.SHUFFLE );
-  shuffleButton.setWidth( 15 * px );
-  shuffleButton.setHeight( 0.4 * shuffleButton.getWidth() );
-  shuffleButton.setPosition( 195, buttonY + 5 * py );
+  shuffleButton.setWidth( buttonWidth );
+  shuffleButton.setHeight( buttonHeight );
+  shuffleButton.setPosition( buttonX + 1.33 * buttonWidth + shuffleButton.getHalfWidth(), buttonY );
   shuffleButton.setColor( 0, 0, 0, 1.0 );
   shuffleButton.setTextColor( 255, 255, 255, 1.0 );
-  shuffleButton.setFontSize( 2 * px );
+  shuffleButton.setFontSize( 1.75 * px );
   this._ui.addButton( shuffleButton );
 
   var submitButton = new SubmitButton();
   // var submitButton = buttonFactory.createButton( ButtonType.SUBMIT );
-  submitButton.setPosition( 290, buttonY + 5 * py );
-  submitButton.setWidth( 15 * px );
-  submitButton.setHeight( 0.4 * submitButton.getWidth() );
+  submitButton.setWidth( buttonWidth );
+  submitButton.setHeight( buttonHeight );
+  submitButton.setPosition( buttonX + 2.66 * buttonWidth + submitButton.getHalfWidth(), buttonY );
   submitButton.setColor( 0, 0, 0, 1.0 );
   submitButton.setTextColor( 255, 255, 255, 1.0 );
-  submitButton.setFontSize( 2 * px );
+  submitButton.setFontSize( 1.75 * px );
   this._ui.addButton( submitButton );
 
   var backspaceButton = new BackspaceButton();
   // var backspaceButton = buttonFactory.createButton( ButtonType.BACKSPACE );
-  backspaceButton.setPosition( 385, buttonY + 5 * py );
-  backspaceButton.setWidth( 15 * px );
-  backspaceButton.setHeight( 0.4 * backspaceButton.getWidth() );
+  backspaceButton.setWidth( buttonWidth );
+  backspaceButton.setHeight( buttonHeight );
+  backspaceButton.setPosition( buttonX + 4 * buttonWidth + backspaceButton.getHalfWidth(), buttonY );
   backspaceButton.setColor( 0, 0, 0, 1.0 );
   backspaceButton.setTextColor( 255, 255, 255, 1.0 );
-  backspaceButton.setFontSize( 2 * px );
+  backspaceButton.setFontSize( 1.75 * px );
   this._ui.addButton( backspaceButton );
 
-  // Pool of letters the player can select form.
+  // Pool of letters the player can select from.
   this._pool = new Pool();
-  this._pool.setPosition( 10 * px, 36 * py );
-  this._pool.setSpacing( 10 * px );
+  this._pool.setSpacing( 12 * px );
   this._pool.setWidth( 8 * px );
   this._pool.setHeight( 8 * px );
+  this._pool.setPosition( buttonX + this._pool.getHalfWidth(), buttonY + 0.5 * buttonHeight + padding + this._pool.getHalfHeight() );
   this._pool.setColor( 240, 63, 53, 1.0 );
   this._pool.setTextColor( 255, 255, 255, 1.0 );
   this._pool.setFontSize( 2.5 * px );
@@ -174,16 +178,16 @@ var Game = function() {
   // Form where player inputs the word guess.
   this._form = new Form();
   this._form.setLineWidth( 5 );
-  this._form.setSpacing( 10 * px );
+  this._form.setSpacing( 12 * px );
   this._form.setWidth( 8 * px  + this._form.getLineWidth() );
   this._form.setHeight( 8 * px + this._form.getLineWidth() );
-  this._form.setPosition( 10 * px, 36 * py + this._form.getHeight() + 5 * py );
+  this._form.setPosition( buttonX + this._pool.getHalfWidth(), this._pool.getY() + this._pool.getHalfHeight() + padding + this._form.getHalfHeight() );
   this._form.setColor( 100, 100, 100, 1.0 );
   this._form.createFormElements( letters.length );
 
   // List displaying all correctly spelled words.
   this._list = new List();
-  this._list.setPosition( 65, 390 );
+  this._list.setPosition( buttonX, this._form.getY() + this._form.getHalfHeight() + padding );
   this._list.setWidth( 20 );
   this._list.setHeight( 20 );
   this._list.setColor( 0, 55, 55, 1.0 );
