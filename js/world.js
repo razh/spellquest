@@ -197,9 +197,9 @@ LayerFactory.prototype.createLayer = function( options ) {
       break;
   }
 
-  layer.setWidth( options.width  || 0 );
+  layer.setWidth( options.width || 0 );
   layer.setHeight( options.height || 0 );
-  layer.setColor( options.color  || new Color( 0, 0, 0, 1.0 ) );
+  layer.setColor( options.color || new Color( 0, 0, 0, 1.0 ) );
   layer.setZIndex( options.zIndex || 0 );
   layer.setParallaxFactor( options.parallaxFactor || 1.0 );
 

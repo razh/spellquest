@@ -168,12 +168,19 @@ var Game = function() {
     parallaxFactor: 0.5
   }));
 
-  var playerEntity = new Entity();
-  playerEntity.setWidth( 10 );
-  playerEntity.setHeight( 20 );
-  playerEntity.setPosition( 30, 90 );
+  var playerEntity = new SpriteEntity();
+  // playerEntity.setWidth( 10 );
+  // playerEntity.setHeight( 20 );
   playerEntity.setColor( 255, 255, 255, 1.0 );
   this._world.setPlayerEntity( playerEntity );
+
+  var spriteEntity = new SpriteEntity();
+  var image = new Image();
+  image.onload = function() {
+    playerEntity.setSprite( this );
+    playerEntity.setPosition( 30, 100 - playerEntity.getHeight() );
+  }
+  image.src = './img/test.png';
 
   this._player = new Player();
 
