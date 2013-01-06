@@ -35,7 +35,7 @@ World.prototype.getScrollSpeed = function() {
 };
 
 World.prototype.setScrollSpeed = function( scrollSpeed ) {
-  return this._scrollSpeed;
+  this._scrollSpeed = scrollSpeed;
 };
 
 World.prototype.update = function( elapsedTime ) {
@@ -155,22 +155,46 @@ Layer.prototype.hit = function( x, y ) {
   return null;
 };
 
+// Loops around.
+var CircularLayer = function() {
+  Layer.call( this );
+};
+
+CircularLayer.prototype = new Layer();
+CircularLayer.prototype.constructor = CircularLayer;
+
+CircularLayer.prototype.update = function( elapsedTime, dx ) {
+  Layer.prototype.update.call( this, elapsedTime, dx );
+
+  // This assumes we only scroll from right-to-left.
+  var x = this.getX();
+  var width = this.getWidth();
+  for ( var i = 0, n = this._props.length; i < n; i++ ) {
+    if ( this._props[i].getX() + this._props[i].getWidth() + x <= 0 ) {
+      this._props[i].setX( this._props[i].getX() + width - this._props[i].getWidth() );
+    }
+  }
+};
+
 var LayerFactory = function() {};
 
 LayerFactory.prototype.createTerrainLayer = function( options ) {
   var width  = options.width  || 0;
   var height = options.height || 0;
+  var color  = options.color  || new Color( 0, 0, 0, 1.0 );
   var maxTerrainHeight = options.maxTerrainHeight || 0;
   var segmentCount = options.segmentCount || 1;
-  var color = options.color || new Color( 0, 0, 0, 1.0 );
 
-  var layer = new Layer();
+  var layer = new CircularLayer();
+  layer.setWidth( width );
+  layer.setHeight( height );
   layer.setZIndex( options.zIndex || 0 );
   layer.setParallaxFactor( options.parallaxFactor || 1.0 );
 
   var segmentWidth = width / segmentCount;
   var points = [];
-  for ( var i = 0; i < segmentCount + 1; i++ ) {
+  // Loops back to the first point, so we don't need extra vertex at end.
+  for ( var i = 0; i < segmentCount; i++ ) {
     points.push( Math.random() * maxTerrainHeight );
   }
 
@@ -183,7 +207,7 @@ LayerFactory.prototype.createTerrainLayer = function( options ) {
       0, height,
       0, height - points[i],
       // Extra pixel added to x-coordinate to connect segments.
-      segmentWidth + 1, height - points[ i + 1 ],
+      segmentWidth + 1, height - points[ ( i + 1 ) % segmentCount ],
       segmentWidth + 1, height
     ]);
 

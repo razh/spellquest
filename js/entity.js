@@ -309,6 +309,22 @@ PolygonEntity.prototype.contains = function( x, y ) {
   return contains;
 };
 
+PolygonEntity.prototype.getWidth = function() {
+  return this._xmax - this._xmin;
+};
+
+PolygonEntity.prototype.getHeight = function() {
+  return this._ymax - this._ymin;
+};
+
+PolygonEntity.prototype.getHalfWidth = function() {
+  return this.getWidth() / 2;
+};
+
+PolygonEntity.prototype.getHalfHeight = function() {
+  return this.getHeight() / 2;
+};
+
 // SpriteEntity ----------------------------------------------------------------
 var SpriteEntity = function() {
   Entity.call( this );
