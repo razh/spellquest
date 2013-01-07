@@ -33,12 +33,24 @@ var Game = function() {
 
   this.EPSILON = 1e-20;
 
-  var cx = this.WIDTH / 2;
-  var cy = this.HEIGHT / 2;
+  this._player = new Player();
+  this._world = new World();
+  this._ui = new UI();
+  this._pool = new Pool();
+  this._form = new Form();
+  this._list = new List();
 
-  var px = this.WIDTH / 100;
-  var py = this.HEIGHT / 100;
-  console.log( px, py );
+  this._dict = new Dictionary();
+
+  this._word = this._dict.getRandomWord();
+  while ( this._word.length < 5 )
+    this._word = this._dict.getRandomWord();
+
+  this._dict.createMap();
+  this._subWords = this._dict.getSubWords( this._word );
+  for ( i = 0; i < this._subWords.length; i++ ) {
+    console.log( this._subWords[i] );
+  }
 
   var pEntity = new PolygonEntity();
   pEntity.setVertices([
@@ -51,21 +63,8 @@ var Game = function() {
   pEntity.setColor( 0, 0, 255, 1.0 );
   pEntity.setVelocity( 0.05, 0.001 );
 
-  var padding = 2.5 * py;
+  this.generateVerticalLayout();
 
-  this._world = new World();
-  this._world.setWidth( 80 * px );
-  this._world.setHeight( 10 * px );
-  this._world.setPosition( cx, 2 * padding + this._world.getHeight() / 2 );
-  this._world.setColor( 20, 0, 0, 0.1 );
-
-  this._worldCanvas.width = this.getWorld().getWidth();
-  this._worldCanvas.height = this.getWorld().getHeight();
-
-  // var tempLayer = new Layer();
-  // tempLayer.addProp( pEntity );
-
-  // this._world.addLayer( tempLayer );
   var layerFactory = new LayerFactory();
   this._world.addLayer(layerFactory.createTerrainLayer({
     type: LayerType.CIRCULAR,
@@ -88,13 +87,32 @@ var Game = function() {
     parallaxFactor: 0.5
   }));
 
-  var playerEntity = new SpriteEntity();
-  // playerEntity.setWidth( 10 );
-  // playerEntity.setHeight( 20 );
-  playerEntity.setColor( 255, 255, 255, 1.0 );
-  this._world.setPlayerEntity( playerEntity );
+  this.drawBackground( this._backgroundCtx );
+};
 
-  var spriteEntity = new SpriteEntity();
+Game.prototype.generateVerticalLayout = function() {
+  var cx = this.WIDTH / 2;
+  var cy = this.HEIGHT / 2;
+
+  var px = this.WIDTH / 100;
+  var py = this.HEIGHT / 100;
+  console.log( px, py );
+
+  var padding = 2.5 * py;
+
+  var world = this.getWorld();
+  world.setWidth( 80 * px );
+  world.setHeight( 10 * px );
+  world.setPosition( cx, 2 * padding + world.getHeight() / 2 );
+  world.setColor( 20, 0, 0, 0.1 );
+
+  this._worldCanvas.width = world.getWidth();
+  this._worldCanvas.height = world.getHeight();
+
+  var playerEntity = new SpriteEntity();
+  playerEntity.setColor( 255, 255, 255, 1.0 );
+  world.setPlayerEntity( playerEntity );
+
   var image = new Image();
   image.onload = function() {
     playerEntity.setSprite( this );
@@ -102,14 +120,13 @@ var Game = function() {
   }
   image.src = './img/test.png';
 
-  this._ui = new UI();
-
   var buttonFactory = new ButtonFactory();
 
-  var buttonWidth = 0.2 * this._world.getWidth();
-  var buttonHeight = 0.5 * this._world.getHeight();
-  var buttonX = this._world.getLeft()
-  var buttonY = this._world.getBottom() + padding;
+  var ui = this.getUI();
+  var buttonWidth = 0.2 * world.getWidth();
+  var buttonHeight = 0.5 * world.getHeight();
+  var buttonX = world.getLeft()
+  var buttonY = world.getBottom() + padding;
   var resetButton = new ResetButton();
   // var resetButton = buttonFactory.createButton( ButtonType.RESET );
   resetButton.setWidth( buttonWidth );
@@ -117,8 +134,8 @@ var Game = function() {
   resetButton.setTopLeft( buttonX, buttonY );
   resetButton.setColor( 0, 0, 0, 1.0 );
   resetButton.setTextColor( 255, 255, 255, 1.0 );
-  resetButton.setFontSize( 1.75 * px );
-  this._ui.addButton( resetButton );
+  resetButton.setFontSize( Math.floor( 1.75 * px ) );
+  ui.addButton( resetButton );
 
   var shuffleButton = new ShuffleButton();
   // var shuffleButton = buttonFactory.createButton( ButtonType.SHUFFLE );
@@ -127,8 +144,8 @@ var Game = function() {
   shuffleButton.setTopLeft( buttonX + 1.33 * buttonWidth, buttonY );
   shuffleButton.setColor( 0, 0, 0, 1.0 );
   shuffleButton.setTextColor( 255, 255, 255, 1.0 );
-  shuffleButton.setFontSize( 1.75 * px );
-  this._ui.addButton( shuffleButton );
+  shuffleButton.setFontSize( Math.floor( 1.75 * px ) );
+  ui.addButton( shuffleButton );
 
   var submitButton = new SubmitButton();
   // var submitButton = buttonFactory.createButton( ButtonType.SUBMIT );
@@ -137,8 +154,8 @@ var Game = function() {
   submitButton.setTopLeft( buttonX + 2.66 * buttonWidth, buttonY );
   submitButton.setColor( 0, 0, 0, 1.0 );
   submitButton.setTextColor( 255, 255, 255, 1.0 );
-  submitButton.setFontSize( 1.75 * px );
-  this._ui.addButton( submitButton );
+  submitButton.setFontSize( Math.floor( 1.75 * px ) );
+  ui.addButton( submitButton );
 
   var backspaceButton = new BackspaceButton();
   // var backspaceButton = buttonFactory.createButton( ButtonType.BACKSPACE );
@@ -147,61 +164,46 @@ var Game = function() {
   backspaceButton.setTopLeft( buttonX + 4 * buttonWidth, buttonY );
   backspaceButton.setColor( 0, 0, 0, 1.0 );
   backspaceButton.setTextColor( 255, 255, 255, 1.0 );
-  backspaceButton.setFontSize( 1.75 * px );
-  this._ui.addButton( backspaceButton );
+  backspaceButton.setFontSize( Math.floor( 1.75 * px ) );
+  ui.addButton( backspaceButton );
 
   // Pool of letters the player can select from.
-  this._pool = new Pool();
-  this._pool.setSpacing( 12 * px );
-  this._pool.setWidth( 8 * px );
-  this._pool.setHeight( 8 * px );
-  this._pool.setTopLeft( buttonX, resetButton.getBottom() + padding );
-  this._pool.setColor( 240, 63, 53, 1.0 );
-  this._pool.setTextColor( 255, 255, 255, 1.0 );
-  this._pool.setFontSize( 2.5 * px );
-
-  this._dict = new Dictionary();
-  var word = this._dict.getRandomWord();
-  while ( word.length < 5 )
-    word = this._dict.getRandomWord();
-
-  this._dict.createMap();
-  this._subWords = this._dict.getSubWords( word );
-  for ( i = 0; i < this._subWords.length; i++ ) {
-    console.log( this._subWords[i] );
-  }
-
-  console.log( word );
-  this._pool.setLetters( word.split( '' ) );
-  var letters = this._pool.getLetters();
+  var pool = this.getPool();
+  pool.setSpacing( 12 * px );
+  pool.setWidth( 8 * px );
+  pool.setHeight( 8 * px );
+  pool.setTopLeft( buttonX, resetButton.getBottom() + padding );
+  pool.setColor( 240, 63, 53, 1.0 );
+  pool.setTextColor( 255, 255, 255, 1.0 );
+  pool.setFontSize( Math.floor( 2.5 * px ) );
+  console.log( this._word );
+  pool.setLetters( this._word.split( '' ) );
+  var letters = pool.getLetters();
 
   // Form where player inputs the word guess.
-  this._form = new Form();
-  this._form.setLineWidth( 5 );
-  this._form.setSpacing( 12 * px );
-  this._form.setWidth( 8 * px  + this._form.getLineWidth() );
-  this._form.setHeight( 8 * px + this._form.getLineWidth() );
-  this._form.setTopLeft( buttonX, this._pool.getBottom() + this._form.getLineWidth() + padding );
-  this._form.setColor( 100, 100, 100, 1.0 );
-  this._form.createFormElements( letters.length );
+  var form = this.getForm();
+  form.setLineWidth( 5 );
+  form.setSpacing( 12 * px );
+  form.setWidth( 8 * px  + form.getLineWidth() );
+  form.setHeight( 8 * px + form.getLineWidth() );
+  form.setTopLeft( buttonX, pool.getBottom() + form.getLineWidth() + padding );
+  form.setColor( 100, 100, 100, 1.0 );
+  form.createFormElements( letters.length );
 
   // List displaying all correctly spelled words.
-  this._list = new List();
-  this._list.setTopLeft( buttonX, this._form.getBottom() + this._form.getLineWidth() + padding );
-  this._list.setWidth( 20 );
-  this._list.setHeight( 20 );
-  this._list.setColor( 0, 55, 55, 1.0 );
-  this._list.setBackgroundColor( 0, 0, 0, 1.0 );
-  this._list.setTextColor( 255, 255, 255, 1.0 );
-  this._list.setLineWidth( 2 );
-  this._list.setHorizontalSpacing( 40 );
-  this._list.setPadding( 100 );
-  this._list.setMaxHeight( this.HEIGHT );
-  this._list.setWords( this._subWords );
-
-  this._player = new Player();
-
-  this.drawBackground( this._backgroundCtx );
+  var list = this.getList();
+  list.setTopLeft( buttonX, form.getBottom() + form.getLineWidth() + padding );
+  list.setWidth( Math.floor( 2 * px ) );
+  list.setHeight( Math.floor( 2 * px ) );
+  list.setFontSize( list.getHeight() * 0.6 );
+  list.setColor( 0, 55, 55, 1.0 );
+  list.setBackgroundColor( 0, 0, 0, 1.0 );
+  list.setTextColor( 255, 255, 255, 1.0 );
+  list.setLineWidth( 2 );
+  list.setHorizontalSpacing( 40 );
+  list.setPadding( 100 );
+  list.setMaxHeight( this.HEIGHT );
+  list.setWords( this._subWords );
 };
 
 Game.prototype.tick = function() {
