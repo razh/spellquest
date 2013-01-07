@@ -51,7 +51,7 @@ Dictionary.prototype.getSubWords = function( word ) {
 
     return a.length < b.length ? -1 : 1;
   });
-}
+};
 
 // TODO: Check whether to optimize.
 Dictionary.prototype.createMap = function() {
@@ -72,7 +72,7 @@ Dictionary.prototype.createMap = function() {
 
 Dictionary.prototype.isWord = function( word ) {
   return this._wordList.lastIndexOf( word ) !== -1;
-}
+};
 
 
 function removeByIndex( array, index ) {

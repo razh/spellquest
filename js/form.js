@@ -90,7 +90,7 @@ FormElement.prototype.getLetter = function() {
 
 FormElement.prototype.hasLetter = function() {
   return this._letter !== null;
-}
+};
 
 FormElement.prototype.getLineWidth = function() {
   return this._lineWidth;
@@ -137,7 +137,7 @@ Form.prototype.createFormElements = function( letterCount ) {
     tempFormElement.setLineWidth( lineWidth );
     this._formElements.push( tempFormElement );
   }
-}
+};
 
 Form.prototype.getWord = function() {
   var word = '';

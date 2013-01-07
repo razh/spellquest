@@ -101,7 +101,7 @@ var Game = function() {
   image.onload = function() {
     playerEntity.setSprite( this );
     playerEntity.setPosition( 30, _game.getWorld().getHeight() - playerEntity.getHeight() );
-  }
+  };
   image.src = './img/test.png';
 
   this.drawBackground( this._backgroundCtx );
@@ -134,7 +134,7 @@ Game.prototype.generateVerticalLayout = function() {
 
   var buttonWidth = 0.2 * world.getWidth();
   var buttonHeight = 0.5 * world.getHeight();
-  var buttonX = world.getLeft()
+  var buttonX = world.getLeft();
   var buttonY = world.getBottom() + padding;
   var resetButton = new ResetButton();
   // var resetButton = buttonFactory.createButton( ButtonType.RESET );
@@ -240,7 +240,7 @@ Game.prototype.generateHorizontalLayout = function() {
 
   var buttonWidth = 0.2 * world.getWidth();
   var buttonHeight = 0.5 * world.getHeight();
-  var buttonX = world.getLeft()
+  var buttonX = world.getLeft();
   var buttonY = world.getBottom() + padding;
   var resetButton = new ResetButton();
   // var resetButton = buttonFactory.createButton( ButtonType.RESET );
