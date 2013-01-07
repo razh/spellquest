@@ -183,7 +183,7 @@ Game.prototype.generateVerticalLayout = function() {
   pool.setTopLeft( buttonX, resetButton.getBottom() + padding );
   pool.setColor( 240, 63, 53, 1.0 );
   pool.setTextColor( 255, 255, 255, 1.0 );
-  pool.setFontSize( Math.floor( 2.5 * px ) );
+  pool.setFontSize( Math.floor( 3 * px ) );
   console.log( this._word );
   pool.setLetters( this._word.split( '' ) );
   var letters = pool.getLetters();
@@ -199,9 +199,9 @@ Game.prototype.generateVerticalLayout = function() {
 
   // List displaying all correctly spelled words.
   list.setTopLeft( buttonX, form.getBottom() + form.getLineWidth() + padding );
-  list.setWidth( Math.floor( 2 * px ) );
-  list.setHeight( Math.floor( 2 * px ) );
-  list.setFontSize( list.getHeight() * 0.6 );
+  list.setWidth( Math.floor( 3 * px ) );
+  list.setHeight( Math.floor( 3 * px ) );
+  list.setFontSize( Math.floor( list.getHeight() * 0.75 ) );
   list.setColor( 0, 55, 55, 1.0 );
   list.setBackgroundColor( 0, 0, 0, 1.0 );
   list.setTextColor( 255, 255, 255, 1.0 );
