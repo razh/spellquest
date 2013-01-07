@@ -7,9 +7,14 @@ var List = function() {
   // Whether or not the player has found the word.
   this._wasFound = [];
 
+  // Spacing between columns.
   this._horizontalSpacing = 0;
+  // Spacing between words in a column.
   this._verticalSpacing = 0;
+  // Spacing from the maxHeight.
   this._padding = 0;
+  // Maximum width. Must call resizeToFit() after setting this.
+  this._maxWidth = 0;
   this._maxHeight = 0;
 
   this._lineWidth = 1;
@@ -33,7 +38,7 @@ List.prototype.setWords = function( words ) {
     this._wasFound.push( false );
   }
 
-  this.calculateWordPositions( this.getMaxHeight() );
+  this.calculateWordPositions();
 };
 
 List.prototype.clear = function() {
@@ -74,6 +79,14 @@ List.prototype.setMaxHeight = function( maxHeight ) {
   this._maxHeight = maxHeight;
 };
 
+List.prototype.getMaxWidth = function() {
+  return this._maxWidth;
+};
+
+List.prototype.setMaxWidth = function( maxWidth ) {
+  this._maxWidth = maxWidth;
+};
+
 List.prototype.getLineWidth = function() {
   return this._lineWidth;
 };
@@ -104,6 +117,37 @@ List.prototype.getFontSize = function() {
 
 List.prototype.setFontSize = function( fontSize ) {
   this._fontSize = fontSize;
+};
+
+List.prototype.getLeft = function() {
+  return this.getX();
+};
+
+List.prototype.setLeft = function( left ) {
+  this.setX( left );
+};
+
+List.prototype.getTop = function() {
+  return this.getY();
+};
+
+List.prototype.setTop = function( top ) {
+  this.setY( top );
+};
+
+List.prototype.getRight = function() {
+  var index = this._words.length - 1;
+  var lastPosition = this._wordPositions[ index ];
+  return lastPosition.x + this._words[ index ].length * this.getWidth();
+};
+
+List.prototype.getBottom = function() {
+  var ymax = 0;
+  for ( var i = 0; i < this._wordPositions.length; i++ ) {
+    ymax = Math.max( this._wordPositions[i].y, ymax );
+  }
+
+  return ymax + this.getHeight();
 };
 
 List.prototype.isWord = function( word ) {
@@ -139,13 +183,60 @@ List.prototype.markWord = function( ctx, word ) {
   }
 };
 
-List.prototype.calculateWordPositions = function( maxHeight ) {
+// Resize to fit inside maxWidth.
+List.prototype.resizeToFit = function() {
+  if ( this.getRight() - this.getX() < this.getMaxWidth() ) {
+    return;
+  }
+
+  var x = this.getX();
+  var y = this.getY();
+  var height = this.getHeight();
+  var padding = this.getPadding();
+  var maxHeight = this.getMaxHeight();
+
+  // How wide the list is in terms of letters (not including padding).
+  var letterCount = 0;
+  // Number of spaces between the word columns.
+  var spaceCount = 0;
+  // Loop through word positions, finding the total width of the word spaces.
+  for ( var i = 0, n = this._wordPositions.length; i < n; i++ ) {
+    y = this._wordPositions[i].y + height;
+
+    // If we've gone past the desired height and not the last word (so below works).
+    if ( y + padding > maxHeight && i !== n ) {
+      letterCount += this._words[i].length;
+      spaceCount++;
+
+      y = this.getY();
+    }
+  }
+
+  // Add length of last word.
+  letterCount += this._words[ this._words.length - 1 ].length;
+
+  var wordWidth = letterCount * this.getWidth();
+  var spaceWidth = spaceCount * this.getHorizontalSpacing();
+  var totalWidth = wordWidth + spaceWidth;
+
+  var letterWidthRatio = ( wordWidth / totalWidth ) / letterCount;
+  var spaceWidthRatio = ( spaceWidth / totalWidth ) / spaceCount;
+
+  this.setWidth( letterWidthRatio * this.getMaxWidth() );
+  this.setHeight( this.getWidth() );
+  this.setHorizontalSpacing( spaceWidthRatio * this.getMaxWidth() );
+
+  this.calculateWordPositions();
+};
+
+List.prototype.calculateWordPositions = function() {
   var x = this.getX();
   var y = this.getY();
   var width = this.getWidth();
   var height = this.getHeight();
   var padding = this.getPadding();
   var horizontalSpacing = this.getHorizontalSpacing();
+  var maxHeight = this.getMaxHeight();
 
   var xPos = 0;
   var yPos = 0;

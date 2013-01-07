@@ -43,10 +43,10 @@ var Game = function() {
   this._dict = new Dictionary();
 
   this._word = this._dict.getRandomWord();
-  while ( this._word.length < 5 )
+  while ( this._word.length < 5 ) {
     this._word = this._dict.getRandomWord();
+  }
 
-  this._dict.createMap();
   this._subWords = this._dict.getSubWords( this._word );
   for ( i = 0; i < this._subWords.length; i++ ) {
     console.log( this._subWords[i] );
@@ -63,13 +63,19 @@ var Game = function() {
   pEntity.setColor( 0, 0, 255, 1.0 );
   pEntity.setVelocity( 0.05, 0.001 );
 
-  this.generateVerticalLayout();
+  if ( this.WIDTH > this.HEIGHT ) {
+    this._layout = Layout.HORIZONTAL;
+    this.generateHorizontalLayout();
+  } else {
+    this._layout = Layout.VERTICAL;
+    this.generateVerticalLayout();
+  }
 
   var layerFactory = new LayerFactory();
   this._world.addLayer(layerFactory.createTerrainLayer({
     type: LayerType.CIRCULAR,
     color: new Color( 255, 0, 0, 1.0 ),
-    width: 40 * this._world.getWidth(),
+    width: 10 * this._world.getWidth(),
     height: this._world.getHeight(),
     maxTerrainHeight: 0.5 * this._world.getHeight(),
     segmentCount: 40,
@@ -87,6 +93,17 @@ var Game = function() {
     parallaxFactor: 0.5
   }));
 
+  var playerEntity = new SpriteEntity();
+  playerEntity.setColor( 255, 255, 255, 1.0 );
+  this._world.setPlayerEntity( playerEntity );
+
+  var image = new Image();
+  image.onload = function() {
+    playerEntity.setSprite( this );
+    playerEntity.setPosition( 30, _game.getWorld().getHeight() - playerEntity.getHeight() );
+  }
+  image.src = './img/test.png';
+
   this.drawBackground( this._backgroundCtx );
 };
 
@@ -96,33 +113,25 @@ Game.prototype.generateVerticalLayout = function() {
 
   var px = this.WIDTH / 100;
   var py = this.HEIGHT / 100;
-  console.log( px, py );
 
   var padding = 2.5 * py;
 
   var world = this.getWorld();
+  var ui = this.getUI();
+  var pool = this.getPool();
+  var form = this.getForm();
+  var list = this.getList();
+
   world.setWidth( 80 * px );
   world.setHeight( 10 * px );
-  world.setPosition( cx, 2 * padding + world.getHeight() / 2 );
+  world.setPosition( cx, 2 * padding + world.getHalfHeight() );
   world.setColor( 20, 0, 0, 0.1 );
 
   this._worldCanvas.width = world.getWidth();
   this._worldCanvas.height = world.getHeight();
 
-  var playerEntity = new SpriteEntity();
-  playerEntity.setColor( 255, 255, 255, 1.0 );
-  world.setPlayerEntity( playerEntity );
-
-  var image = new Image();
-  image.onload = function() {
-    playerEntity.setSprite( this );
-    playerEntity.setPosition( 30, _game.getWorld().getHeight() - playerEntity.getHeight() );
-  }
-  image.src = './img/test.png';
-
   var buttonFactory = new ButtonFactory();
 
-  var ui = this.getUI();
   var buttonWidth = 0.2 * world.getWidth();
   var buttonHeight = 0.5 * world.getHeight();
   var buttonX = world.getLeft()
@@ -168,7 +177,6 @@ Game.prototype.generateVerticalLayout = function() {
   ui.addButton( backspaceButton );
 
   // Pool of letters the player can select from.
-  var pool = this.getPool();
   pool.setSpacing( 12 * px );
   pool.setWidth( 8 * px );
   pool.setHeight( 8 * px );
@@ -181,7 +189,6 @@ Game.prototype.generateVerticalLayout = function() {
   var letters = pool.getLetters();
 
   // Form where player inputs the word guess.
-  var form = this.getForm();
   form.setLineWidth( 5 );
   form.setSpacing( 12 * px );
   form.setWidth( 8 * px  + form.getLineWidth() );
@@ -191,7 +198,6 @@ Game.prototype.generateVerticalLayout = function() {
   form.createFormElements( letters.length );
 
   // List displaying all correctly spelled words.
-  var list = this.getList();
   list.setTopLeft( buttonX, form.getBottom() + form.getLineWidth() + padding );
   list.setWidth( Math.floor( 2 * px ) );
   list.setHeight( Math.floor( 2 * px ) );
@@ -201,9 +207,126 @@ Game.prototype.generateVerticalLayout = function() {
   list.setTextColor( 255, 255, 255, 1.0 );
   list.setLineWidth( 2 );
   list.setHorizontalSpacing( 40 );
-  list.setPadding( 100 );
+  list.setPadding( 10 * px );
   list.setMaxHeight( this.HEIGHT );
   list.setWords( this._subWords );
+};
+
+Game.prototype.generateHorizontalLayout = function() {
+  var cx = this.WIDTH / 2;
+  var cy = this.HEIGHT / 2;
+
+  var px = this.WIDTH / 100;
+  var py = this.HEIGHT / 100;
+
+  var padding = 2.5 * px;
+
+  var world = this.getWorld();
+  var ui = this.getUI();
+  var pool = this.getPool();
+  var form = this.getForm();
+  var list = this.getList();
+
+
+  world.setWidth( 64 * px );
+  world.setHeight( 8 * px );
+  world.setTopLeft( 2 * padding, 2 * padding );
+  world.setColor( 20, 0, 0, 0.1 );
+
+  this._worldCanvas.width = world.getWidth();
+  this._worldCanvas.height = world.getHeight();
+
+  var buttonFactory = new ButtonFactory();
+
+  var buttonWidth = 0.2 * world.getWidth();
+  var buttonHeight = 0.5 * world.getHeight();
+  var buttonX = world.getLeft()
+  var buttonY = world.getBottom() + padding;
+  var resetButton = new ResetButton();
+  // var resetButton = buttonFactory.createButton( ButtonType.RESET );
+  resetButton.setWidth( buttonWidth );
+  resetButton.setHeight( buttonHeight );
+  resetButton.setTopLeft( buttonX, buttonY );
+  resetButton.setColor( 0, 0, 0, 1.0 );
+  resetButton.setTextColor( 255, 255, 255, 1.0 );
+  resetButton.setFontSize( Math.floor( 1.75 * px ) );
+  ui.addButton( resetButton );
+
+  var shuffleButton = new ShuffleButton();
+  // var shuffleButton = buttonFactory.createButton( ButtonType.SHUFFLE );
+  shuffleButton.setWidth( buttonWidth );
+  shuffleButton.setHeight( buttonHeight );
+  shuffleButton.setTopLeft( buttonX + 1.33 * buttonWidth, buttonY );
+  shuffleButton.setColor( 0, 0, 0, 1.0 );
+  shuffleButton.setTextColor( 255, 255, 255, 1.0 );
+  shuffleButton.setFontSize( Math.floor( 1.75 * px ) );
+  ui.addButton( shuffleButton );
+
+  var submitButton = new SubmitButton();
+  // var submitButton = buttonFactory.createButton( ButtonType.SUBMIT );
+  submitButton.setWidth( buttonWidth );
+  submitButton.setHeight( buttonHeight );
+  submitButton.setTopLeft( buttonX + 2.66 * buttonWidth, buttonY );
+  submitButton.setColor( 0, 0, 0, 1.0 );
+  submitButton.setTextColor( 255, 255, 255, 1.0 );
+  submitButton.setFontSize( Math.floor( 1.75 * px ) );
+  ui.addButton( submitButton );
+
+  var backspaceButton = new BackspaceButton();
+  // var backspaceButton = buttonFactory.createButton( ButtonType.BACKSPACE );
+  backspaceButton.setWidth( buttonWidth );
+  backspaceButton.setHeight( buttonHeight );
+  backspaceButton.setTopLeft( buttonX + 4 * buttonWidth, buttonY );
+  backspaceButton.setColor( 0, 0, 0, 1.0 );
+  backspaceButton.setTextColor( 255, 255, 255, 1.0 );
+  backspaceButton.setFontSize( Math.floor( 1.75 * px ) );
+  ui.addButton( backspaceButton );
+
+  // Pool of letters the player can select from.
+  pool.setSpacing( 12 * px );
+  pool.setWidth( 8 * px );
+  pool.setHeight( 8 * px );
+  pool.setTopLeft( buttonX, resetButton.getBottom() + padding );
+  pool.setColor( 240, 63, 53, 1.0 );
+  pool.setTextColor( 255, 255, 255, 1.0 );
+  pool.setFontSize( Math.floor( 2.5 * px ) );
+  console.log( this._word );
+  pool.setLetters( this._word.split( '' ) );
+  var letters = pool.getLetters();
+
+  // Form where player inputs the word guess.
+  form.setLineWidth( 5 );
+  form.setSpacing( 12 * px );
+  form.setWidth( 8 * px  + form.getLineWidth() );
+  form.setHeight( 8 * px + form.getLineWidth() );
+  form.setTopLeft( buttonX, pool.getBottom() + form.getLineWidth() + padding );
+  form.setColor( 100, 100, 100, 1.0 );
+  form.createFormElements( letters.length );
+
+  // List displaying all correctly spelled words.
+  list.setWidth( Math.floor( 2 * px ) );
+  list.setHeight( Math.floor( 2 * px ) );
+  list.setTop( world.getTop() );
+
+  var worldRight = world.getRight();
+  var formRight = form.getRight();
+  if ( formRight > worldRight ) {
+    list.setLeft( formRight + list.getWidth() );
+  } else {
+    list.setLeft( worldRight + list.getWidth() );
+  }
+
+  list.setFontSize( list.getHeight() * 0.6 );
+  list.setColor( 0, 55, 55, 1.0 );
+  list.setBackgroundColor( 0, 0, 0, 1.0 );
+  list.setTextColor( 255, 255, 255, 1.0 );
+  list.setLineWidth( Math.floor( 0.4 * px ) );
+  list.setHorizontalSpacing( 6 * px );
+  list.setPadding( 2 * padding );
+  list.setMaxHeight( this.HEIGHT );
+  list.setWords( this._subWords );
+  list.setMaxWidth( this.WIDTH - ( list.getLeft() + 2 * list.getWidth() ) );
+  list.resizeToFit();
 };
 
 Game.prototype.tick = function() {
@@ -275,28 +398,59 @@ Game.prototype.getPlayer = function() {
 };
 
 Game.prototype.reset = function() {
-  this.getPool().clear();
-  this.getForm().clear();
-  this.getList().clear();
+  var pool = this.getPool();
+  var form = this.getForm();
+  var list = this.getList();
 
-  var word = this._dict.getRandomWord();
-  while ( word.length < 5 )
-    word = this._dict.getRandomWord();
+  pool.clear();
+  form.clear();
+  list.clear();
 
-  this._dict.createMap();
-  this._subWords = this._dict.getSubWords( word );
+  this._word = this._dict.getRandomWord();
+  while ( this._word.length < 5 ) {
+    this._word = this._dict.getRandomWord();
+  }
+
+  this._subWords = this._dict.getSubWords( this._word );
   for ( i = 0; i < this._subWords.length; i++ ) {
     console.log( this._subWords[i] );
   }
 
-  console.log( 'word: ' + word );
-  this.getPool().setLetters( word.split( '' ) );
-  var letters = this.getPool().getLetters();
+  console.log( 'word: ' + this._word );
+  pool.setLetters( this._word.split( '' ) );
+  var letters = pool.getLetters();
 
-  this.getForm().createFormElements( letters.length );
-  this.getList().setWords( this._subWords );
+  form.createFormElements( letters.length );
+
+  if ( this._layout === Layout.HORIZONTAL ) {
+    var px = this.WIDTH / 100;
+    list.setWidth( Math.floor( 2 * px ) );
+    list.setHeight( Math.floor( 2 * px ) );
+    list.setHorizontalSpacing( 6 * px );
+    list.setPadding( 5 * px );
+
+    var worldRight = this.getWorld().getRight();
+    var formRight = form.getRight();
+    if ( formRight > worldRight ) {
+      list.setLeft( formRight + list.getWidth() );
+    } else {
+      list.setLeft( worldRight + list.getWidth() );
+    }
+  }
+
+  list.setWords( this._subWords );
+
+  if ( this._layout === Layout.HORIZONTAL ) {
+    list.setMaxWidth( this.WIDTH - ( list.getLeft() + 2 * list.getWidth() ) );
+    list.resizeToFit();
+  }
 
   this.drawBackground( this._backgroundCtx );
+};
+
+var Layout = {
+  HORIZONTAL: 0,
+  VERTICAL: 1
 };
 
 // Keep track of last three positions.

@@ -5,7 +5,6 @@ var Letter = function() {
   this._fontSize = 12;
 
   this._textColor = new Color();
-
 };
 
 Letter.prototype = new Entity();

@@ -16,12 +16,12 @@ var Dictionary = function() {
   }) ();
 
   this._wordMap = [];
+  this.createMap();
 };
 
 Dictionary.prototype.getRandomWord = function() {
   return this._wordList[ Math.floor( Math.random() * ( this._wordList.length + 1 ) ) ];
 };
-
 
 Dictionary.prototype.getSubWordsRecursive = function( word ) {
   if ( word.length < 3 ) {
