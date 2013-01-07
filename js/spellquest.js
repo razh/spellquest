@@ -201,7 +201,7 @@ Game.prototype.generateVerticalLayout = function() {
   list.setTopLeft( buttonX, form.getBottom() + form.getLineWidth() + padding );
   list.setWidth( Math.floor( 3 * px ) );
   list.setHeight( Math.floor( 3 * px ) );
-  list.setFontSize( Math.floor( list.getHeight() * 0.75 ) );
+  list.setFontSize( Math.floor( list.getHeight() * 0.6 ) );
   list.setColor( 0, 55, 55, 1.0 );
   list.setBackgroundColor( 0, 0, 0, 1.0 );
   list.setTextColor( 255, 255, 255, 1.0 );
