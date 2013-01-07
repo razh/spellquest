@@ -70,6 +70,7 @@ var Game = function() {
     this._layout = Layout.VERTICAL;
     this.generateVerticalLayout();
   }
+  this._aspectRatio = this.WIDTH / this.HEIGHT;
 
   var layerFactory = new LayerFactory();
   this._world.addLayer(layerFactory.createTerrainLayer({
@@ -327,6 +328,34 @@ Game.prototype.generateHorizontalLayout = function() {
   list.setWords( this._subWords );
   list.setMaxWidth( this.WIDTH - ( list.getLeft() + 2 * list.getWidth() ) );
   list.resizeToFit();
+};
+
+Game.prototype.generateThreeTwoLayout = function() {
+  var cx = this.WIDTH / 2;
+  var cy = this.HEIGHT / 2;
+
+  var px = this.WIDTH / 160;
+  var py = this.HEIGHT / 160;
+
+  var padding = 3 * px;
+
+  var world = this.getWorld();
+  var ui = this.getUI();
+  var pool = this.getPool();
+  var form = this.getForm();
+  var list = this.getList();
+};
+
+Game.prototype.generateFourThreeLayout = function() {
+
+};
+
+Game.prototype.generateSixteenNineLayout = function() {
+
+};
+
+Game.prototype.generateSixteenTenLayout = function() {
+
 };
 
 Game.prototype.tick = function() {
