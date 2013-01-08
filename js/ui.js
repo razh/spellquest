@@ -121,7 +121,6 @@ ButtonFactory.prototype.createButton = function( buttonType ) {
       break;
 
     case ButtonType.RESET:
-    console.log( "RESET" );
       button.addOnClick(function() {
         _game.reset();
       });

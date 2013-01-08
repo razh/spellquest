@@ -40,6 +40,16 @@ var Game = function() {
   this._form = new Form();
   this._list = new List();
 
+  this._resetButton = new ResetButton();
+  this._shuffleButton = new ShuffleButton();
+  this._submitButton = new SubmitButton();
+  this._backspaceButton = new BackspaceButton();
+
+  this._ui.addButton( this._resetButton );
+  this._ui.addButton( this._shuffleButton );
+  this._ui.addButton( this._submitButton );
+  this._ui.addButton( this._backspaceButton );
+
   this._dict = new Dictionary();
 
   this._word = this._dict.getRandomWord();
@@ -63,14 +73,20 @@ var Game = function() {
   pEntity.setColor( 0, 0, 255, 1.0 );
   pEntity.setVelocity( 0.05, 0.001 );
 
-  if ( this.WIDTH > this.HEIGHT ) {
-    this._layout = Layout.HORIZONTAL;
-    this.generateHorizontalLayout();
-  } else {
-    this._layout = Layout.VERTICAL;
-    this.generateVerticalLayout();
-  }
-  this._aspectRatio = this.WIDTH / this.HEIGHT;
+  // if ( this.WIDTH > this.HEIGHT ) {
+  //   this._layout = Layout.HORIZONTAL;
+  //   this.generateHorizontalLayout();
+  // } else {
+  //   this._layout = Layout.VERTICAL;
+  //   this.generateVerticalLayout();
+  // }
+  // this._aspectRatio = this.WIDTH / this.HEIGHT;
+  this.HEIGHT = this.WIDTH / 2 * 3;
+  this._backgroundCanvas.height = this.HEIGHT;
+  this.generateThreeTwoLayout();
+
+  this._worldCanvas.width = this._world.getWidth();
+  this._worldCanvas.height = this._world.getHeight();
 
   var layerFactory = new LayerFactory();
   this._world.addLayer(layerFactory.createTerrainLayer({
@@ -118,10 +134,14 @@ Game.prototype.generateVerticalLayout = function() {
   var padding = 2.5 * py;
 
   var world = this.getWorld();
-  var ui = this.getUI();
   var pool = this.getPool();
   var form = this.getForm();
   var list = this.getList();
+
+  var resetButton = this._resetButton;
+  var shuffleButton = this._shuffleButton;
+  var submitButton = this._submitButton;
+  var backspaceButton = this._backspaceButton;
 
   world.setWidth( 80 * px );
   world.setHeight( 10 * px );
@@ -131,51 +151,38 @@ Game.prototype.generateVerticalLayout = function() {
   this._worldCanvas.width = world.getWidth();
   this._worldCanvas.height = world.getHeight();
 
-  var buttonFactory = new ButtonFactory();
-
   var buttonWidth = 0.2 * world.getWidth();
   var buttonHeight = 0.5 * world.getHeight();
   var buttonX = world.getLeft();
   var buttonY = world.getBottom() + padding;
-  var resetButton = new ResetButton();
-  // var resetButton = buttonFactory.createButton( ButtonType.RESET );
+
   resetButton.setWidth( buttonWidth );
   resetButton.setHeight( buttonHeight );
   resetButton.setTopLeft( buttonX, buttonY );
   resetButton.setColor( 0, 0, 0, 1.0 );
   resetButton.setTextColor( 255, 255, 255, 1.0 );
   resetButton.setFontSize( Math.floor( 1.75 * px ) );
-  ui.addButton( resetButton );
 
-  var shuffleButton = new ShuffleButton();
-  // var shuffleButton = buttonFactory.createButton( ButtonType.SHUFFLE );
   shuffleButton.setWidth( buttonWidth );
   shuffleButton.setHeight( buttonHeight );
   shuffleButton.setTopLeft( buttonX + 1.33 * buttonWidth, buttonY );
   shuffleButton.setColor( 0, 0, 0, 1.0 );
   shuffleButton.setTextColor( 255, 255, 255, 1.0 );
   shuffleButton.setFontSize( Math.floor( 1.75 * px ) );
-  ui.addButton( shuffleButton );
 
-  var submitButton = new SubmitButton();
-  // var submitButton = buttonFactory.createButton( ButtonType.SUBMIT );
   submitButton.setWidth( buttonWidth );
   submitButton.setHeight( buttonHeight );
   submitButton.setTopLeft( buttonX + 2.66 * buttonWidth, buttonY );
   submitButton.setColor( 0, 0, 0, 1.0 );
   submitButton.setTextColor( 255, 255, 255, 1.0 );
   submitButton.setFontSize( Math.floor( 1.75 * px ) );
-  ui.addButton( submitButton );
 
-  var backspaceButton = new BackspaceButton();
-  // var backspaceButton = buttonFactory.createButton( ButtonType.BACKSPACE );
   backspaceButton.setWidth( buttonWidth );
   backspaceButton.setHeight( buttonHeight );
   backspaceButton.setTopLeft( buttonX + 4 * buttonWidth, buttonY );
   backspaceButton.setColor( 0, 0, 0, 1.0 );
   backspaceButton.setTextColor( 255, 255, 255, 1.0 );
   backspaceButton.setFontSize( Math.floor( 1.75 * px ) );
-  ui.addButton( backspaceButton );
 
   // Pool of letters the player can select from.
   pool.setSpacing( 12 * px );
@@ -206,8 +213,8 @@ Game.prototype.generateVerticalLayout = function() {
   list.setColor( 0, 55, 55, 1.0 );
   list.setBackgroundColor( 0, 0, 0, 1.0 );
   list.setTextColor( 255, 255, 255, 1.0 );
-  list.setLineWidth( 2 );
-  list.setHorizontalSpacing( 40 );
+  list.setLineWidth( 0.5 * px );
+  list.setHorizontalSpacing( 20 );
   list.setPadding( 10 * px );
   list.setMaxHeight( this.HEIGHT );
   list.setWords( this._subWords );
@@ -223,11 +230,14 @@ Game.prototype.generateHorizontalLayout = function() {
   var padding = 2.5 * px;
 
   var world = this.getWorld();
-  var ui = this.getUI();
   var pool = this.getPool();
   var form = this.getForm();
   var list = this.getList();
 
+  var resetButton = this._resetButton;
+  var shuffleButton = this._shuffleButton;
+  var submitButton = this._submitButton;
+  var backspaceButton = this._backspaceButton;
 
   world.setWidth( 64 * px );
   world.setHeight( 8 * px );
@@ -237,51 +247,38 @@ Game.prototype.generateHorizontalLayout = function() {
   this._worldCanvas.width = world.getWidth();
   this._worldCanvas.height = world.getHeight();
 
-  var buttonFactory = new ButtonFactory();
-
   var buttonWidth = 0.2 * world.getWidth();
   var buttonHeight = 0.5 * world.getHeight();
   var buttonX = world.getLeft();
   var buttonY = world.getBottom() + padding;
-  var resetButton = new ResetButton();
-  // var resetButton = buttonFactory.createButton( ButtonType.RESET );
+
   resetButton.setWidth( buttonWidth );
   resetButton.setHeight( buttonHeight );
   resetButton.setTopLeft( buttonX, buttonY );
   resetButton.setColor( 0, 0, 0, 1.0 );
   resetButton.setTextColor( 255, 255, 255, 1.0 );
   resetButton.setFontSize( Math.floor( 1.75 * px ) );
-  ui.addButton( resetButton );
 
-  var shuffleButton = new ShuffleButton();
-  // var shuffleButton = buttonFactory.createButton( ButtonType.SHUFFLE );
   shuffleButton.setWidth( buttonWidth );
   shuffleButton.setHeight( buttonHeight );
   shuffleButton.setTopLeft( buttonX + 1.33 * buttonWidth, buttonY );
   shuffleButton.setColor( 0, 0, 0, 1.0 );
   shuffleButton.setTextColor( 255, 255, 255, 1.0 );
   shuffleButton.setFontSize( Math.floor( 1.75 * px ) );
-  ui.addButton( shuffleButton );
 
-  var submitButton = new SubmitButton();
-  // var submitButton = buttonFactory.createButton( ButtonType.SUBMIT );
   submitButton.setWidth( buttonWidth );
   submitButton.setHeight( buttonHeight );
   submitButton.setTopLeft( buttonX + 2.66 * buttonWidth, buttonY );
   submitButton.setColor( 0, 0, 0, 1.0 );
   submitButton.setTextColor( 255, 255, 255, 1.0 );
   submitButton.setFontSize( Math.floor( 1.75 * px ) );
-  ui.addButton( submitButton );
 
-  var backspaceButton = new BackspaceButton();
-  // var backspaceButton = buttonFactory.createButton( ButtonType.BACKSPACE );
   backspaceButton.setWidth( buttonWidth );
   backspaceButton.setHeight( buttonHeight );
   backspaceButton.setTopLeft( buttonX + 4 * buttonWidth, buttonY );
   backspaceButton.setColor( 0, 0, 0, 1.0 );
   backspaceButton.setTextColor( 255, 255, 255, 1.0 );
   backspaceButton.setFontSize( Math.floor( 1.75 * px ) );
-  ui.addButton( backspaceButton );
 
   // Pool of letters the player can select from.
   pool.setSpacing( 12 * px );
@@ -330,6 +327,13 @@ Game.prototype.generateHorizontalLayout = function() {
   list.resizeToFit();
 };
 
+var AspectRatio = {
+  THREE_TWO: 0,
+  FOUR_THREE: 1,
+  SIXTEEN_NINE: 2,
+  SIXTEEN_TEN: 3
+};
+
 Game.prototype.generateThreeTwoLayout = function() {
   var cx = this.WIDTH / 2;
   var cy = this.HEIGHT / 2;
@@ -340,14 +344,100 @@ Game.prototype.generateThreeTwoLayout = function() {
   var padding = 3 * px;
 
   var world = this.getWorld();
-  var ui = this.getUI();
   var pool = this.getPool();
   var form = this.getForm();
   var list = this.getList();
+
+  var resetButton = this._resetButton;
+  var shuffleButton = this._shuffleButton;
+  var submitButton = this._submitButton;
+  var backspaceButton = this._backspaceButton;
+
+  world.setWidth( 128 * px );
+  world.setHeight( 32 * px );
+
+  world.setTop( 2 * padding );
+  world.setX( cx );
+  world.setColor( 20, 0, 0, 0.1 );
+
+  var buttonWidth = 0.2 * world.getWidth();
+  var buttonHeight = 0.4 * world.getHeight();
+  var buttonFontSize = Math.floor( 0.4 * buttonHeight );
+  var buttonX = world.getLeft();
+  var buttonY = world.getBottom() + padding;
+
+  resetButton.setWidth( buttonWidth );
+  resetButton.setHeight( buttonHeight );
+  resetButton.setTopLeft( buttonX, buttonY );
+  resetButton.setColor( 0, 0, 0, 1.0 );
+  resetButton.setTextColor( 255, 255, 255, 1.0 );
+  resetButton.setFontSize( buttonFontSize );
+
+  shuffleButton.setWidth( buttonWidth );
+  shuffleButton.setHeight( buttonHeight );
+  shuffleButton.setTopLeft( buttonX + 1.33 * buttonWidth, buttonY );
+  shuffleButton.setColor( 0, 0, 0, 1.0 );
+  shuffleButton.setTextColor( 255, 255, 255, 1.0 );
+  shuffleButton.setFontSize( buttonFontSize );
+
+  submitButton.setWidth( buttonWidth );
+  submitButton.setHeight( buttonHeight );
+  submitButton.setTopLeft( buttonX + 2.66 * buttonWidth, buttonY );
+  submitButton.setColor( 0, 0, 0, 1.0 );
+  submitButton.setTextColor( 255, 255, 255, 1.0 );
+  submitButton.setFontSize( buttonFontSize );
+
+  backspaceButton.setWidth( buttonWidth );
+  backspaceButton.setHeight( buttonHeight );
+  backspaceButton.setTopLeft( buttonX + 4 * buttonWidth, buttonY );
+  backspaceButton.setColor( 0, 0, 0, 1.0 );
+  backspaceButton.setTextColor( 255, 255, 255, 1.0 );
+  backspaceButton.setFontSize( buttonFontSize );
+
+  // Pool of letters the player can select from.
+  pool.setSpacing( 22 * px );
+  pool.setWidth( 18 * px );
+  pool.setHeight( 18 * px );
+  pool.setTopLeft( buttonX, resetButton.getBottom() + padding );
+  pool.setColor( 240, 63, 53, 1.0 );
+  pool.setTextColor( 255, 255, 255, 1.0 );
+  pool.setFontSize( Math.floor( 0.4 * pool.getWidth() ) );
+  console.log( this._word );
+  pool.setLetters( this._word.split( '' ) );
+  var letters = pool.getLetters();
+
+  // Form where player inputs the word guess.
+  form.setLineWidth( px );
+  form.setSpacing( 22 * px );
+  form.setWidth( 18 * px  + form.getLineWidth() );
+  form.setHeight( 18 * px + form.getLineWidth() );
+  form.setTopLeft( buttonX, pool.getBottom() + form.getLineWidth() + padding );
+  form.setColor( 100, 100, 100, 1.0 );
+  form.createFormElements( letters.length );
+
+  // List displaying all correctly spelled words.
+  list.setTopLeft( buttonX, form.getBottom() + form.getLineWidth() + padding );
+  list.setWidth( Math.floor( 6 * px ) );
+  list.setHeight( Math.floor( 6 * px ) );
+  list.setFontSize( Math.floor( list.getHeight() * 0.6 ) );
+  list.setColor( 0, 55, 55, 1.0 );
+  list.setBackgroundColor( 0, 0, 0, 1.0 );
+  list.setTextColor( 255, 255, 255, 1.0 );
+  list.setLineWidth( 0.5 * px );
+  list.setHorizontalSpacing( list.getWidth() );
+  list.setPadding( 20 * padding );
+  list.setMaxHeight( this.HEIGHT );
+  list.setWords( this._subWords );
 };
 
 Game.prototype.generateFourThreeLayout = function() {
+  var cx = this.WIDTH / 2;
+  var cy = this.HEIGHT / 2;
 
+  var px = this.WIDTH / 256;
+  var py = this.HEIGHT / 256;
+
+  var padding = 3 * px;
 };
 
 Game.prototype.generateSixteenNineLayout = function() {
