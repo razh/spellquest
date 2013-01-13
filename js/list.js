@@ -156,7 +156,7 @@ List.prototype.isWord = function( word ) {
 
 List.prototype.wasWordFound = function( word ) {
   var index = this.getWords().lastIndexOf( word );
-  return index === -1 && this._wasFound[ index ];
+  return index !== -1 && this._wasFound[ index ];
 };
 
 List.prototype.markWord = function( ctx, word ) {
