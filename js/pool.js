@@ -19,11 +19,11 @@ Pool.prototype = new Entity();
 Pool.prototype.constructor = Pool;
 
 // TODO: Go in order of letter indices.
-Pool.prototype.getLetterByChar = function( char ) {
+Pool.prototype.getLetterByChar = function( character ) {
   var index;
   for ( var i = 0; i < this._letterIndices.length; i++ ) {
     index = this._letterIndices[i];
-    if ( this._letterEntities[ index ].getChar() === char && !this._isUsed[ index ] ) {
+    if ( this._letterEntities[ index ].getChar() === character && !this._isUsed[ index ] ) {
       this._isUsed[ index ] = true;
       return this._letterEntities[ index ];
     }
