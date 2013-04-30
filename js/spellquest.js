@@ -386,7 +386,7 @@ define(
       world.setWidth( 128 * px );
       world.setHeight( 32 * px );
 
-      world.setTop( 2 * padding );
+      world.setTop( 5 * padding );
       world.setX( cx );
       world.setColor( 20, 0, 0, 0.1 );
 
@@ -605,7 +605,7 @@ define(
       this.drawBackground( this._backgroundCtx );
     };
 
-    Game.prototype.inputCharacter = function( character ) {
+    Game.prototype.input = function( character ) {
       var letter = this.getPool().getLetterByChar( character );
       if ( letter !== null ) {
         var currFormElement = this.getForm().getFirstEmptyFormElement();

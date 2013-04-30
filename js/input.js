@@ -47,7 +47,7 @@ define(
         var index = pool._letterEntities.lastIndexOf( selected );
         var formElement;
         if ( !pool._isUsed[ index ] ) {
-          game.inputCharacter( selected.getChar() );
+          game.input( selected.getChar() );
         } else {
           formElement = game.getForm().getLastUsedFormElement();
           if ( formElement !== null ) {
@@ -81,7 +81,7 @@ define(
 
       if ( 65 <= event.keyCode && event.keyCode <= 90 ) {
         // console.log( String.fromCharCode( event.keyCode ) );
-        game.inputCharacter( String.fromCharCode( event.keyCode ) );
+        game.input( String.fromCharCode( event.keyCode ) );
       }
 
       else {
