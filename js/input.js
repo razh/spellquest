@@ -7,19 +7,22 @@ define(
     function inputDown( input ) {
       // console.log( 'down' );
       // Game.instance._backgroundCtx.fillRect( input.x, input.y, 5, 5 );
+      var game = Game.getInstance();
 
-      Game.instance.getPlayer().setSelected( Game.instance.hit( input.x, input.y ) );
+      game.getPlayer().setSelected( game.hit( input.x, input.y ) );
 
-      var selected = Game.instance.getPlayer().getSelected();
+      var selected = game.getPlayer().getSelected();
       if ( selected !== null ) {
         // selected.setPosition( input.x, input.y );
         selected.setVelocity( 0, 0 );
       } else {
-        Game.instance.getUI().click( input.x, input.y );
+        game.getUI().click( game, input.x, input.y );
       }
     }
 
     function inputMove( input ) {
+      var game = Game.getInstance();
+
       // console.log( 'move' );
       while ( lastPositions.length > 1 ) {
         lastPositions.shift();
@@ -28,15 +31,17 @@ define(
       lastPositions.push( input );
       // console.log( input.x + ", " + input.y );
 
-      var selected = Game.instance.getPlayer().getSelected();
+      var selected = game.getPlayer().getSelected();
       if ( selected !== null ) {
         // selected.setPosition( input.x, input.y );
       }
     }
 
     function inputUp( input ) {
+      var game = Game.getInstance();
+
       // console.log( 'up' );
-      var selected = Game.instance.getPlayer().getSelected();
+      var selected = game.getPlayer().getSelected();
       if ( selected !== null ) {
         // var dx = lastPositions[1].x - lastPositions[0].x,
         //     dy = lastPositions[1].y - lastPositions[0].y;
@@ -47,10 +52,10 @@ define(
         // console.log( lastPositions[1].x + ", " + lastPositions[0].x)
         // console.log( dx + ", " +dy)
         // if ( ( dx * dx + dy * dy ) < 400 ) {
-        var pool = Game.instance.getPool();
+        var pool = game.getPool();
         var index = pool._letterEntities.lastIndexOf( selected );
         if ( !pool._isUsed[ index ] ) {
-          var formElement = Game.instance.getForm().getFirstEmptyFormElement( selected );
+          var formElement = game.getForm().getFirstEmptyFormElement( selected );
           if ( formElement !== null ) {
             selected.setPosition( formElement.getPosition() );
           }
@@ -61,15 +66,67 @@ define(
         // console.log( lastPositions );
         // console.log( dx + ", " + dy );
         // console.log( selected.getVelocity() );
-        Game.instance.getPlayer().setSelected( null );
+        game.getPlayer().setSelected( null );
       }
     }
 
     function transformCoords( x, y ) {
+      var game = Game.getInstance();
+
       return {
-        x: x - Game.instance._canvas.offsetLeft,
-        y: y - Game.instance._canvas.offsetTop
+        x: x - game._canvas.offsetLeft,
+        y: y - game._canvas.offsetTop
       };
+    }
+
+    function onKeyDown( event ) {
+      var game = Game.getInstance();
+
+      // ESC.
+      if ( event.keyCode === 27 ) {
+        game.stop();
+        return;
+      }
+
+      if ( 65 <= event.keyCode && event.keyCode <= 90 ) {
+        // console.log( String.fromCharCode( event.keyCode ) );
+        var letter = game.getPool().getLetterByChar( String.fromCharCode( event.keyCode ) );
+        if ( letter !== null ) {
+          var currFormElement = game.getForm().getFirstEmptyFormElement();
+          if ( currFormElement !== null ) {
+            letter.setPosition( currFormElement.getPosition() );
+            currFormElement.setLetter( letter );
+          }
+         }
+      }
+
+      else {
+        console.log( event.keyCode );
+        switch ( event.keyCode ) {
+          // Enter.
+          case 13:
+            var word = game.getForm().getWord().toLowerCase();
+            console.log( game.getForm().getWord() );
+            console.log( game.getList().isWord( word ) );
+            if ( game.getList().isWord( word ) ) {
+              game.getList().markWord( game._backgroundCtx, word );
+            }
+            game.getPool().reset();
+            break;
+          // Space.
+          case 32:
+            game.getPool().shuffle();
+            break;
+          // Backspace.
+          case 8:
+            event.preventDefault();
+            var form = game.getForm();
+            if ( form.getWord().length !== 0 ) {
+              game.getPool().pushLetter( form.getLastLetter() );
+            }
+            break;
+        }
+      }
     }
 
     return {
@@ -105,52 +162,7 @@ define(
         inputUp();
       },
 
-      onKeyDown: function( event ) {
-        // ESC.
-        if ( event.keyCode === 27 ) {
-          quit();
-          return;
-        }
-
-        if ( 65 <= event.keyCode && event.keyCode <= 90 ) {
-          // console.log( String.fromCharCode( event.keyCode ) );
-          var letter = Game.instance.getPool().getLetterByChar( String.fromCharCode( event.keyCode ) );
-          if ( letter !== null ) {
-            var currFormElement = Game.instance.getForm().getFirstEmptyFormElement();
-            if ( currFormElement !== null ) {
-              letter.setPosition( currFormElement.getPosition() );
-            }
-           }
-        }
-
-        else {
-          console.log( event.keyCode );
-          switch ( event.keyCode ) {
-            // Enter.
-            case 13:
-              var word = Game.instance.getForm().getWord().toLowerCase();
-              console.log( Game.instance.getForm().getWord() );
-              console.log( Game.instance.getList().isWord( word ) );
-              if ( Game.instance.getList().isWord( word ) ) {
-                Game.instance.getList().markWord( Game.instance._backgroundCtx, word );
-              }
-              Game.instance.getPool().reset();
-              break;
-            // Space.
-            case 32:
-              Game.instance.getPool().shuffle();
-              break;
-            // Backspace.
-            case 8:
-              event.preventDefault();
-              var form = Game.instance.getForm();
-              if ( form.getWord().length !== 0 ) {
-                Game.instance.getPool().pushLetter( form.getLastLetter() );
-              }
-              break;
-          }
-        }
-      }
+      onKeyDown: onKeyDown
     };
   }
 );

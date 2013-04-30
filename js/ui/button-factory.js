@@ -5,12 +5,12 @@ define(
       createSubmitButton: function() {
         var button = new Button();
 
-        button.addOnClick(function() {
-          var word = Game.instance.getForm().getWord().toLowerCase();
-          if ( Game.instance.getList().isWord( word ) ) {
-            Game.instance.getList().markWord( Game.instance._backgroundCtx, word );
+        button.addOnClick(function( game ) {
+          var word = game.getForm().getWord().toLowerCase();
+          if ( game.getList().isWord( word ) ) {
+            game.getList().markWord( game._backgroundCtx, word );
           }
-          Game.instance.getPool().reset();
+          game.getPool().reset();
         });
 
         button.setText( 'submit' );
@@ -21,8 +21,8 @@ define(
       createResetButton: function() {
         var button = new Button();
 
-        button.addOnClick(function() {
-          Game.instance.reset();
+        button.addOnClick(function( game ) {
+          game.reset();
         });
 
         button.setText( 'reset' );
@@ -33,8 +33,8 @@ define(
       createShuffleButton: function() {
         var button = new Button();
 
-        button.addOnClick(function() {
-          Game.instance.getPool().shuffle();
+        button.addOnClick(function( game ) {
+          game.getPool().shuffle();
         });
 
         button.setText( 'shuffle' );
@@ -45,10 +45,10 @@ define(
       createBackspaceButton: function() {
         var button = new Button();
 
-        button.addOnClick(function() {
-          var form = Game.instance.getForm();
+        button.addOnClick(function( game ) {
+          var form = game.getForm();
           if ( form.getWord().length !== 0 ) {
-            Game.instance.getPool().pushLetter( form.getLastLetter() );
+            game.getPool().pushLetter( form.getLastLetter() );
           }
         });
 

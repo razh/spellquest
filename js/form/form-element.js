@@ -16,13 +16,18 @@ define(
     FormElement.prototype.update = function( elapsedTime ) {
       Entity.prototype.update.call( this, elapsedTime );
 
+      if ( typeof Game === 'undefined' ) {
+        return;
+      }
+
+      var game = Game.getInstance();
       // Remove letter if no longer inside the form element.
       if ( this.hasLetter() ) {
         if ( this.getPosition() !== this.getLetter().getPosition() ) {
           // TODO: pool.setLetterUsed() instead.
-          var index = Game.instance.getPool()._letterEntities.lastIndexOf( this.getLetter() );
+          var index = game.getPool()._letterEntities.lastIndexOf( this.getLetter() );
           if ( index !== -1 ) {
-            Game.instance.getPool()._isUsed[ index ] = false;
+            game.getPool()._isUsed[ index ] = false;
           }
 
           this.setLetter( null );

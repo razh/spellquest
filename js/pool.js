@@ -1,6 +1,6 @@
 define(
-  [ 'color', 'spellquest', 'entities/entity', 'entities/letter' ],
-  function( Color, Game, Entity, Letter ) {
+  [ 'color', 'entities/entity', 'entities/letter' ],
+  function( Color, Entity, Letter ) {
     // http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
     function fisherYates( array ) {
       var i = array.length;

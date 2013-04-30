@@ -10,9 +10,9 @@ define(
       }
     };
 
-    UI.prototype.click = function( x, y ) {
+    UI.prototype.click = function( game, x, y ) {
       for ( var i = 0; i < this._buttons.length; i++ ) {
-        this._buttons[i].click( x, y );
+        this._buttons[i].click( game, x, y );
       }
     };
 

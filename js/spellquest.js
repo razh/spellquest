@@ -9,6 +9,7 @@ define(
         Pool          = require( 'pool' ),
         Form          = require( 'form/form' ),
         List          = require( 'list' ),
+        Layout        = require( 'ui/layout' ),
         Dictionary    = require( 'dictionary' ),
         PolygonEntity = require( 'entities/polygon-entity' ),
         SpriteEntity  = require( 'entities/sprite-entity' ),
@@ -33,8 +34,8 @@ define(
       this._ctx = this._canvas.getContext( '2d' );
       this._worldCtx = this._worldCanvas.getContext( '2d' );
 
-      this.WIDTH = window.innerWidth;
-      this.HEIGHT = window.innerHeight;
+      this.WIDTH = 320;
+      this.HEIGHT = 480;
 
       this._canvas.width = this.WIDTH;
       this._canvas.height = this.HEIGHT;
@@ -98,12 +99,12 @@ define(
       //   this._layout = Layout.VERTICAL;
       //   this.generateVerticalLayout();
       // }
-      this._aspectRatio = this.WIDTH / this.HEIGHT;
-      if ( this._aspectRatio < 3 / 2 ) {
-        this._backgroundCanvas.height = this.WIDTH / 2 * 3;
-      } else if ( this._aspectRatio > 3 / 2 ) {
-        this._backgroundCanvas.width = this.HEIGHT / 3 * 2;
-      }
+      // this._aspectRatio = this.WIDTH / this.HEIGHT;
+      // if ( this._aspectRatio < 3 / 2 ) {
+      //   this._backgroundCanvas.height = this.WIDTH / 2 * 3;
+      // } else if ( this._aspectRatio > 3 / 2 ) {
+      //   this._backgroundCanvas.width = this.HEIGHT / 3 * 2;
+      // }
       // this._backgroundCanvas.height = this.HEIGHT;
       this.generateThreeTwoLayout();
 
@@ -148,6 +149,10 @@ define(
 
     // Lazy singleton;
     Game.instance = null;
+
+    Game.getInstance = function() {
+      return Game.instance;
+    };
 
     Game.prototype.generateVerticalLayout = function() {
       var cx = this.WIDTH / 2;
@@ -564,7 +569,7 @@ define(
       }
 
       this._subWords = this._dict.getSubWords( this._word );
-      for ( i = 0; i < this._subWords.length; i++ ) {
+      for ( var i = 0; i < this._subWords.length; i++ ) {
         console.log( this._subWords[i] );
       }
 

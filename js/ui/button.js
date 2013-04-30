@@ -39,10 +39,10 @@ define(
       this._fontSize = fontSize;
     };
 
-    Button.prototype.click = function( x, y ) {
+    Button.prototype.click = function( game, x, y ) {
       if ( this.contains( x, y ) ) {
         for ( var i = 0; i < this._onClick.length; i++ ) {
-          this._onClick[i].call( this, x, y );
+          this._onClick[i].call( this, game, x, y );
         }
       }
     };
