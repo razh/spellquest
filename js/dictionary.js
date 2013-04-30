@@ -1,6 +1,6 @@
 define(
-  [],
-  function() {
+  [ 'jquery' ],
+  function( $ ) {
     function removeByIndex( array, index ) {
       var newArray = array.slice( 0, index );
       newArray = newArray.concat( array.slice( index + 1 ) );

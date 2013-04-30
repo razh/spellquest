@@ -57,7 +57,10 @@ define(
         this._layers[i].draw( ctx );
       }
 
-      this.getPlayerEntity().draw( ctx );
+      var playerEntity = this.getPlayerEntity();
+      if ( playerEntity !== null ) {
+        playerEntity.draw( ctx );
+      }
     };
 
     World.prototype.hit = function( x, y ) {

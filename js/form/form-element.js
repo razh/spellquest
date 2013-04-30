@@ -1,5 +1,5 @@
 define(
-  [ 'entities/entity/' ],
+  [ 'entities/entity' ],
   function( Entity ) {
     // Adapted from http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html.
     function roundRectCentered( ctx, x, y, width, height, radius, fill, stroke ) {

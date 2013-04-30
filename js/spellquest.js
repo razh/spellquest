@@ -1,6 +1,22 @@
 define(
-  [ 'util' ],
-  function( Utils ) {
+  function( require ) {
+    'use strict';
+
+    var Color         = require( 'color' ),
+        Player        = require( 'player' ),
+        World         = require( 'world/world' ),
+        UI            = require( 'ui/ui' ),
+        Pool          = require( 'pool' ),
+        Form          = require( 'form/form' ),
+        List          = require( 'list' ),
+        Dictionary    = require( 'dictionary' ),
+        PolygonEntity = require( 'entities/polygon-entity' ),
+        SpriteEntity  = require( 'entities/sprite-entity' ),
+        ButtonType    = require( 'ui/button-type' ),
+        ButtonFactory = require( 'ui/button-factory' ),
+        LayerType     = require( 'world/layer-type' ),
+        LayerFactory  = require( 'world/layer-factory' );
+
     function Game() {
       this._backgroundCanvas = document.createElement( 'canvas' );
       this._canvas = document.createElement( 'canvas' );
@@ -42,10 +58,10 @@ define(
       this._form = new Form();
       this._list = new List();
 
-      this._resetButton = new ResetButton();
-      this._shuffleButton = new ShuffleButton();
-      this._submitButton = new SubmitButton();
-      this._backspaceButton = new BackspaceButton();
+      this._resetButton = ButtonFactory.createButton( ButtonType.RESET );
+      this._shuffleButton = ButtonFactory.createButton( ButtonType.SHUFFLE );
+      this._submitButton = ButtonFactory.createButton( ButtonType.SUBMIT );
+      this._backspaceButton = ButtonFactory.createButton( ButtonType.BACKSPACE );
 
       this._ui.addButton( this._resetButton );
       this._ui.addButton( this._shuffleButton );
@@ -60,7 +76,7 @@ define(
       }
 
       this._subWords = this._dict.getSubWords( this._word );
-      for ( i = 0; i < this._subWords.length; i++ ) {
+      for ( var i = 0; i < this._subWords.length; i++ ) {
         console.log( this._subWords[i] );
       }
 
@@ -82,16 +98,19 @@ define(
       //   this._layout = Layout.VERTICAL;
       //   this.generateVerticalLayout();
       // }
-      // this._aspectRatio = this.WIDTH / this.HEIGHT;
-      this.HEIGHT = this.WIDTH / 2 * 3;
-      this._backgroundCanvas.height = this.HEIGHT;
+      this._aspectRatio = this.WIDTH / this.HEIGHT;
+      if ( this._aspectRatio > 3 / 2 ) {
+        this._backgroundCanvas.height = this.WIDTH / 2 * 3;
+      } else if ( this._aspectRatio < 3 / 2 ) {
+        this._backgroundCanvas.width = this.HEIGHT / 3 * 2;
+      }
+      // this._backgroundCanvas.height = this.HEIGHT;
       this.generateThreeTwoLayout();
 
       this._worldCanvas.width = this._world.getWidth();
       this._worldCanvas.height = this._world.getHeight();
 
-      var layerFactory = new LayerFactory();
-      this._world.addLayer(layerFactory.createTerrainLayer({
+      this._world.addLayer(LayerFactory.createTerrainLayer({
         type: LayerType.CIRCULAR,
         color: new Color( 255, 0, 0, 1.0 ),
         width: 10 * this._world.getWidth(),
@@ -101,7 +120,7 @@ define(
         zIndex: 1,
         parallaxFactor: 1.0
       }));
-      this._world.addLayer(layerFactory.createTerrainLayer({
+      this._world.addLayer(LayerFactory.createTerrainLayer({
         type: LayerType.CIRCULAR,
         color: new Color( 0, 0, 255, 1.0 ),
         width: 20 * this._world.getHeight(),
@@ -445,13 +464,9 @@ define(
       var padding = 3 * px;
     };
 
-    Game.prototype.generateSixteenNineLayout = function() {
+    Game.prototype.generateSixteenNineLayout = function() {};
 
-    };
-
-    Game.prototype.generateSixteenTenLayout = function() {
-
-    };
+    Game.prototype.generateSixteenTenLayout = function() {};
 
     Game.prototype.tick = function() {
       this.update();
@@ -529,6 +544,10 @@ define(
       this._running = running;
     };
 
+    Game.prototype.stop = function() {
+      this.setRunning( false );
+    };
+
     Game.prototype.reset = function() {
       var pool = this.getPool();
       var form = this.getForm();
@@ -581,51 +600,5 @@ define(
     };
 
     return Game;
-  }
-);
-
-var Layout = {
-  HORIZONTAL: 0,
-  VERTICAL: 1
-};
-
-var _game;
-function init() {
-  _game = new Game();
-
-  var isTouchSupported = "ontouchend" in document;
-
-  if ( isTouchSupported ) {
-    _game._canvas.addEventListener( 'touchstart', onTouchStart, null );
-    _game._canvas.addEventListener( 'touchmove', onTouchMove, null );
-    _game._canvas.addEventListener( 'touchend', onTouchEnd, null );
-  } else {
-    _game._canvas.addEventListener( 'mousedown', onMouseDown, null );
-    _game._canvas.addEventListener( 'mousemove', onMouseMove, null );
-    _game._canvas.addEventListener( 'mouseup', onMouseUp, null );
-  }
-
-
-  document.addEventListener( 'keydown', onKeyDown, null );
-
-  loop();
-}
-
-function loop() {
-  if ( !running )
-    return;
-
-  _game.tick();
-  requestAnimFrame( loop );
-}
-
-function quit() {
-  console.log( 'quit' );
-  _game.setRunning( false );
-}
-
-$(
-  function() {
-    init();
   }
 );

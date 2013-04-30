@@ -1,6 +1,7 @@
 define(
-  [ 'color' ],
-  function( Color ) {
+  [ 'color', 'spellquest' ],
+  function( Color, Game ) {
+
     function Entity() {
       this._position = {
         x: 0,
@@ -158,10 +159,10 @@ define(
       // this.setVelocityX( this.getVelocityX() * 0.95 );
       // this.setVelocityY( this.getVelocityY() * 0.95 );
 
-      if ( Math.abs( this.getVelocityX() ) < _game.EPSILON ) {
+      if ( Math.abs( this.getVelocityX() ) < Game.instance.EPSILON ) {
         this.setVelocityX( 0 );
       }
-      if ( Math.abs( this.getVelocityY() ) < _game.EPSILON ) {
+      if ( Math.abs( this.getVelocityY() ) < Game.instance.EPSILON ) {
         this.setVelocityY( 0 );
       }
 
@@ -171,14 +172,14 @@ define(
       // if ( this.getX() - this.getHalfWidth() <= 0 ) {
       //   this.setX( this.getHalfWidth() );
       // }
-      // if ( this.getX() + this.getHalfWidth() >= _game.WIDTH ) {
-      //   this.setX( _game.WIDTH - this.getHalfWidth() );
+      // if ( this.getX() + this.getHalfWidth() >= Game.instance.WIDTH ) {
+      //   this.setX( Game.instance.WIDTH - this.getHalfWidth() );
       // }
       // if ( this.getY() - this.getHalfHeight() <= 0 ) {
       //   this.setY( this.getHalfHeight() );
       // }
-      // if ( this.getY() + this.getHalfHeight() >= _game.HEIGHT ) {
-      //   this.setY( _game.HEIGHT - this.getHalfHeight() );
+      // if ( this.getY() + this.getHalfHeight() >= Game.instance.HEIGHT ) {
+      //   this.setY( Game.instance.HEIGHT - this.getHalfHeight() );
       // }
     };
 

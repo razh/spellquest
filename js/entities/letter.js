@@ -1,6 +1,7 @@
 define(
   [ 'color', './entity' ],
   function( Color, Entity ) {
+
     function Letter() {
       Entity.call( this );
 

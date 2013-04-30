@@ -1,6 +1,7 @@
 define(
   [ 'entities/entity', './form-element' ],
   function( Entity, FormElement ) {
+
     function Form() {
       Entity.call( this );
 
