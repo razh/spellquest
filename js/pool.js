@@ -130,10 +130,6 @@ define(
     };
 
     Pool.prototype.reset = function() {
-      if ( !this._form ) {
-        return;
-      }
-
       var x = this.getX();
       var y = this.getY();
       var spacing = this.getSpacing();
@@ -161,6 +157,7 @@ define(
           xPos++;
         }
       }
+      console.log( xPos );
 
       // Shift letters in pool to the right.
       for ( var i = 0; i < this._letterIndices.length; i++ ) {

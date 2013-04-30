@@ -14,7 +14,7 @@ define(
       var selected = game.getPlayer().getSelected();
       if ( selected !== null ) {
         // selected.setPosition( input.x, input.y );
-        selected.setVelocity( 0, 0 );
+        // selected.setVelocity( 0, 0 );
       } else {
         game.getUI().click( game, input.x, input.y );
       }
@@ -43,29 +43,20 @@ define(
       // console.log( 'up' );
       var selected = game.getPlayer().getSelected();
       if ( selected !== null ) {
-        // var dx = lastPositions[1].x - lastPositions[0].x,
-        //     dy = lastPositions[1].y - lastPositions[0].y;
-
-        // selected.setVelocity( dx / 50, dy / 50 );
-
-        // TODO: Awful feel.
-        // console.log( lastPositions[1].x + ", " + lastPositions[0].x)
-        // console.log( dx + ", " +dy)
-        // if ( ( dx * dx + dy * dy ) < 400 ) {
         var pool = game.getPool();
         var index = pool._letterEntities.lastIndexOf( selected );
+        var formElement;
         if ( !pool._isUsed[ index ] ) {
-          var formElement = game.getForm().getFirstEmptyFormElement( selected );
-          if ( formElement !== null ) {
-            selected.setPosition( formElement.getPosition() );
-          }
+          game.inputCharacter( selected.getChar() );
         } else {
+          formElement = game.getForm().getLastUsedFormElement();
+          if ( formElement !== null ) {
+            formElement.setLetter( null );
+          }
+
           pool.pushLetter( selected );
         }
 
-        // console.log( lastPositions );
-        // console.log( dx + ", " + dy );
-        // console.log( selected.getVelocity() );
         game.getPlayer().setSelected( null );
       }
     }
@@ -90,14 +81,7 @@ define(
 
       if ( 65 <= event.keyCode && event.keyCode <= 90 ) {
         // console.log( String.fromCharCode( event.keyCode ) );
-        var letter = game.getPool().getLetterByChar( String.fromCharCode( event.keyCode ) );
-        if ( letter !== null ) {
-          var currFormElement = game.getForm().getFirstEmptyFormElement();
-          if ( currFormElement !== null ) {
-            letter.setPosition( currFormElement.getPosition() );
-            currFormElement.setLetter( letter );
-          }
-         }
+        game.inputCharacter( String.fromCharCode( event.keyCode ) );
       }
 
       else {
@@ -105,13 +89,7 @@ define(
         switch ( event.keyCode ) {
           // Enter.
           case 13:
-            var word = game.getForm().getWord().toLowerCase();
-            console.log( game.getForm().getWord() );
-            console.log( game.getList().isWord( word ) );
-            if ( game.getList().isWord( word ) ) {
-              game.getList().markWord( game._backgroundCtx, word );
-            }
-            game.getPool().reset();
+            game.submit();
             break;
           // Space.
           case 32:
@@ -120,10 +98,7 @@ define(
           // Backspace.
           case 8:
             event.preventDefault();
-            var form = game.getForm();
-            if ( form.getWord().length !== 0 ) {
-              game.getPool().pushLetter( form.getLastLetter() );
-            }
+            game.backspace();
             break;
         }
       }

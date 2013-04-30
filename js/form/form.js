@@ -93,6 +93,16 @@ define(
       return null;
     };
 
+    Form.prototype.getLastUsedFormElement = function() {
+      for ( var i = this._formElements.length - 1; i >= 0; i-- ) {
+        if ( this._formElements[i].hasLetter() ) {
+          return this._formElements[i];
+        }
+      }
+
+      return null;
+    };
+
     Form.prototype.getFirstEmptyFormElement = function( letter ) {
       for ( var i = 0; i < this._formElements.length; i++ ) {
         if ( !this._formElements[i].hasLetter() ||

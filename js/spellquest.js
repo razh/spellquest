@@ -605,6 +605,38 @@ define(
       this.drawBackground( this._backgroundCtx );
     };
 
+    Game.prototype.inputCharacter = function( character ) {
+      var letter = this.getPool().getLetterByChar( character );
+      if ( letter !== null ) {
+        var currFormElement = this.getForm().getFirstEmptyFormElement();
+        if ( currFormElement !== null ) {
+          letter.setPosition( currFormElement.getPosition() );
+          currFormElement.setLetter( letter );
+        }
+      }
+    };
+
+    Game.prototype.submit = function() {
+      var word = this.getForm().getWord().toLowerCase();
+      console.log( this.getForm().getWord() );
+      console.log( 'isWord: ' + this.getList().isWord( word ) );
+      if ( this.getList().isWord( word ) ) {
+        this.getList().markWord( this._backgroundCtx, word );
+      }
+      this.getPool().reset();
+    };
+
+    Game.prototype.backspace = function() {
+      var form = this.getForm();
+      if ( form.getWord().length !== 0 ) {
+        var formElement = form.getLastUsedFormElement();
+        if ( formElement !== null ) {
+          this.getPool().pushLetter( formElement.getLetter() );
+          formElement.setLetter( null );
+        }
+      }
+    };
+
     return Game;
   }
 );

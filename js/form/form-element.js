@@ -13,28 +13,6 @@ define(
     FormElement.prototype = new Entity();
     FormElement.prototype.constructor = FormElement;
 
-    FormElement.prototype.update = function( elapsedTime ) {
-      Entity.prototype.update.call( this, elapsedTime );
-
-      if ( typeof Game === 'undefined' ) {
-        return;
-      }
-
-      var game = Game.getInstance();
-      // Remove letter if no longer inside the form element.
-      if ( this.hasLetter() ) {
-        if ( this.getPosition() !== this.getLetter().getPosition() ) {
-          // TODO: pool.setLetterUsed() instead.
-          var index = game.getPool()._letterEntities.lastIndexOf( this.getLetter() );
-          if ( index !== -1 ) {
-            game.getPool()._isUsed[ index ] = false;
-          }
-
-          this.setLetter( null );
-        }
-      }
-    };
-
     FormElement.prototype.setLetter = function( letter ) {
       this._letter = letter;
     };
