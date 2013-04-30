@@ -19,6 +19,8 @@ define(
     function Pool() {
       Entity.call( this );
 
+      this._form = null;
+
       this._spacing = 0;
       // Actual letters, in order.
       this._letters = [];
@@ -128,6 +130,10 @@ define(
     };
 
     Pool.prototype.reset = function() {
+      if ( !this._form ) {
+        return;
+      }
+
       var x = this.getX();
       var y = this.getY();
       var spacing = this.getSpacing();
@@ -136,7 +142,7 @@ define(
       var letter = null;
       // The new order of the letters.
       var newIndices = [];
-      var formElements = Game.instance.getForm().getFormElements();
+      var formElements = this._form.getFormElements();
 
       // We want the letters in the form to be first.
       for ( i = 0; i < formElements.length; i++ ){
@@ -237,6 +243,10 @@ define(
           xPos++;
         }
       }
+    };
+
+    Pool.prototype.setForm = function( form ) {
+      this._form = form;
     };
 
     return Pool;

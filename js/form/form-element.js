@@ -1,6 +1,6 @@
 define(
-  [ 'entities/entity', 'round-rectangle' ],
-  function( Entity, RoundRectangle ) {
+  [ 'spellquest', 'entities/entity', 'round-rectangle' ],
+  function( Game, Entity, RoundRectangle ) {
     var roundRectCentered = RoundRectangle.roundRectCentered;
 
     function FormElement() {
@@ -20,9 +20,9 @@ define(
       if ( this.hasLetter() ) {
         if ( this.getPosition() !== this.getLetter().getPosition() ) {
           // TODO: pool.setLetterUsed() instead.
-          var index = _game.getPool()._letterEntities.lastIndexOf( this.getLetter() );
+          var index = Game.instance.getPool()._letterEntities.lastIndexOf( this.getLetter() );
           if ( index !== -1 ) {
-            _game.getPool()._isUsed[ index ] = false;
+            Game.instance.getPool()._isUsed[ index ] = false;
           }
 
           this.setLetter( null );

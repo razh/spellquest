@@ -52,9 +52,11 @@ define(
       this._player = new Player();
       this._world = new World();
       this._ui = new UI();
-      this._pool = new Pool();
       this._form = new Form();
       this._list = new List();
+
+      this._pool = new Pool();
+      this._pool.setForm( this._form );
 
       this._resetButton = ButtonFactory.createButton( ButtonType.RESET );
       this._shuffleButton = ButtonFactory.createButton( ButtonType.SHUFFLE );
@@ -144,9 +146,8 @@ define(
       this.drawBackground( this._backgroundCtx );
     }
 
-    // Lasy singleton;
+    // Lazy singleton;
     Game.instance = null;
-    Game.EPSILON = 1e-5;
 
     Game.prototype.generateVerticalLayout = function() {
       var cx = this.WIDTH / 2;

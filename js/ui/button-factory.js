@@ -1,16 +1,16 @@
 define(
-  [ './button', './button-type' ],
-  function( Button, ButtonType ) {
+  [ 'spellquest', './button', './button-type' ],
+  function( Game, Button, ButtonType ) {
     return {
       createSubmitButton: function() {
         var button = new Button();
 
         button.addOnClick(function() {
-          var word = _game.getForm().getWord().toLowerCase();
-          if ( _game.getList().isWord( word ) ) {
-            _game.getList().markWord( _game._backgroundCtx, word );
+          var word = Game.instance.getForm().getWord().toLowerCase();
+          if ( Game.instance.getList().isWord( word ) ) {
+            Game.instance.getList().markWord( Game.instance._backgroundCtx, word );
           }
-          _game.getPool().reset();
+          Game.instance.getPool().reset();
         });
 
         button.setText( 'submit' );
@@ -22,7 +22,7 @@ define(
         var button = new Button();
 
         button.addOnClick(function() {
-          _game.reset();
+          Game.instance.reset();
         });
 
         button.setText( 'reset' );
@@ -34,7 +34,7 @@ define(
         var button = new Button();
 
         button.addOnClick(function() {
-          _game.getPool().shuffle();
+          Game.instance.getPool().shuffle();
         });
 
         button.setText( 'shuffle' );
@@ -46,9 +46,9 @@ define(
         var button = new Button();
 
         button.addOnClick(function() {
-          var form = _game.getForm();
+          var form = Game.instance.getForm();
           if ( form.getWord().length !== 0 ) {
-            _game.getPool().pushLetter( form.getLastLetter() );
+            Game.instance.getPool().pushLetter( form.getLastLetter() );
           }
         });
 
