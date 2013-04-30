@@ -1,6 +1,8 @@
 define(
-  [ 'color', 'entities/entity' ],
-  function( Color, Entity ) {
+  [ 'color', 'entities/entity', 'round-rectangle' ],
+  function( Color, Entity, RoundRectangle ) {
+    var roundRect = RoundRectangle.roundRect;
+
     function List() {
       Entity.call( this );
 

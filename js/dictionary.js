@@ -1,6 +1,6 @@
 define(
-  [ 'jquery' ],
-  function( $ ) {
+  [ 'jquery', 'text!json/dictionary.json' ],
+  function( $, jsonData ) {
     function removeByIndex( array, index ) {
       var newArray = array.slice( 0, index );
       newArray = newArray.concat( array.slice( index + 1 ) );
@@ -20,22 +20,7 @@ define(
 
 
     function Dictionary() {
-      var jsonURL = './json/dictionary.json';
-
-      this._wordList = (function() {
-        var json = null;
-        $.ajax({
-          'async': false,
-          'global': false,
-          'url': jsonURL,
-          'dataType': 'json',
-          'success': function( data ) {
-            json = data;
-          }
-        });
-        return json;
-      }) ();
-
+      this._wordList = JSON.parse( jsonData );
       this._wordMap = [];
       this.createMap();
     }

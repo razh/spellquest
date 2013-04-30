@@ -1,6 +1,6 @@
 define(
-  [ 'color', 'spellquest' ],
-  function( Color, Game ) {
+  [ 'color', 'defaults' ],
+  function( Color, Defaults ) {
 
     function Entity() {
       this._position = {
@@ -159,10 +159,10 @@ define(
       // this.setVelocityX( this.getVelocityX() * 0.95 );
       // this.setVelocityY( this.getVelocityY() * 0.95 );
 
-      if ( Math.abs( this.getVelocityX() ) < Game.instance.EPSILON ) {
+      if ( Math.abs( this.getVelocityX() ) < Defaults.EPSILON ) {
         this.setVelocityX( 0 );
       }
-      if ( Math.abs( this.getVelocityY() ) < Game.instance.EPSILON ) {
+      if ( Math.abs( this.getVelocityY() ) < Defaults.EPSILON ) {
         this.setVelocityY( 0 );
       }
 

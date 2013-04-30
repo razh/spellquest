@@ -1,6 +1,6 @@
 define(
-  [ 'color', 'entities/entity', 'entities/letter' ],
-  function( Color, Entity, Letter ) {
+  [ 'color', 'spellquest', 'entities/entity', 'entities/letter' ],
+  function( Color, Game, Entity, Letter ) {
     // http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
     function fisherYates( array ) {
       var i = array.length;
@@ -136,7 +136,7 @@ define(
       var letter = null;
       // The new order of the letters.
       var newIndices = [];
-      var formElements = _game.getForm().getFormElements();
+      var formElements = Game.instance.getForm().getFormElements();
 
       // We want the letters in the form to be first.
       for ( i = 0; i < formElements.length; i++ ){

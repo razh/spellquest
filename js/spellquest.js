@@ -49,8 +49,6 @@ define(
 
       this._entities = [];
 
-      this.EPSILON = 1e-20;
-
       this._player = new Player();
       this._world = new World();
       this._ui = new UI();
@@ -99,9 +97,9 @@ define(
       //   this.generateVerticalLayout();
       // }
       this._aspectRatio = this.WIDTH / this.HEIGHT;
-      if ( this._aspectRatio > 3 / 2 ) {
+      if ( this._aspectRatio < 3 / 2 ) {
         this._backgroundCanvas.height = this.WIDTH / 2 * 3;
-      } else if ( this._aspectRatio < 3 / 2 ) {
+      } else if ( this._aspectRatio > 3 / 2 ) {
         this._backgroundCanvas.width = this.HEIGHT / 3 * 2;
       }
       // this._backgroundCanvas.height = this.HEIGHT;
@@ -135,10 +133,11 @@ define(
       playerEntity.setColor( 255, 255, 255, 1.0 );
       this._world.setPlayerEntity( playerEntity );
 
-      var image = new Image();
+      var world = this._world,
+          image = new Image();
       image.onload = function() {
         playerEntity.setSprite( this );
-        playerEntity.setPosition( 30, _game.getWorld().getHeight() - playerEntity.getHeight() );
+        playerEntity.setPosition( 30, world.getHeight() - playerEntity.getHeight() );
       };
       image.src = './img/test.png';
 
@@ -147,6 +146,7 @@ define(
 
     // Lasy singleton;
     Game.instance = null;
+    Game.EPSILON = 1e-5;
 
     Game.prototype.generateVerticalLayout = function() {
       var cx = this.WIDTH / 2;

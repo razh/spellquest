@@ -1,6 +1,6 @@
 define(
-  [ 'color', './entity' ],
-  function( Color, Entity ) {
+  [ 'color', 'spellquest', './entity' ],
+  function( Color, Game, Entity ) {
 
     function Letter() {
       Entity.call( this );
@@ -18,9 +18,9 @@ define(
       Entity.prototype.update.call( this, x, y );
 
       // TODO: This should be removed at some point.
-      if ( _game !== undefined && _game !== null ) {
+      if ( Game && Game.instance !== undefined && Game.instance !== null ) {
         // Snap letter to form element.
-        var formElements = _game.getForm().getFormElements();
+        var formElements = Game.instance.getForm().getFormElements();
         for ( var i = formElements.length - 1; i >= 0; i-- ) {
           if ( formElements[i].hit( this.getX(), this.getY() ) !== null ) {
             this.setPosition( formElements[i].getPosition() );
@@ -28,9 +28,9 @@ define(
             formElements[i].setLetter( this );
 
             // Set it to used.
-            var index = _game.getPool()._letterEntities.lastIndexOf( this );
+            var index = Game.instance.getPool()._letterEntities.lastIndexOf( this );
             if ( index !== -1 ) {
-              _game.getPool()._isUsed[ index ] = true;
+              Game.instance.getPool()._isUsed[ index ] = true;
             }
 
             break;
