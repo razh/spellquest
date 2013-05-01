@@ -93,6 +93,14 @@ define(
       return null;
     };
 
+    Form.prototype.getFormElementWithLetter = function( letter ) {
+      for ( var i = 0, n = this._formElements.length; i < n; i++ ) {
+        if ( this._formElements[i].getLetter() === letter ) {
+          return this._formElements[i];
+        }
+      }
+    };
+
     Form.prototype.getLastUsedFormElement = function() {
       for ( var i = this._formElements.length - 1; i >= 0; i-- ) {
         if ( this._formElements[i].hasLetter() ) {
@@ -105,8 +113,7 @@ define(
 
     Form.prototype.getFirstEmptyFormElement = function( letter ) {
       for ( var i = 0; i < this._formElements.length; i++ ) {
-        if ( !this._formElements[i].hasLetter() ||
-             ( letter !== undefined && this._formElements[i].getLetter() === letter ) ) {
+        if ( !this._formElements[i].hasLetter() ) {
           return this._formElements[i];
         }
       }

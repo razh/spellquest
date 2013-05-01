@@ -43,17 +43,18 @@ define(
       // console.log( 'up' );
       var selected = game.getPlayer().getSelected();
       if ( selected !== null ) {
-        var pool = game.getPool();
-        var index = pool._letterEntities.lastIndexOf( selected );
-        var formElement;
+
+        var form = game.getForm(),
+            pool = game.getPool(),
+            index = pool._letterEntities.lastIndexOf( selected );
+
         if ( !pool._isUsed[ index ] ) {
           game.input( selected.getChar() );
         } else {
-          formElement = game.getForm().getLastUsedFormElement();
-          if ( formElement !== null ) {
-            formElement.setLetter( null );
-          }
+          // Remove from form.
+          form.getFormElementWithLetter( selected ).setLetter( null );
 
+          // Push to pool.
           pool.pushLetter( selected );
         }
 
