@@ -1,6 +1,10 @@
 define(
-  [ 'spellquest', './button', './button-type' ],
+  [ 'spellquest',
+    './button',
+    './button-type' ],
   function( Game, Button, ButtonType ) {
+    'use strict';
+
     return {
       createSubmitButton: function() {
         var button = new Button();

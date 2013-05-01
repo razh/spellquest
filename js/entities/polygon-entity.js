@@ -1,6 +1,7 @@
 define(
   [ './entity' ],
   function( Entity ) {
+    'use strict';
 
     function PolygonEntity() {
       Entity.call( this );

@@ -1,6 +1,10 @@
 define(
-  [ 'spellquest', 'entities/entity', 'round-rectangle' ],
+  [ 'spellquest',
+    'entities/entity',
+    'round-rectangle' ],
   function( Game, Entity, RoundRectangle ) {
+    'use strict';
+
     var roundRectCentered = RoundRectangle.roundRectCentered;
 
     function FormElement() {

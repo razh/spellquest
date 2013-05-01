@@ -1,6 +1,7 @@
 define(
-  [],
   function() {
+    'use strict';
+
     window.requestAnimFrame = (function() {
       return window.requestAnimationFrame       ||
              window.webkitRequestAnimationFrame ||

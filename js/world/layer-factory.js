@@ -1,6 +1,11 @@
 define(
-  [ 'color', './layer-type', './layer', './circular-layer', 'entities/polygon-entity' ],
+  [ 'color',
+    './layer-type',
+    './layer',
+    './circular-layer',
+    'entities/polygon-entity' ],
   function( Color, LayerType, Layer, CircularLayer, PolygonEntity ) {
+    'use strict';
 
     return {
       createLayer: function( options ) {

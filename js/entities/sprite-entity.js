@@ -1,6 +1,7 @@
 define(
   [ './entity' ],
   function( Entity ) {
+    'use strict';
 
     function SpriteEntity() {
       Entity.call( this );

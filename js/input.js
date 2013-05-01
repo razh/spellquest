@@ -1,6 +1,8 @@
 define(
   [ 'spellquest' ],
   function( Game ) {
+    'use strict';
+
     // Keep track of last three positions.
     var lastPositions = [];
 

@@ -6,6 +6,8 @@ requirejs.config({
 
 define(
   function( require ) {
+    'use strict';
+
     var Game  = require( 'spellquest' ),
         Util  = require( 'util' ),
         Input = require( 'input' );

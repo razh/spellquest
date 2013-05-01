@@ -1,6 +1,8 @@
 define(
-  [ 'color', 'entities/entity' ],
+  [ 'color',
+    'entities/entity' ],
   function( Color, Entity ) {
+    'use strict';
 
     function Button() {
       Entity.call( this );

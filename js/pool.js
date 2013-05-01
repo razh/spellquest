@@ -1,6 +1,10 @@
 define(
-  [ 'color', 'entities/entity', 'entities/letter' ],
+  [ 'color',
+    'entities/entity',
+    'entities/letter' ],
   function( Color, Entity, Letter ) {
+    'use strict';
+
     // http://stackoverflow.com/questions/2450954/how-to-randomize-a-javascript-array
     function fisherYates( array ) {
       var i = array.length;

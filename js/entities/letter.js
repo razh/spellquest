@@ -1,6 +1,9 @@
 define(
-  [ 'color', 'spellquest', './entity' ],
+  [ 'color',
+    'spellquest',
+    './entity' ],
   function( Color, Game, Entity ) {
+    'use strict';
 
     function Letter() {
       Entity.call( this );

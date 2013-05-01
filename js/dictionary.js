@@ -1,6 +1,9 @@
 define(
-  [ 'jquery', 'text!json/dictionary.json' ],
+  [ 'jquery',
+    'text!json/dictionary.json' ],
   function( $, jsonData ) {
+    'use strict';
+
     function removeByIndex( array, index ) {
       var newArray = array.slice( 0, index );
       newArray = newArray.concat( array.slice( index + 1 ) );

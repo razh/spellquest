@@ -1,5 +1,7 @@
 define(
   function() {
+    'use strict';
+
     // Adapted from http://js-bits.blogspot.com/2010/07/canvas-rounded-corner-rectangles.html.
     function roundRectCentered( ctx, x, y, width, height, radius, fill, stroke ) {
       if ( typeof stroke === undefined ) {

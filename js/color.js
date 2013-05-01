@@ -1,6 +1,7 @@
 define(
-  [],
   function() {
+    'use strict';
+
     function Color() {
       this._red = 0;
       this._green = 0;

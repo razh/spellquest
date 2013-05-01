@@ -1,17 +1,26 @@
-var Camera = function() {
-  Entity.call( this );
+define(
+  [ 'entities/entity' ],
+  function( Entity ) {
+    'use strict';
 
-  this._zoom = 1.0;
-};
+    // This isn't used right now.
+    function Camera() {
+      Entity.call( this );
 
-Camera.prototype = new Entity();
-Camera.prototype.constructor = Camera;
+      this._zoom = 1.0;
+    }
 
-Camera.prototype.getZoom = function() {
-  return this._zoom;
-};
+    Camera.prototype = new Entity();
+    Camera.prototype.constructor = Camera;
 
-Camera.prototype.setZoom = function( zoom ) {
-  this._zoom = zoom;
-};
+    Camera.prototype.getZoom = function() {
+      return this._zoom;
+    };
 
+    Camera.prototype.setZoom = function( zoom ) {
+      this._zoom = zoom;
+    };
+
+    return Camera;
+  }
+);

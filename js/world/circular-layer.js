@@ -1,6 +1,8 @@
 define(
   [ './layer' ],
   function( Layer ) {
+    'use strict';
+
     function CircularLayer() {
       Layer.call( this );
     }

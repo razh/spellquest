@@ -1,6 +1,8 @@
 define(
   [ 'entities/entity' ],
   function( Entity ) {
+    'use strict';
+
     function Layer() {
       Entity.call( this );
 

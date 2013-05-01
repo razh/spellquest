@@ -1,6 +1,8 @@
 define(
-  [ 'color', 'defaults' ],
+  [ 'color',
+    'defaults' ],
   function( Color, Defaults ) {
+    'use strict';
 
     function Entity() {
       this._position = {

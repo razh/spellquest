@@ -1,6 +1,8 @@
 define(
-  [ 'entities/entity', './form-element' ],
+  [ 'entities/entity',
+    './form-element' ],
   function( Entity, FormElement ) {
+    'use strict';
 
     function Form() {
       Entity.call( this );

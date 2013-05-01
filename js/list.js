@@ -1,6 +1,10 @@
 define(
-  [ 'color', 'entities/entity', 'round-rectangle' ],
+  [ 'color',
+    'entities/entity',
+    'round-rectangle' ],
   function( Color, Entity, RoundRectangle ) {
+    'use strict';
+
     var roundRect = RoundRectangle.roundRect;
 
     function List() {
