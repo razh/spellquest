@@ -45,10 +45,12 @@ define([
     ctx.translate( this.getX(), this.getY() );
 
     ctx.beginPath();
+
     for ( var i = 0, n = this.getVertexCount(); i < n; i++ ) {
       ctx.lineTo( this._vertices[ 2 * i ],
                   this._vertices[ 2 * i + 1 ] );
     }
+
     ctx.closePath();
 
     ctx.fillStyle = this.getColor().toString();
@@ -66,9 +68,10 @@ define([
       return false;
     }
 
-    var vertexCount = this.getVertexCount();
-    var contains = false;
-    var xi, yi, xj, yj;
+    var vertexCount = this.getVertexCount(),
+        contains    = false,
+        xi, yi, xj, yj;
+
     for ( var i = 0, j = vertexCount - 1; i < vertexCount; j = i++ ) {
       xi = this._vertices[ 2 * i ];
       yi = this._vertices[ 2 * i + 1 ];

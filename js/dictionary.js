@@ -4,6 +4,10 @@ define([
 ], function( $, jsonData ) {
   'use strict';
 
+  /**
+   * We use this instead of Array.prototype.splice( index, 1 ) because it does
+   * not alter the original array.
+   */
   function removeByIndex( array, index ) {
     var newArray = array.slice( 0, index );
     newArray = newArray.concat( array.slice( index + 1 ) );
@@ -13,7 +17,7 @@ define([
   function uniqueArray( array ) {
     var newArray = [];
     for ( var i = 0, n = array.length; i < n; i++ ) {
-      if ( newArray.lastIndexOf( array[i] ) === -1 ) {
+      if ( newArray.indexOf( array[i] ) === -1 ) {
         newArray.push( array[i] );
       }
     }
@@ -24,7 +28,7 @@ define([
 
   function Dictionary() {
     this._wordList = JSON.parse( jsonData );
-    this._wordMap = [];
+    this._wordMap  = [];
     this.createMap();
   }
 
@@ -37,11 +41,11 @@ define([
       return [];
     }
 
-    var sortedWordArray = word.split( '' ).sort();
-    var sortedWord = sortedWordArray.join( '' );
+    var sortedWordArray = word.split( '' ).sort(),
+        sortedWord      = sortedWordArray.join( '' );
 
     var subWordsArray = this._wordMap[ sortedWord ];
-    if ( subWordsArray === undefined ) {
+    if ( !subWordsArray ) {
       subWordsArray = [];
     }
 
@@ -64,23 +68,24 @@ define([
 
   // TODO: Check whether to optimize.
   Dictionary.prototype.createMap = function() {
-    var key, word;
+    var key, word, sortedWord;
     for ( var i = 0, n = this._wordList.length; i < n; i++ ) {
-      word = this._wordList[i].split( '' ).sort().join( '' );
-      key = this._wordMap[ word ];
+      word       = this._wordList[i];
+      sortedWord = word.split( '' ).sort().join( '' );
 
+      key = this._wordMap[ sortedWord ];
       if ( key === undefined ) {
         key = [];
       }
 
-      key.push( this._wordList[i] );
-      this._wordMap[ word ] = key;
+      key.push( word );
+      this._wordMap[ sortedWord ] = key;
     }
   };
 
 
   Dictionary.prototype.isWord = function( word ) {
-    return this._wordList.lastIndexOf( word ) !== -1;
+    return this._wordList.indexOf( word ) !== -1;
   };
 
   return Dictionary;

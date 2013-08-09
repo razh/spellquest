@@ -2,9 +2,9 @@ define(function() {
   'use strict';
 
   function Player() {
-    this._score = 0;
+    this._score  = 0;
     this._health = 0;
-    this._level = 0;
+    this._level  = 0;
 
     this._selected = null;
   }

@@ -3,18 +3,18 @@ define(function( require ) {
 
   var Color         = require( 'color' ),
       Player        = require( 'player' ),
+      Layer         = require( 'world/layer' ),
       World         = require( 'world/world' ),
       UI            = require( 'ui/ui' ),
       Pool          = require( 'pool' ),
       Form          = require( 'form/form' ),
       List          = require( 'list' ),
+      Button        = require( 'ui/button' ),
       Layout        = require( 'ui/layout' ),
       Dictionary    = require( 'dictionary' ),
       PolygonEntity = require( 'entities/polygon-entity' ),
       SpriteEntity  = require( 'entities/sprite-entity' ),
-      ButtonType    = require( 'ui/button-type' ),
       ButtonFactory = require( 'ui/button-factory' ),
-      LayerType     = require( 'world/layer-type' ),
       LayerFactory  = require( 'world/layer-factory' );
 
   function Game() {
@@ -33,14 +33,14 @@ define(function( require ) {
     this._ctx = this._canvas.getContext( '2d' );
     this._worldCtx = this._worldCanvas.getContext( '2d' );
 
-    this.WIDTH = 320;
+    this.WIDTH  = 320;
     this.HEIGHT = 480;
 
-    this._canvas.width = this.WIDTH;
+    this._canvas.width  = this.WIDTH;
     this._canvas.height = this.HEIGHT;
 
     this._backgroundCanvas.style.backgroundColor = '#DDDDDD';
-    this._backgroundCanvas.width = this.WIDTH;
+    this._backgroundCanvas.width  = this.WIDTH;
     this._backgroundCanvas.height = this.HEIGHT;
 
     this._prevTime = Date.now();
@@ -50,18 +50,18 @@ define(function( require ) {
     this._entities = [];
 
     this._player = new Player();
-    this._world = new World();
-    this._ui = new UI();
-    this._form = new Form();
-    this._list = new List();
+    this._world  = new World();
+    this._ui     = new UI();
+    this._form   = new Form();
+    this._list   = new List();
 
     this._pool = new Pool();
     this._pool.setForm( this._form );
 
-    this._resetButton = ButtonFactory.createButton( ButtonType.RESET );
-    this._shuffleButton = ButtonFactory.createButton( ButtonType.SHUFFLE );
-    this._submitButton = ButtonFactory.createButton( ButtonType.SUBMIT );
-    this._backspaceButton = ButtonFactory.createButton( ButtonType.BACKSPACE );
+    this._resetButton     = ButtonFactory.createButton( Button.Type.RESET );
+    this._shuffleButton   = ButtonFactory.createButton( Button.Type.SHUFFLE );
+    this._submitButton    = ButtonFactory.createButton( Button.Type.SUBMIT );
+    this._backspaceButton = ButtonFactory.createButton( Button.Type.BACKSPACE );
 
     this._ui.addButton( this._resetButton );
     this._ui.addButton( this._shuffleButton );
@@ -111,7 +111,7 @@ define(function( require ) {
     this._worldCanvas.height = this._world.getHeight();
 
     this._world.addLayer(LayerFactory.createTerrainLayer({
-      type: LayerType.CIRCULAR,
+      type: Layer.Type.CIRCULAR,
       color: new Color( 255, 0, 0, 1.0 ),
       width: 10 * this._world.getWidth(),
       height: this._world.getHeight(),
@@ -121,7 +121,7 @@ define(function( require ) {
       parallaxFactor: 1.0
     }));
     this._world.addLayer(LayerFactory.createTerrainLayer({
-      type: LayerType.CIRCULAR,
+      type: Layer.Type.CIRCULAR,
       color: new Color( 0, 0, 255, 1.0 ),
       width: 20 * this._world.getHeight(),
       height: this._world.getHeight(),

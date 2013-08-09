@@ -69,5 +69,10 @@ define([
     return null;
   };
 
+  Layer.Type = {
+    DEFAULT: 0,
+    CIRCULAR: 1
+  };
+
   return Layer;
 });

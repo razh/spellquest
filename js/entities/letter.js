@@ -8,7 +8,7 @@ define([
   function Letter() {
     Entity.call( this );
 
-    this._char = ' ';
+    this._char     = ' ';
     this._fontSize = 12;
 
     this._textColor = new Color();

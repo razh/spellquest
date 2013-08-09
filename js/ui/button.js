@@ -7,9 +7,9 @@ define([
   function Button() {
     Entity.call( this );
 
-    this._text = '';
+    this._text      = '';
     this._textColor = new Color();
-    this._fontSize = 12;
+    this._fontSize  = 12;
 
     this._onClick = [];
   }
@@ -43,9 +43,10 @@ define([
 
   Button.prototype.click = function( game, x, y ) {
     if ( this.contains( x, y ) ) {
-      for ( var i = 0; i < this._onClick.length; i++ ) {
-        this._onClick[i].call( this, game, x, y );
-      }
+      var that = this;
+      this._onClick.forEach(function( fn ) {
+        fn.call( that, game, x, y );
+      });
     }
   };
 
@@ -62,6 +63,14 @@ define([
     ctx.fillStyle = this.getTextColor().toString();
 
     ctx.fillText( this.getText(), this.getX(), this.getY() );
+  };
+
+  Button.Type = {
+    DEFAULT:   0,
+    SUBMIT:    1,
+    RESET:     2,
+    SHUFFLE:   3,
+    BACKSPACE: 4
   };
 
   return Button;

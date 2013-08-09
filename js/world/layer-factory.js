@@ -1,23 +1,22 @@
 define([
   'color',
-  'world/layer-type',
   'world/layer',
   'world/circular-layer',
   'entities/polygon-entity'
-], function( Color, LayerType, Layer, CircularLayer, PolygonEntity ) {
+], function( Color, Layer, CircularLayer, PolygonEntity ) {
   'use strict';
 
   return {
     createLayer: function( options ) {
-      var type = options.type || LayerType.DEFAULT;
+      var type = options.type || Layer.Type.DEFAULT;
 
       var layer = null;
       switch ( type ) {
-        case LayerType.DEFAULT:
+        case Layer.Type.DEFAULT:
           layer = new Layer();
           break;
 
-        case LayerType.CIRCULAR:
+        case Layer.Type.CIRCULAR:
           layer = new CircularLayer();
           break;
       }
@@ -34,13 +33,14 @@ define([
     createTerrainLayer: function( options ) {
       var layer = this.createLayer( options );
 
-      var width = layer.getWidth();
-      var height = layer.getHeight();
-      var color = layer.getColor();
+      var width  = layer.getWidth(),
+          height = layer.getHeight(),
+          color  = layer.getColor();
 
-      var maxTerrainHeight = options.maxTerrainHeight || 0;
-      var segmentCount = options.segmentCount || 1;
-      var segmentWidth = width / segmentCount;
+      var maxTerrainHeight = options.maxTerrainHeight || 0,
+          segmentCount     = options.segmentCount     || 1,
+          segmentWidth     = width / segmentCount;
+
       var points = [];
       // Loops back to the first point, so we don't need extra vertex at end.
       for ( var i = 0; i < segmentCount; i++ ) {

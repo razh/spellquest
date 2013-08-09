@@ -19,17 +19,18 @@ define([
     // Spacing between columns.
     this._horizontalSpacing = 0;
     // Spacing between words in a column.
-    this._verticalSpacing = 0;
+    this._verticalSpacing   = 0;
+
     // Spacing from the maxHeight.
-    this._padding = 0;
+    this._padding   = 0;
     // Maximum width. Must call resizeToFit() after setting this.
-    this._maxWidth = 0;
+    this._maxWidth  = 0;
     this._maxHeight = 0;
 
     this._lineWidth = 1;
 
     this._backgroundColor = new Color();
-    this._textColor = new Color();
+    this._textColor       = new Color();
 
     this._fontSize = 12;
   }
@@ -43,7 +44,7 @@ define([
 
   List.prototype.setWords = function( words ) {
     this._words = words;
-    for ( var i = 0; i < this.getWords().length; i++ ) {
+    for ( var i = 0, l = this.getWords().length; i < l; i++ ) {
       this._wasFound.push( false );
     }
 
@@ -145,35 +146,37 @@ define([
   };
 
   List.prototype.getRight = function() {
-    var index = this._words.length - 1;
-    var lastPosition = this._wordPositions[ index ];
+    var index        = this._words.length - 1,
+        lastPosition = this._wordPositions[ index ];
+
     return lastPosition.x + this._words[ index ].length * this.getWidth();
   };
 
   List.prototype.getBottom = function() {
     var ymax = 0;
-    for ( var i = 0; i < this._wordPositions.length; i++ ) {
-      ymax = Math.max( this._wordPositions[i].y, ymax );
-    }
+
+    this._wordPositions.forEach(function( wordPosition ) {
+      ymax = Math.max( wordPosition.y, ymax );
+    });
 
     return ymax + this.getHeight();
   };
 
   List.prototype.isWord = function( word ) {
-    return this.getWords().lastIndexOf( word ) !== -1;
+    return this.getWords().indexOf( word ) !== -1;
   };
 
   List.prototype.wasWordFound = function( word ) {
-    var index = this.getWords().lastIndexOf( word );
+    var index = this.getWords().indexOf( word );
     return index !== -1 && this._wasFound[ index ];
   };
 
   List.prototype.markWord = function( ctx, word ) {
-    var index = this.getWords().lastIndexOf( word );
+    var index = this.getWords().indexOf( word );
     if ( index !== -1 && !this._wasFound[ index ] ) {
-      var x = this._wordPositions[ index ].x;
-      var y = this._wordPositions[ index ].y;
-      var letterCount = word.length;
+      var x = this._wordPositions[ index ].x,
+          y = this._wordPositions[ index ].y,
+          letterCount = word.length;
 
       ctx.fillStyle = this.getBackgroundColor().toString();
       ctx.fillRect( x, y, this.getWidth() * letterCount, this.getHeight() );
@@ -183,9 +186,12 @@ define([
       ctx.textBaseline = 'middle';
       ctx.fillStyle = this.getTextColor().toString();
 
-      var yPos = y + this.getHalfHeight();
+      var yPos      = y + this.getHalfHeight(),
+          width     = this.getWidth(),
+          halfWidth = this.getHalfWidth();
+
       for ( var i = 0; i < letterCount; i++ ) {
-        ctx.fillText( word[i].toUpperCase(), x + i * this.getWidth() + this.getHalfWidth(), yPos );
+        ctx.fillText( word[i].toUpperCase(), x + i * width + halfWidth, yPos );
       }
 
       this._wasFound[ index ] = true;
@@ -198,16 +204,17 @@ define([
       return;
     }
 
-    var x = this.getX();
-    var y = this.getY();
-    var height = this.getHeight();
-    var padding = this.getPadding();
-    var maxHeight = this.getMaxHeight();
+    var x = this.getX(),
+        y = this.getY(),
+        height    = this.getHeight(),
+        padding   = this.getPadding(),
+        maxHeight = this.getMaxHeight();
 
     // How wide the list is in terms of letters (not including padding).
-    var letterCount = 0;
+    var letterCount = 0,
     // Number of spaces between the word columns.
-    var spaceCount = 0;
+        spaceCount = 0;
+
     // Loop through word positions, finding the total width of the word spaces.
     for ( var i = 0, n = this._wordPositions.length; i < n; i++ ) {
       y = this._wordPositions[i].y + height;
@@ -224,12 +231,12 @@ define([
     // Add length of last word.
     letterCount += this._words[ this._words.length - 1 ].length;
 
-    var wordWidth = letterCount * this.getWidth();
-    var spaceWidth = spaceCount * this.getHorizontalSpacing();
-    var totalWidth = wordWidth + spaceWidth;
+    var wordWidth  = letterCount * this.getWidth(),
+        spaceWidth = spaceCount * this.getHorizontalSpacing(),
+        totalWidth = wordWidth + spaceWidth;
 
-    var letterWidthRatio = ( wordWidth / totalWidth ) / letterCount;
-    var spaceWidthRatio = ( spaceWidth / totalWidth ) / spaceCount;
+    var letterWidthRatio = ( wordWidth  / totalWidth ) / letterCount,
+        spaceWidthRatio  = ( spaceWidth / totalWidth ) / spaceCount;
 
     this.setWidth( letterWidthRatio * this.getMaxWidth() );
     this.setHeight( this.getWidth() );
@@ -239,16 +246,17 @@ define([
   };
 
   List.prototype.calculateWordPositions = function() {
-    var x = this.getX();
-    var y = this.getY();
-    var width = this.getWidth();
-    var height = this.getHeight();
-    var padding = this.getPadding();
-    var horizontalSpacing = this.getHorizontalSpacing();
-    var maxHeight = this.getMaxHeight();
+    var x = this.getX(),
+        y = this.getY(),
+        width  = this.getWidth(),
+        height = this.getHeight(),
+        padding           = this.getPadding(),
+        horizontalSpacing = this.getHorizontalSpacing(),
+        maxHeight         = this.getMaxHeight();
 
-    var xPos = 0;
-    var yPos = 0;
+    var xPos = 0,
+        yPos = 0;
+
     for ( var i = 0; i < this._words.length; i++ ) {
       this._wordPositions[i] = {
         x: x + xPos,
@@ -265,8 +273,8 @@ define([
   };
 
   List.prototype.draw = function( ctx ) {
-    var width = this.getWidth();
-    var height = this.getHeight();
+    var width  = this.getWidth(),
+        height = this.getHeight();
 
     for ( var i = 0; i < this._words.length; i++ ) {
       this.drawWordSpace( ctx, this._wordPositions[i].x, this._wordPositions[i].y, width, height, this._words[i].length );
@@ -274,17 +282,19 @@ define([
   };
 
   List.prototype.drawWordSpace = function( ctx, x, y, width, height, letterCount ) {
-    ctx.lineWidth = this.getLineWidth();
+    ctx.lineWidth   = this.getLineWidth();
     ctx.strokeStyle = this.getColor().toString();
 
     // ctx.strokeRect( x, y, width * letterCount, height );
     roundRect( ctx, x, y, width * letterCount, height, 3, false, true );
 
     ctx.beginPath();
+
     for ( var i = 1; i < letterCount; i++ ) {
       ctx.moveTo( x + i * width, y );
       ctx.lineTo( x + i * width, y + height );
     }
+
     ctx.closePath();
 
     ctx.stroke();

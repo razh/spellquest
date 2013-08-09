@@ -7,8 +7,8 @@ define([
   function Form() {
     Entity.call( this );
 
-    this._spacing = 0;
-    this._lineWidth = 5;
+    this._spacing      = 0;
+    this._lineWidth    = 5;
     this._formElements = [];
   }
 
@@ -16,13 +16,13 @@ define([
   Form.prototype.constructor = Form;
 
   Form.prototype.createFormElements = function( letterCount ) {
-    var x = this.getX();
-    var y = this.getY();
-    var spacing = this.getSpacing();
-    var width = this.getWidth();
-    var height = this.getHeight();
-    var color = this.getColor();
-    var lineWidth = this.getLineWidth();
+    var x         = this.getX(),
+        y         = this.getY(),
+        spacing   = this.getSpacing(),
+        width     = this.getWidth(),
+        height    = this.getHeight(),
+        color     = this.getColor(),
+        lineWidth = this.getLineWidth();
 
     var tempFormElement = null;
     for ( var i = 0; i < letterCount; i++ ) {
@@ -39,26 +39,27 @@ define([
   Form.prototype.getWord = function() {
     var word = '';
 
-    for ( var i = 0, n = this._formElements.length; i < n; i++ ) {
-      var letter = this._formElements[i].getLetter();
-      if ( letter !== null ) {
+    var letter;
+    this._formElements.forEach(function( formElement ) {
+      letter = formElement.getLetter();
+      if ( letter ) {
         word += letter.getChar();
       }
-    }
+    });
 
     return word;
   };
 
   Form.prototype.draw = function( ctx ) {
-    for ( var i = 0, n = this._formElements.length; i < n; i++ ) {
-      this._formElements[i].draw( ctx );
-    }
+    this._formElements.forEach(function( formElement ) {
+      formElement.draw( ctx );
+    });
   };
 
   Form.prototype.update = function( elapsedTime ) {
-    for ( var i = 0; i < this._formElements.length; i++ ) {
-      this._formElements[i].update( elapsedTime );
-    }
+    this._formElements.forEach(function( formElement ) {
+      formElement.update( elapsedTime );
+    });
   };
 
   Form.prototype.getSpacing = function() {

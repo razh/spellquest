@@ -10,7 +10,7 @@ define([
   function FormElement() {
     Entity.call( this );
 
-    this._letter = null;
+    this._letter    = null;
     this._lineWidth = 0;
   }
 

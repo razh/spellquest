@@ -31,12 +31,12 @@ define([
     // Letter entities, in order.
     this._letterEntities = [];
     // Order of the letter entities in the pool.
-    this._letterIndices = [];
+    this._letterIndices  = [];
     // Whether the letter has been used, in order.
     this._isUsed = [];
 
     this._textColor = new Color();
-    this._fontSize = 12;
+    this._fontSize  = 12;
   }
 
   Pool.prototype = new Entity();
@@ -104,11 +104,11 @@ define([
   };
 
   Pool.prototype.createLetterEntities = function() {
-    var width = this.getWidth();
-    var height = this.getHeight();
-    var color = this.getColor();
-    var textColor = this.getTextColor();
-    var fontSize = this.getFontSize();
+    var width  = this.getWidth(),
+        height = this.getHeight(),
+        color     = this.getColor(),
+        textColor = this.getTextColor(),
+        fontSize  = this.getFontSize();
 
     var letter = null;
     for ( var i = 0; i < this.getLetters().length; i++ ) {
@@ -124,9 +124,9 @@ define([
       this._isUsed.push( false );
     }
 
-    var x = this.getX();
-    var y = this.getY();
-    var spacing = this.getSpacing();
+    var x = this.getX(),
+        y = this.getY(),
+        spacing = this.getSpacing();
     // Position letters in scrambled order.
     for ( i = 0; i < this._letterIndices.length; i++ ) {
       this._letterEntities[ this._letterIndices[i] ].setPosition( x + i * spacing, y );
@@ -134,15 +134,17 @@ define([
   };
 
   Pool.prototype.reset = function() {
-    var x = this.getX();
-    var y = this.getY();
-    var spacing = this.getSpacing();
+    var x = this.getX(),
+        y = this.getY(),
+        spacing = this.getSpacing();
+
     // x-position of letter in pool.
-    var xPos = 0;
-    var letter = null;
+    var xPos = 0,
+        letter = null;
+
     // The new order of the letters.
-    var newIndices = [];
-    var formElements = this._form.getFormElements();
+    var newIndices = [],
+        formElements = this._form.getFormElements();
 
     // We want the letters in the form to be first.
     var i;
@@ -176,19 +178,20 @@ define([
 
     // Mark all not used.
     for ( i = 0; i < this._isUsed.length; i++ ) {
-      this._isUsed[ i ] = false;
+      this._isUsed[i] = false;
     }
 
     this._letterIndices = newIndices;
   };
 
   Pool.prototype.pushLetter = function( letter ) {
-    var x = this.getX();
-    var y = this.getY();
-    var spacing = this.getSpacing();
+    var x = this.getX(),
+        y = this.getY(),
+        spacing = this.getSpacing();
 
-    var xPos = 0;
-    var newIndices = [];
+    var xPos       = 0,
+        newIndices = [];
+
     for ( var i = 0; i < this._letterIndices.length; i++ ) {
       if ( !this._isUsed[ this._letterIndices[i] ] ) {
         this._letterEntities[ this._letterIndices[i] ].setPosition( x + xPos * spacing, y );
@@ -209,15 +212,15 @@ define([
   };
 
   Pool.prototype.update = function( elapsedTime ) {
-    for ( var i = 0; i < this._letterEntities.length; i++ ) {
-      this._letterEntities[i].update( elapsedTime );
-    }
+    this._letterEntities.forEach(function( letterEntity ) {
+      letterEntity.update( elapsedTime );
+    });
   };
 
   Pool.prototype.draw = function( ctx ) {
-    for ( var i = 0; i < this._letterEntities.length; i++ ) {
-      this._letterEntities[i].draw( ctx );
-    }
+    this._letterEntities.forEach(function( letterEntity ) {
+      letterEntity.draw( ctx );
+    });
   };
 
   Pool.prototype.hit = function( x, y ) {
@@ -235,9 +238,9 @@ define([
 
     // Only shuffle if all letters are not used/in pool.
     if ( index === -1 ) {
-      var x = this.getX();
-      var y = this.getY();
-      var spacing = this.getSpacing();
+      var x = this.getX(),
+          y = this.getY(),
+          spacing = this.getSpacing();
 
       var xPos = 0;
       this._letterIndices = fisherYates( this._letterIndices );

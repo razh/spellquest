@@ -7,9 +7,9 @@ define([
     Entity.call( this );
 
     this._playerEntity = null;
-    this._enemies = [];
+    this._enemies      = [];
 
-    this._layers = [];
+    this._layers      = [];
     this._scrollSpeed = -0.1;
   }
 
@@ -44,9 +44,10 @@ define([
   };
 
   World.prototype.update = function( elapsedTime ) {
-    for ( var i = 0; i < this._layers.length; i++ ) {
-      this._layers[i].update( elapsedTime, elapsedTime * this.getScrollSpeed() );
-    }
+    var scrollSpeed = this.getScrollSpeed();
+    this._layers.forEach(function( layer ) {
+      layer.update( elapsedTime, elapsedTime * scrollSpeed );
+    });
   };
 
   World.prototype.draw = function( ctx ) {
@@ -55,12 +56,12 @@ define([
     ctx.fillStyle = this.getColor().toString();
     ctx.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 
-    for ( var i = 0; i < this._layers.length; i++ ) {
-      this._layers[i].draw( ctx );
-    }
+    this._layers.forEach(function( layer ) {
+      layer.draw( ctx );
+    });
 
     var playerEntity = this.getPlayerEntity();
-    if ( playerEntity !== null ) {
+    if ( playerEntity ) {
       playerEntity.draw( ctx );
     }
   };

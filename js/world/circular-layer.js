@@ -14,13 +14,14 @@ define([
     Layer.prototype.update.call( this, elapsedTime, dx );
 
     // This assumes we only scroll from right-to-left.
-    var x = this.getX();
-    var width = this.getWidth();
-    for ( var i = 0, n = this._props.length; i < n; i++ ) {
-      if ( this._props[i].getX() + this._props[i].getWidth() + x <= 0 ) {
-        this._props[i].setX( this._props[i].getX() + width );
+    var x     = this.getX(),
+        width = this.getWidth();
+
+    this._props.forEach(function( prop ) {
+      if ( prop.getX() + prop.getWidth() + x <= 0 ) {
+        prop.setX( prop.getX() + width );
       }
-    }
+    });
   };
 
   return CircularLayer;

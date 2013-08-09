@@ -6,15 +6,15 @@ define(function() {
   }
 
   UI.prototype.draw = function( ctx ) {
-    for ( var i = 0; i < this._buttons.length; i++ ) {
-      this._buttons[i].draw( ctx );
-    }
+    this._buttons.forEach(function( button ) {
+      button.draw( ctx );
+    });
   };
 
   UI.prototype.click = function( game, x, y ) {
-    for ( var i = 0; i < this._buttons.length; i++ ) {
-      this._buttons[i].click( game, x, y );
-    }
+    this._buttons.forEach(function( button ) {
+      button.click( game, x, y );
+    });
   };
 
   UI.prototype.getButtons = function() {

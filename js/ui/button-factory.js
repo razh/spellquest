@@ -1,8 +1,7 @@
 define([
   'spellquest',
   'ui/button',
-  'ui/button-type'
-], function( Game, Button, ButtonType ) {
+], function( Game, Button ) {
   'use strict';
 
   return {
@@ -56,19 +55,19 @@ define([
 
     createButton: function( buttonType ) {
       switch ( buttonType ) {
-        case ButtonType.DEFAULT:
+        case Button.Type.DEFAULT:
           return new Button();
 
-        case ButtonType.SUBMIT:
+        case Button.Type.SUBMIT:
           return this.createSubmitButton();
 
-        case ButtonType.RESET:
+        case Button.Type.RESET:
           return this.createResetButton();
 
-        case ButtonType.SHUFFLE:
+        case Button.Type.SHUFFLE:
           return this.createShuffleButton();
 
-        case ButtonType.BACKSPACE:
+        case Button.Type.BACKSPACE:
           return this.createBackspaceButton();
       }
     }
