@@ -1,77 +1,76 @@
-define(
-  [ 'spellquest',
-    './button',
-    './button-type' ],
-  function( Game, Button, ButtonType ) {
-    'use strict';
+define([
+  'spellquest',
+  'ui/button',
+  'ui/button-type'
+], function( Game, Button, ButtonType ) {
+  'use strict';
 
-    return {
-      createSubmitButton: function() {
-        var button = new Button();
+  return {
+    createSubmitButton: function() {
+      var button = new Button();
 
-        button.addOnClick(function( game ) {
-          game.submit();
-        });
+      button.addOnClick(function( game ) {
+        game.submit();
+      });
 
-        button.setText( 'submit' );
+      button.setText( 'submit' );
 
-        return button;
-      },
+      return button;
+    },
 
-      createResetButton: function() {
-        var button = new Button();
+    createResetButton: function() {
+      var button = new Button();
 
-        button.addOnClick(function( game ) {
-          game.reset();
-        });
+      button.addOnClick(function( game ) {
+        game.reset();
+      });
 
-        button.setText( 'reset' );
+      button.setText( 'reset' );
 
-        return button;
-      },
+      return button;
+    },
 
-      createShuffleButton: function() {
-        var button = new Button();
+    createShuffleButton: function() {
+      var button = new Button();
 
-        button.addOnClick(function( game ) {
-          game.getPool().shuffle();
-        });
+      button.addOnClick(function( game ) {
+        game.getPool().shuffle();
+      });
 
-        button.setText( 'shuffle' );
+      button.setText( 'shuffle' );
 
-        return button;
-      },
+      return button;
+    },
 
-      createBackspaceButton: function() {
-        var button = new Button();
+    createBackspaceButton: function() {
+      var button = new Button();
 
-        button.addOnClick(function( game ) {
-          game.backspace();
-        });
+      button.addOnClick(function( game ) {
+        game.backspace();
+      });
 
-        button.setText( '\u2190' );
+      button.setText( '\u2190' );
 
-        return button;
-      },
+      return button;
+    },
 
-      createButton: function( buttonType ) {
-        switch ( buttonType ) {
-          case ButtonType.DEFAULT:
-            return new Button();
+    createButton: function( buttonType ) {
+      switch ( buttonType ) {
+        case ButtonType.DEFAULT:
+          return new Button();
 
-          case ButtonType.SUBMIT:
-            return this.createSubmitButton();
+        case ButtonType.SUBMIT:
+          return this.createSubmitButton();
 
-          case ButtonType.RESET:
-            return this.createResetButton();
+        case ButtonType.RESET:
+          return this.createResetButton();
 
-          case ButtonType.SHUFFLE:
-            return this.createShuffleButton();
+        case ButtonType.SHUFFLE:
+          return this.createShuffleButton();
 
-          case ButtonType.BACKSPACE:
-            return this.createBackspaceButton();
-        }
+        case ButtonType.BACKSPACE:
+          return this.createBackspaceButton();
       }
-    };
-  }
-);
+    }
+  };
+});
